@@ -1,4 +1,5 @@
 import { createEffect, createMemo, createSignal, on, onCleanup } from "solid-js"
+import { createStore } from "solid-js/store"
 import { useKeyboard, useRenderer } from "@opentui/solid"
 import { isDeepEqual } from "remeda"
 import { createSimpleContext } from "./helper"

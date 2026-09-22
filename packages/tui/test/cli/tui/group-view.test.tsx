@@ -76,6 +76,7 @@ test("retains nested expansion state and registers exact headers and parts", asy
                 thinkingMode: () => "hide",
                 markdownMode: () => "rendered",
                 groupExploration: () => true,
+                legacyTurns: () => false,
                 diffWrapMode: () => "word",
                 models: () => [],
                 messageIndex: () => undefined,
