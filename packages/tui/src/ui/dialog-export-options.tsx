@@ -58,8 +58,8 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
     commands: [
       {
         bind: "tab",
-        title: "Next export option",
-        group: "Dialog",
+        title: "下一个导出选项",
+        group: "对话框",
         run: () => {
           const order: Active[] =
             store.format === "markdown"
@@ -70,7 +70,7 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
       },
       {
         bind: "return",
-        title: "Select export option",
+        title: "选择导出选项",
         group: "Dialog",
         run: activate,
       },
@@ -86,7 +86,7 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
     <box paddingLeft={2} paddingRight={2} gap={1}>
       <box flexDirection="row" justifyContent="space-between">
         <text attributes={TextAttributes.BOLD} fg={theme.text.base}>
-          Export session
+          导出会话
         </text>
         <text fg={theme.text.muted} onMouseUp={() => dialog.clear()}>
           esc
@@ -161,7 +161,7 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
                   : theme.text.formfield.base
             }
           >
-            Include thinking
+            包含思考过程
           </text>
         </box>
         <box
@@ -199,7 +199,7 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
                   : theme.text.formfield.base
             }
           >
-            Include tools
+            包含工具调用
           </text>
         </box>
       </Show>
@@ -239,7 +239,7 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
                   : theme.text.formfield.base
             }
           >
-            Sanitize sensitive data
+            清理敏感数据
           </text>
         </box>
       </Show>
@@ -263,7 +263,7 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
           onMouseUp={() => confirm("export")}
         >
           <text fg={store.active === "export" ? theme.text.action.primary.focused : theme.text.action.primary.base}>
-            Export
+            导出
           </text>
         </box>
       </box>

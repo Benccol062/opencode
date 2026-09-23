@@ -63,18 +63,18 @@ function formKind(value: string | undefined): FormKind | undefined {
 }
 
 const SAMPLE_MARKDOWN = [
-  "# Direct Mode Demo",
+  "# 直接模式演示",
   "",
   "This is a realistic assistant response for direct-mode formatting checks.",
   "It mixes **bold**, _italic_, `inline code`, links, code fences, and tables in one streamed reply.",
   "",
-  "## Summary",
+  "## 摘要",
   "",
   "- Restored the final markdown flush so the last block is committed on idle.",
   "- Switched markdown scrollback commits back to top-level block boundaries.",
   "- Added footer-level regression coverage for split-footer rendering.",
   "",
-  "## Status",
+  "## 状态",
   "",
   "| Area | Before | After | Notes |",
   "| --- | --- | --- | --- |",
@@ -88,7 +88,7 @@ const SAMPLE_MARKDOWN = [
   "const result = { markdown: true, tables: 2, stable: true }",
   "```",
   "",
-  "## Files",
+  "## 文件",
   "",
   "| File | Change |",
   "| --- | --- |",
@@ -100,7 +100,7 @@ const SAMPLE_MARKDOWN = [
 ].join("\n")
 
 const SAMPLE_TABLE = [
-  "# Table Sample",
+  "# 表格示例",
   "",
   "| Kind | Example | Notes |",
   "| --- | --- | --- |",
@@ -434,7 +434,7 @@ async function emitBash(state: State, signal?: AbortSignal): Promise<void> {
   const ref = make(state, "shell", {
     command: "git status",
     workdir: process.cwd(),
-    description: "Show git status",
+    description: "显示 Git 状态",
   })
   startTool(state, ref)
   await wait(70, signal)
@@ -495,7 +495,7 @@ function emitPatch(state: State): void {
         {
           status: "added",
           file: path.join(process.cwd(), "README-demo.md"),
-          patch: "@@ -0,0 +1,4 @@\n+# Demo\n+This is a generated preview file.\n",
+          patch: "@@ -0,0 +1,4 @@\n+# 演示\n+This is a generated preview file.\n",
           deletions: 0,
         },
       ],
@@ -533,10 +533,10 @@ function emitTask(state: State): void {
   } satisfies SessionMessageAssistantTool
   showSubagent(state, {
     sessionID: "ses_demo_child",
-    label: "Explore",
+    label: "探索",
     description: "Scan run/* for reducer touchpoints",
     status: "completed",
-    title: "Reducer touchpoints found",
+    title: "已找到 Reducer 触点",
     commits: [
       {
         kind: "user",
@@ -569,21 +569,21 @@ function emitQuestionTool(state: State): void {
   const ref = make(state, "question", {
     questions: [
       {
-        header: "Style",
-        question: "Which output style do you want to inspect?",
+        header: "样式",
+        question: "你想查看哪种输出样式？",
         options: [
-          { label: "Diff", description: "Show diff block" },
-          { label: "Code", description: "Show code block" },
+          { label: "Diff", description: "显示差异块" },
+          { label: "Code", description: "显示代码块" },
         ],
         multiple: false,
         custom: false,
       },
       {
-        header: "Extras",
-        question: "Pick extra rows",
+        header: "附加项",
+        question: "选择附加行",
         options: [
-          { label: "Usage", description: "Add usage row" },
-          { label: "Duration", description: "Add duration row" },
+          { label: "用量", description: "Add usage row" },
+          { label: "时长", description: "Add duration row" },
         ],
         multiple: true,
         custom: true,
@@ -607,7 +607,7 @@ function emitPermission(state: State, kind: PermissionKind = "edit"): void {
     const ref = make(state, "shell", {
       command,
       workdir: root,
-      description: "Inspect worktree changes",
+      description: "检查工作区变更",
     })
     askPermission(state, {
       ref,
@@ -684,7 +684,7 @@ function emitPermission(state: State, kind: PermissionKind = "edit"): void {
       },
       always: [`${dir}/**`],
       done: {
-        output: `1: # External demo\n2: Shared preview file\nPath: ${target}`,
+        output: `1: # 外部演示\n2: Shared preview file\nPath: ${target}`,
         metadata: {},
       },
     })
@@ -693,7 +693,7 @@ function emitPermission(state: State, kind: PermissionKind = "edit"): void {
 
   if (kind === "doom") {
     const ref = make(state, "subagent", {
-      description: "Retry the formatter after repeated failures",
+      description: "在多次失败后重试格式化器",
       agent: "general",
     })
     askPermission(state, {
@@ -732,48 +732,48 @@ function demoForm(kind: FormKind): { title: string; fields: MiniFormRequest["fie
     const questions: JsonValue[] = [
       {
         header: "Layout",
-        question: "Which footer view should be the reference for spacing checks?",
+        question: "哪个页脚视图应作为间距检查的基准？",
         options: [
-          { label: "Form", description: "Inspect the canonical Form footer" },
-          { label: "Prompt", description: "Return to the normal composer" },
+          { label: "Form", description: "查看标准表单页脚" },
+          { label: "提示", description: "Return to the normal composer" },
         ],
         multiple: false,
         custom: true,
       },
       {
         header: "Checks",
-        question: "Pick formatting previews",
+        question: "选择格式预览",
         options: [
-          { label: "Diff", description: "Emit an edit diff" },
-          { label: "Subagent", description: "Emit a subagent card" },
+          { label: "Diff", description: "输出编辑差异" },
+          { label: "子代理", description: "Emit a subagent card" },
         ],
         multiple: true,
         custom: true,
       },
     ]
     return {
-      title: "Questions",
+      title: "提问",
       questions,
       fields: [
         {
           key: "q0",
-          title: "Layout",
+          title: "布局",
           description: "Which footer view should be the reference for spacing checks?",
           type: "string",
           options: [
             { value: "Form", label: "Form", description: "Inspect the canonical Form footer" },
-            { value: "Prompt", label: "Prompt", description: "Return to the normal composer" },
+            { value: "Prompt", label: "Prompt", description: "返回常规输入框" },
           ],
           custom: true,
         },
         {
           key: "q1",
-          title: "Checks",
+          title: "检查项",
           description: "Pick formatting previews",
           type: "multiselect",
           options: [
             { value: "Diff", label: "Diff", description: "Emit an edit diff" },
-            { value: "Subagent", label: "Subagent", description: "Emit a subagent card" },
+            { value: "Subagent", label: "Subagent", description: "输出子代理卡片" },
           ],
           custom: true,
         },
@@ -781,14 +781,14 @@ function demoForm(kind: FormKind): { title: string; fields: MiniFormRequest["fie
     }
   }
   return {
-    title: "MCP authorization",
+    title: "MCP 授权",
     fields: [
       {
         key: "authorization",
         type: "external",
         url: "https://example.com/opencode-demo",
-        title: "Authorize demo MCP server",
-        description: "Complete authorization in your browser",
+        title: "授权演示 MCP 服务器",
+        description: "在浏览器中完成授权",
       },
     ],
   }
@@ -808,7 +808,7 @@ function emitForm(state: State, kind: FormKind = "question"): void {
     metadata:
       kind === "question"
         ? { kind: "question", tool: { messageID: ref.msg, id: ref.call } }
-        : { kind: "mcp", message: `Synthetic ${kind} MCP elicitation` },
+        : { kind: "mcp", message: `合成 ${kind} MCP 征询` },
     fields: form.fields,
   }
   state.forms.set(request.id, { ref, kind, request })
@@ -893,7 +893,7 @@ async function emitFmt(state: State, kind: string, body: string, signal?: AbortS
     emitPatch(state)
     emitTask(state)
     emitQuestionTool(state)
-    emitError(state, "demo mixed scenario error")
+    emitError(state, "演示混合场景错误")
     return true
   }
 

@@ -35,7 +35,7 @@ export function permissionPresentation(
     const diff = text(first.patch) || text(first.diff) || text(metadata.diff) || undefined
     return {
       icon: "→",
-      title: `Edit ${formatPath(file)}`,
+      title: `编辑 ${formatPath(file)}`,
       lines: [],
       diff,
       patch: diff ? undefined : text(input.patchText) || undefined,
@@ -67,7 +67,7 @@ export function permissionPresentation(
     const command = text(input.command)
     return {
       icon: "#",
-      title: "Shell command",
+      title: "Shell 命令",
       lines: command ? [`$ ${command}`] : resources.map((item) => `- ${item}`),
     }
   }
@@ -77,7 +77,7 @@ export function permissionPresentation(
     const description = text(input.description)
     return {
       icon: "#",
-      title: `${Locale.titlecase(agent)} Subagent`,
+      title: `${Locale.titlecase(agent)} 子代理`,
       lines: description ? [`◉ ${description}`] : [],
     }
   }
@@ -123,7 +123,7 @@ export function permissionPresentation(
     const directory = wildcardDirectory(raw)
     return {
       icon: "←",
-      title: `Access external directory ${formatPath(directory)}`,
+      title: `访问外部目录 ${formatPath(directory)}`,
       lines: resources.map((item) => `- ${item}`),
     }
   }
@@ -131,7 +131,7 @@ export function permissionPresentation(
   if (action === "doom_loop") {
     return {
       icon: "⟳",
-      title: "Continue after repeated failures",
+      title: "在反复失败后继续",
       lines: ["This keeps the session running despite repeated failures."],
     }
   }
@@ -160,11 +160,11 @@ export function permissionAlwaysLines(input: { action: string; save?: ReadonlyAr
 }
 
 export function permissionOptionLabel(option: "once" | "always" | "reject" | "confirm" | "cancel") {
-  if (option === "once") return "Allow once"
-  if (option === "always") return "Always allow"
-  if (option === "reject") return "Reject"
-  if (option === "confirm") return "Confirm"
-  return "Cancel"
+  if (option === "once") return "允许一次"
+  if (option === "always") return "始终允许"
+  if (option === "reject") return "拒绝"
+  if (option === "confirm") return "确认"
+  return "取消"
 }
 
 function normalizeInput(action: string, value: unknown): Dict {

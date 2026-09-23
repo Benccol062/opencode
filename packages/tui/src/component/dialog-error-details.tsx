@@ -55,7 +55,7 @@ export function DialogErrorDetails(props: {
   Keymap.createLayer(() => ({
     mode: "modal",
     commands: [
-      { bind: "escape", title: "Back", group: "Dialog", run: props.onBack },
+      { bind: "escape", title: "Back", group: "对话框", run: props.onBack },
       { bind: "c", title: "Copy details", group: "Dialog", run: copy },
       { bind: "i", title: "Investigate error", group: "Dialog", run: investigate },
     ],
@@ -123,7 +123,7 @@ export function DialogErrorDetails(props: {
         </text>
         <text onMouseUp={copy}>
           <span style={{ fg: copied() ? theme.text.feedback.success.base : theme.text.base }}>
-            <b>{copied() ? "✓ copied" : "c"}</b>
+            <b>{copied() ? "✓ 已复制" : "c"}</b>
           </span>
           <span style={{ fg: theme.text.muted }}>{copied() ? "" : " copy details"}</span>
         </text>

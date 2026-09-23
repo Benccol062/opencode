@@ -29,8 +29,8 @@ export function DialogConfirm(props: DialogConfirmProps) {
     commands: [
       {
         bind: "return",
-        title: "Confirm dialog selection",
-        group: "Dialog",
+        title: "确认对话框选择",
+        group: "对话框",
         run: () => {
           if (store.active === "confirm") props.onConfirm?.()
           if (store.active === "cancel") props.onCancel?.()
@@ -39,7 +39,7 @@ export function DialogConfirm(props: DialogConfirmProps) {
       },
       {
         bind: "left",
-        title: "Previous dialog option",
+        title: "上一个对话框选项",
         group: "Dialog",
         run: () => {
           setStore("active", store.active === "confirm" ? "cancel" : "confirm")
@@ -47,7 +47,7 @@ export function DialogConfirm(props: DialogConfirmProps) {
       },
       {
         bind: "right",
-        title: "Next dialog option",
+        title: "下一个对话框选项",
         group: "Dialog",
         run: () => {
           setStore("active", store.active === "confirm" ? "cancel" : "confirm")

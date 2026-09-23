@@ -11,8 +11,8 @@ export function DialogHelp() {
   Keymap.createLayer(() => ({
     mode: "modal",
     commands: [
-      { bind: "return", title: "Close help", group: "Dialog", run: () => dialog.clear() },
-      { bind: "escape", title: "Close help", group: "Dialog", run: () => dialog.clear() },
+      { bind: "return", title: "关闭帮助", group: "Dialog", run: () => dialog.clear() },
+      { bind: "escape", title: "Close help", group: "对话框", run: () => dialog.clear() },
     ],
   }))
 

@@ -70,11 +70,11 @@ export function formSelected(field: FormField | undefined, value: FormValue | un
 }
 
 export function formValidateValue(field: FormAnswerField, value: FormValue | undefined): string | undefined {
-  if (value === undefined) return field.required ? "Answer required" : undefined
+  if (value === undefined) return field.required ? "需要回答" : undefined
   if (field.required && (value === "" || (Array.isArray(value) && value.length === 0)))
-    return field.type === "multiselect" ? "Select at least one option" : "Answer required"
+    return field.type === "multiselect" ? "请至少选择一个选项" : "Answer required"
   if (field.type === "string") {
-    if (typeof value !== "string") return "Expected text"
+    if (typeof value !== "string") return "应为文本"
     if (field.minLength !== undefined && value.length < field.minLength)
       return `Must be at least ${field.minLength} characters`
     if (field.maxLength !== undefined && value.length > field.maxLength)
@@ -86,27 +86,27 @@ export function formValidateValue(field: FormAnswerField, value: FormValue | und
         return `Invalid pattern: ${field.pattern}`
       }
     }
-    if (field.format === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "Expected an email address"
-    if (field.format === "uri" && !validURL(value)) return "Expected a URL"
+    if (field.format === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "应为电子邮件地址"
+    if (field.format === "uri" && !validURL(value)) return "应为 URL"
     if (field.format === "date" && !validDate(value)) return "Expected a date (YYYY-MM-DD)"
-    if (field.format === "date-time" && Number.isNaN(new Date(value).getTime())) return "Expected a date and time"
+    if (field.format === "date-time" && Number.isNaN(new Date(value).getTime())) return "应为日期和时间"
     if (field.options && !field.custom && !field.options.some((option) => option.value === value))
-      return "Select an available option"
+      return "请选择可用选项"
     return
   }
   if (field.type === "number" || field.type === "integer") {
-    if (typeof value !== "number" || !Number.isFinite(value)) return "Expected a number"
-    if (field.type === "integer" && !Number.isInteger(value)) return "Expected an integer"
+    if (typeof value !== "number" || !Number.isFinite(value)) return "应为数字"
+    if (field.type === "integer" && !Number.isInteger(value)) return "应为整数"
     if (typeof field.minimum === "number" && value < field.minimum) return `Must be at least ${field.minimum}`
     if (typeof field.maximum === "number" && value > field.maximum) return `Must be at most ${field.maximum}`
     return
   }
-  if (field.type === "boolean") return typeof value === "boolean" ? undefined : "Expected yes or no"
-  if (!Array.isArray(value)) return "Expected selections"
+  if (field.type === "boolean") return typeof value === "boolean" ? undefined : "应为是或否"
+  if (!Array.isArray(value)) return "应为所选项"
   if (field.minItems !== undefined && value.length < field.minItems) return `Select at least ${field.minItems}`
   if (field.maxItems !== undefined && value.length > field.maxItems) return `Select at most ${field.maxItems}`
   if (!field.custom && value.some((item) => !field.options.some((option) => option.value === item)))
-    return "Select only available options"
+    return "只能选择可用选项"
 }
 
 export function formDisplayValue(field: FormAnswerField, value: FormValue | undefined, emptyMultiselect: string) {

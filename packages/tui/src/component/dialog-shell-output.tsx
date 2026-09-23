@@ -81,16 +81,16 @@ export function DialogShellOutput(props: { shell: ShellInfo; location: LocationR
   })
 
   const status = () => {
-    if (info().status === "running") return "Running"
-    if (info().status === "timeout") return "Timed out"
-    if (info().status === "killed") return "Killed"
-    return info().exit === undefined ? "Exited" : `Exited · code ${info().exit}`
+    if (info().status === "running") return "运行中"
+    if (info().status === "timeout") return "已超时"
+    if (info().status === "killed") return "已终止"
+    return info().exit === undefined ? "已退出" : `Exited · code ${info().exit}`
   }
 
   Keymap.createLayer(() => ({
     mode: "modal",
     commands: [
-      { bind: "up", title: "Scroll output up", group: "Shell", run: () => scroll?.scrollBy(-1) },
+      { bind: "up", title: "向上滚动输出", group: "Shell", run: () => scroll?.scrollBy(-1) },
       { bind: "down", title: "Scroll output down", group: "Shell", run: () => scroll?.scrollBy(1) },
       { bind: "pageup", title: "Previous output page", group: "Shell", run: () => scroll?.scrollBy(-height()) },
       { bind: "pagedown", title: "Next output page", group: "Shell", run: () => scroll?.scrollBy(height()) },
@@ -103,7 +103,7 @@ export function DialogShellOutput(props: { shell: ShellInfo; location: LocationR
     <box paddingLeft={2} paddingRight={2} paddingBottom={1} gap={1}>
       <box flexDirection="row" gap={2}>
         <text fg={theme.text.base} attributes={TextAttributes.BOLD} flexGrow={1}>
-          Shell output
+          Shell 输出
         </text>
         <text fg={theme.text.muted}>{status()}</text>
         <text fg={theme.text.muted} onMouseUp={() => dialog.clear()}>
@@ -114,7 +114,7 @@ export function DialogShellOutput(props: { shell: ShellInfo; location: LocationR
         {props.shell.command}
       </text>
       <Show when={omitted()}>
-        <text fg={theme.text.muted}>Earlier output omitted · showing recent output</text>
+        <text fg={theme.text.muted}>较早的输出已省略，仅显示最近的输出</text>
       </Show>
       <scrollbox
         id="shell-output-scroll"
@@ -127,7 +127,7 @@ export function DialogShellOutput(props: { shell: ShellInfo; location: LocationR
         <text fg={theme.text.base} wrapMode="word">
           {text() ||
             (output() === undefined
-              ? "Loading output…"
+              ? "正在加载输出…"
               : "No captured output. Output redirected to files is not shown here.")}
         </text>
       </scrollbox>

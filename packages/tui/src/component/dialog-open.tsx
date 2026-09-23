@@ -120,7 +120,7 @@ export function DialogOpen(props: { sessions: SessionInfo[]; onLoad: (sessions: 
   }
   const [worktrees, worktreeActions] = createResource(projectID, (projectID) =>
     client.api.worktree.list({ projectID }).catch((error: unknown) => {
-      toast.show({ title: "Loading worktrees failed", message: errorMessage(error), variant: "error" })
+      toast.show({ title: "加载工作树失败", message: errorMessage(error), variant: "error" })
       return []
     }),
   )
@@ -193,7 +193,7 @@ export function DialogOpen(props: { sessions: SessionInfo[]; onLoad: (sessions: 
         title: withTimestampedFallback(session),
         searchText: `${session.id} ${session.location.directory}`,
         value: { type: "session", sessionID: session.id } as OpenTarget,
-        category: "Sessions",
+        category: "会话",
         footer: `${label ? `${Locale.truncate(label, 30)} · ` : ""}${timeAgo(session.time.updated)}`,
         onSelect: () => location.set(session.location),
         gutter: running
@@ -245,7 +245,7 @@ export function DialogOpen(props: { sessions: SessionInfo[]; onLoad: (sessions: 
             directory: item.directory,
             ...(git ? { projectID: item.project!.id } : {}),
           } as OpenTarget,
-          category: "Projects",
+          category: "项目",
           gutter:
             item.directory === current.directory ||
             (item.directory === location.current?.project.canonical && !seen.has(locationKey(current)))
@@ -320,7 +320,7 @@ export function DialogOpen(props: { sessions: SessionInfo[]; onLoad: (sessions: 
               restore(previous)
             }}
             title={projectID() ? `${projectName(data.project.get(projectID()!)) ?? "Project"} / Worktrees` : "Open"}
-            placeholder={projectID() ? "Search worktrees…" : "Search sessions and projects…"}
+            placeholder={projectID() ? "搜索工作树…" : "Search sessions and projects…"}
             options={projectID() ? worktreeOptions() : options()}
             current={
               currentSessionID() ? ({ type: "session", sessionID: currentSessionID()! } as OpenTarget) : undefined
@@ -337,7 +337,7 @@ export function DialogOpen(props: { sessions: SessionInfo[]; onLoad: (sessions: 
             emptyView={
               <Show when={!recent.loading && !projects.loading}>
                 <box paddingLeft={4} paddingRight={4}>
-                  <text fg={theme.text.muted}>No recent sessions or projects</text>
+                  <text fg={theme.text.muted}>暂无最近会话或项目</text>
                 </box>
               </Show>
             }
@@ -351,15 +351,15 @@ export function DialogOpen(props: { sessions: SessionInfo[]; onLoad: (sessions: 
               >
                 <box>
                   <Show when={projectID() && worktrees.loading}>
-                    <Spinner color={theme.text.muted}>Loading worktrees…</Spinner>
+                    <Spinner color={theme.text.muted}>正在加载工作树…</Spinner>
                   </Show>
                   <Show when={!projectID() && (recent.loading || projects.loading)}>
-                    <Spinner color={theme.text.muted}>Refreshing sessions and projects…</Spinner>
+                    <Spinner color={theme.text.muted}>正在刷新会话和项目…</Spinner>
                   </Show>
                   <Show when={!projectID() && (recent() === false || projects() === false)}>
                     <text fg={theme.text.feedback.error.base}>
-                      Could not refresh{" "}
-                      {recent() === false ? (projects() === false ? "sessions and projects" : "sessions") : "projects"}.
+                      无法刷新{" "}
+                      {recent() === false ? (projects() === false ? "会话和项目" : "sessions") : "projects"}.
                     </text>
                   </Show>
                 </box>
@@ -407,12 +407,12 @@ export function DialogOpen(props: { sessions: SessionInfo[]; onLoad: (sessions: 
                   {projectID()
                     ? worktrees.loading
                       ? "Loading worktrees…"
-                      : "No matching worktrees"
+                      : "无匹配的工作树"
                     : recent.loading || projects.loading || matched.loading
-                      ? "Searching sessions and projects…"
+                      ? "正在搜索会话和项目…"
                       : shortcuts.get("session.list")
                         ? `No matches · search all sessions with ${shortcuts.get("session.list")}`
-                        : "No matches"}
+                        : "无匹配项"}
                 </text>
               </box>
             }
@@ -434,10 +434,10 @@ export function DialogOpen(props: { sessions: SessionInfo[]; onLoad: (sessions: 
         <DialogPrompt
           size="large"
           title={`${projectName(data.project.get(projectID()!)) ?? "Project"} / New worktree`}
-          placeholder="Worktree name (optional)"
+          placeholder="工作树名称(可选)"
           description={() => <text fg={theme.text.muted}>Leave blank for a random name.</text>}
           busy={creating()}
-          busyText="Creating worktree…"
+          busyText="正在创建工作树…"
           onCancel={cancelCreation}
           onConfirm={(value) => {
             const id = projectID()!
@@ -458,7 +458,7 @@ export function DialogOpen(props: { sessions: SessionInfo[]; onLoad: (sessions: 
                 location.set(target)
               })
               .catch((error: unknown) =>
-                toast.show({ title: "Creating worktree failed", message: errorMessage(error), variant: "error" }),
+                toast.show({ title: "创建工作树失败", message: errorMessage(error), variant: "error" }),
               )
               .finally(() => setCreating(false))
           }}

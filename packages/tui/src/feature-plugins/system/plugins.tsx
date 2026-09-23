@@ -93,7 +93,7 @@ export function PluginsDialog(props: {
       (entry): DialogSelectOption<string> => ({
         title: label(entry, props.context),
         value: entry.key,
-        category: entry.runtime === "tui" ? "TUI" : "Server",
+        category: entry.runtime === "tui" ? "TUI" : "服务端",
         searchText: entry.runtime === "tui" ? entry.target : source(entry.plugin, props.context),
         footer: updating(entry) ? "updating" : footer(entry),
         footerColor:
@@ -185,15 +185,15 @@ export function PluginsDialog(props: {
         when={detail()}
         fallback={
           <DialogSelect
-            title="Plugins"
+            title="插件"
             options={options()}
             locked={locked()}
             preserveSelection={true}
             bindings={[
               {
                 bind: "ctrl+a",
-                title: "Toggle internal plugins",
-                group: "Plugins",
+                title: "切换内置插件显示",
+                group: "插件",
                 run: () => {
                   setShowInternal((value) => !value)
                 },
@@ -263,7 +263,7 @@ export function PluginsDialog(props: {
           <DialogErrorDetails
             title={`${entry().runtime === "tui" ? "TUI" : "Server"} plugin error`}
             source={pluginSource(entry(), props.context)}
-            error={pluginError(entry()) ?? "Unknown plugin error"}
+            error={pluginError(entry()) ?? "未知插件错误"}
             diagnosticRef={pluginErrorRef(entry())}
             context={`Plugin: ${label(entry(), props.context)}\nStatus: failed\nRuntime: ${entry().runtime}\nSource: ${pluginSource(entry(), props.context)}`}
             onBack={() => {
@@ -341,7 +341,7 @@ function Commands(props: { context: Plugin.Context }) {
       {
         id: "plugins.list",
         title: "Plugins",
-        group: "System",
+        group: "系统",
         slash: { name: "plugins" },
         palette: true,
         run() {

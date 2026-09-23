@@ -61,7 +61,7 @@ export function DialogPair(props: { credentials?: DialogPairCredentials }) {
       <box flexDirection={horizontal() ? "row" : "column"} alignItems={horizontal() ? "flex-start" : "center"} gap={2}>
         <box width={horizontal() ? 29 : "100%"} flexShrink={0} gap={1}>
           <box>
-            <text fg={theme.text.muted}>This device</text>
+            <text fg={theme.text.muted}>本设备</text>
             <Show when={localhost()}>
               {(url) => (
                 <Link href={href(url())} fg={theme.text.base}>
@@ -81,11 +81,11 @@ export function DialogPair(props: { credentials?: DialogPairCredentials }) {
             </For>
           </box>
           <box>
-            <text fg={theme.text.muted}>Username</text>
+            <text fg={theme.text.muted}>用户名</text>
             <text fg={theme.text.base}>{value.username}</text>
           </box>
           <box>
-            <text fg={theme.text.muted}>Password</text>
+            <text fg={theme.text.muted}>密码</text>
             <text
               fg={passwordHover() ? theme.text.base : theme.text.muted}
               wrapMode="word"
@@ -127,7 +127,7 @@ export function DialogPair(props: { credentials?: DialogPairCredentials }) {
       <Show
         when={loadError()}
         fallback={
-          <Show when={info()} fallback={<text fg={theme.text.muted}>Loading server information…</text>}>
+          <Show when={info()} fallback={<text fg={theme.text.muted}>正在加载服务器信息…</text>}>
             <Show
               when={dimensions().height >= 36}
               fallback={
@@ -147,7 +147,7 @@ export function DialogPair(props: { credentials?: DialogPairCredentials }) {
         {(error) => (
           <box>
             <text fg={theme.text.feedback.error.base} attributes={TextAttributes.BOLD}>
-              Could not load server information
+              无法加载服务器信息
             </text>
             <text fg={theme.text.muted}>{errorMessage(error())}</text>
             <text fg={theme.text.muted}>Close and reopen Pair to try again.</text>

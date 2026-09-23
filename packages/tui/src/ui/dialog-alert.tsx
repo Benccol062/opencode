@@ -18,8 +18,8 @@ export function DialogAlert(props: DialogAlertProps) {
     commands: [
       {
         bind: "return",
-        title: "Confirm alert",
-        group: "Dialog",
+        title: "确认提示",
+        group: "对话框",
         run: () => {
           props.onConfirm?.()
           dialog.clear()

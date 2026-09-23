@@ -26,7 +26,7 @@ export function DialogStatus() {
           esc
         </text>
       </box>
-      <Show when={mcp().length > 0} fallback={<text fg={theme.text.base}>No MCP servers</text>}>
+      <Show when={mcp().length > 0} fallback={<text fg={theme.text.base}>暂无 MCP 服务器</text>}>
         <box>
           <text fg={theme.text.base}>
             {mcp().length} MCP server{mcp().length === 1 ? "" : "s"}
@@ -41,9 +41,9 @@ export function DialogStatus() {
                   <b>{item.name}</b>{" "}
                   <span style={{ fg: theme.text.muted }}>
                     <Switch fallback={item.status.status}>
-                      <Match when={item.status.status === "connected"}>Connected</Match>
+                      <Match when={item.status.status === "connected"}>已连接</Match>
                       <Match when={item.status.status === "failed" && item.status}>{(val) => val().error}</Match>
-                      <Match when={item.status.status === "disabled"}>Disabled in configuration</Match>
+                      <Match when={item.status.status === "disabled"}>已在配置中禁用</Match>
                       <Match when={item.status.status === "needs_auth" && item.status}>
                         {(val) => `Needs authentication: ${val().error}`}
                       </Match>

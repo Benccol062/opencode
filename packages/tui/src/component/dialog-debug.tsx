@@ -28,9 +28,9 @@ export function DialogDebug() {
       { label: "Version", value: `${app.version} (${app.channel})` },
       { label: "Date", value: new Date().toISOString() },
       { label: "OS", value: describeOS() },
-      { label: "Terminal", value: describeTerminal() },
-      { label: "Session ID", value: route.data.type === "session" ? route.data.sessionID : "n/a" },
-      { label: "Model", value: model ? `${model.providerID}/${model.modelID}` : "n/a" },
+      { label: "终端", value: describeTerminal() },
+      { label: "会话 ID", value: route.data.type === "session" ? route.data.sessionID : "n/a" },
+      { label: "模型", value: model ? `${model.providerID}/${model.modelID}` : "n/a" },
     ]
   })
 
@@ -42,14 +42,14 @@ export function DialogDebug() {
       .write(text)
       .then(() => {
         setCopied(true)
-        toast.show({ message: "Debug info copied to clipboard", variant: "info" })
+        toast.show({ message: "调试信息已复制到剪贴板", variant: "info" })
       })
       .catch(toast.error)
   }
 
   Keymap.createLayer(() => ({
     mode: "modal",
-    commands: [{ bind: "return", title: "Copy debug info", group: "Dialog", run: copy }],
+    commands: [{ bind: "return", title: "Copy debug info", group: "对话框", run: copy }],
   }))
 
   return (
@@ -82,7 +82,7 @@ export function DialogDebug() {
         <text fg={theme.text.muted}>Share this when reporting an issue.</text>
         <text onMouseUp={copy}>
           <span style={{ fg: copied() ? theme.text.feedback.success.base : theme.text.base }}>
-            <b>{copied() ? "✓ copied" : "copy"}</b>{" "}
+            <b>{copied() ? "✓ 已复制" : "copy"}</b>{" "}
           </span>
           <span style={{ fg: theme.text.muted }}>enter</span>
         </text>

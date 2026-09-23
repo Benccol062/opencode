@@ -672,48 +672,48 @@ export function Autocomplete(props: {
     commands: [
       {
         id: "prompt.autocomplete.prev",
-        title: "Previous autocomplete item",
-        group: "Autocomplete",
+        title: "上一条自动补全候选项",
+        group: "自动补全",
         run() {
           move(-1)
         },
       },
       {
         id: "prompt.autocomplete.next",
-        title: "Next autocomplete item",
-        group: "Autocomplete",
+        title: "下一条自动补全候选项",
+        group: "自动补全",
         run() {
           move(1)
         },
       },
       {
         id: "prompt.autocomplete.hide",
-        title: "Hide autocomplete",
-        group: "Autocomplete",
+        title: "隐藏自动补全",
+        group: "自动补全",
         run() {
           hide()
         },
       },
       {
         id: "prompt.clear",
-        title: "Dismiss autocomplete",
-        group: "Autocomplete",
+        title: "关闭自动补全",
+        group: "自动补全",
         run() {
           hide(true)
         },
       },
       {
         id: "prompt.autocomplete.select",
-        title: "Select autocomplete item",
-        group: "Autocomplete",
+        title: "选择自动补全候选项",
+        group: "自动补全",
         run() {
           select()
         },
       },
       {
         id: "prompt.autocomplete.complete",
-        title: "Complete autocomplete item",
-        group: "Autocomplete",
+        title: "补全自动补全候选项",
+        group: "自动补全",
         run() {
           const selected = options()[store.selected]
           if (selected?.isDirectory) {
@@ -726,8 +726,8 @@ export function Autocomplete(props: {
       },
       {
         id: "prompt.autocomplete.destructive",
-        title: "Confirm autocomplete action",
-        group: "Autocomplete",
+        title: "确认自动补全操作",
+        group: "自动补全",
         bind: "ctrl+d",
         run: triggerDestructive,
       },
@@ -831,15 +831,15 @@ export function Autocomplete(props: {
   const scrollAcceleration = createMemo(() => getScrollAcceleration(config))
   const emptyMessage = createMemo(() => {
     const fileSearch = visibleFiles()
-    if (store.visible === "command") return "No matching commands"
+    if (store.visible === "command") return "没有匹配的命令"
     if (store.visible === "directory") {
-      if (files.loading) return "Searching…"
+      if (files.loading) return "搜索中…"
       if (fileSearch.failed) return "Could not search directories. Keep typing to try again."
-      return "No matching directories"
+      return "没有匹配的目录"
     }
-    if (files.loading) return "Searching…"
+    if (files.loading) return "搜索中…"
     if (fileSearch.failed) return "Could not search files. Keep typing to try again."
-    return "No matching files, agents, or references"
+    return "没有匹配的文件、智能体或引用"
   })
   const emptyError = createMemo(() => store.visible === "reference" && !files.loading && visibleFiles().failed)
   const labels = {

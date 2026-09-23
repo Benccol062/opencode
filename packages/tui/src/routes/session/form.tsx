@@ -117,7 +117,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
   })
   const tabs = createMemo(() => (single() ? 1 : fields().length + 1))
   const tabbed = createMemo(() => {
-    const width = fields().reduce((sum, item) => sum + truncate(formLabel(item), 24).length + 3, "Submit".length + 3)
+    const width = fields().reduce((sum, item) => sum + truncate(formLabel(item), 24).length + 3, "提交".length + 3)
     return width <= dimensions().width - 8
   })
   const completed = (item: FormField) => {
@@ -177,10 +177,10 @@ export function FormPrompt(props: { form: FormWithLocation }) {
       const minimum = typeof current.minimum === "number" ? current.minimum : undefined
       const maximum = typeof current.maximum === "number" ? current.maximum : undefined
       if (minimum !== undefined && maximum !== undefined) return `${minimum}-${maximum}`
-      if (minimum !== undefined) return `at least ${minimum}`
-      if (maximum !== undefined) return `at most ${maximum}`
+      if (minimum !== undefined) return `至少 ${minimum}`
+      if (maximum !== undefined) return `至多 ${maximum}`
     }
-    return "Type your answer"
+    return "输入你的答案"
   })
   const other = createMemo(() => custom() && store.selected === rows().length)
   const input = createMemo(() => store.custom[answerField()?.key ?? ""] ?? "")
@@ -197,7 +197,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
     const external = externalField()
     if (external) {
       if (store.answers[external.key] === true) return "continue"
-      return store.externalReady[external.key] ? "I finished" : "open link"
+      return store.externalReady[external.key] ? "我已完成" : "open link"
     }
     if (multi()) {
       if (other() && store.editing) return "done"
@@ -490,7 +490,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
       .write(current.url)
       .then(() => {
         setStore("externalReady", { ...store.externalReady, [current.key]: true })
-        toast.show({ message: "Copied URL to clipboard", variant: "info" })
+        toast.show({ message: "已复制 URL 到剪贴板", variant: "info" })
       })
       .catch(toast.error)
   }
@@ -520,7 +520,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
       .filter(isFormAnswerField)
       .find((field) => formValidateValue(field, store.answers[field.key]))
     if (invalid) {
-      setStore("error", formValidateValue(invalid, store.answers[invalid.key]) ?? "Invalid answer")
+      setStore("error", formValidateValue(invalid, store.answers[invalid.key]) ?? "答案无效")
       return
     }
     reply(
@@ -541,7 +541,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
     commands: [
       {
         id: "prompt.paste",
-        title: "Paste from clipboard",
+        title: "从剪贴板粘贴",
         group: "Form",
         run: (_input, event) => {
           event?.preventDefault()
@@ -559,7 +559,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
     commands: [
       {
         id: "prompt.clear",
-        title: "Clear answer edit",
+        title: "清空答案编辑",
         group: "Form",
         run() {
           const text = textarea?.plainText ?? ""
@@ -576,7 +576,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
       },
       {
         bind: "escape",
-        title: textual() ? "Dismiss form" : "Close answer edit",
+        title: textual() ? "关闭表单" : "Close answer edit",
         group: "Form",
         run: () => {
           if (textual()) {
@@ -588,7 +588,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
       },
       {
         bind: "tab",
-        title: "Next field",
+        title: "下一个字段",
         group: "Form",
         run: () => {
           const text = textarea?.plainText?.trim() ?? ""
@@ -597,7 +597,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
       },
       {
         bind: "shift+tab",
-        title: "Previous field",
+        title: "上一个字段",
         group: "Form",
         run: () => {
           const text = textarea?.plainText?.trim() ?? ""
@@ -606,7 +606,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
       },
       {
         bind: "up",
-        title: "Leave answer edit",
+        title: "离开答案编辑",
         group: "Form",
         run: () => {
           if (textual() || !textarea || textarea.isDestroyed || store.selected === 0) return false
@@ -617,7 +617,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
       },
       {
         bind: "return",
-        title: "Submit answer edit",
+        title: "提交答案编辑",
         group: "Form",
         run: () => {
           const text = textarea?.plainText?.trim() ?? ""
@@ -650,33 +650,33 @@ export function FormPrompt(props: { form: FormWithLocation }) {
       commands: [
         {
           id: "app.exit",
-          title: "Dismiss form",
+          title: "关闭表单",
           group: "Form",
           run: cancel,
         },
         {
           bind: "left",
-          title: "Previous field",
+          title: "上一个字段",
           group: "Form",
           run: () => selectTab((store.tab - 1 + tabs()) % tabs()),
         },
         {
           bind: "h",
-          title: "Previous field",
+          title: "上一个字段",
           group: "Form",
           run: () => selectTab((store.tab - 1 + tabs()) % tabs()),
         },
-        { bind: "right", title: "Next field", group: "Form", run: () => selectTab((store.tab + 1) % tabs()) },
-        { bind: "l", title: "Next field", group: "Form", run: () => selectTab((store.tab + 1) % tabs()) },
+        { bind: "right", title: "下一个字段", group: "Form", run: () => selectTab((store.tab + 1) % tabs()) },
+        { bind: "l", title: "下一个字段", group: "Form", run: () => selectTab((store.tab + 1) % tabs()) },
         {
           bind: "tab",
-          title: "Next field",
+          title: "下一个字段",
           group: "Form",
           run: () => selectTab((store.tab + 1) % tabs()),
         },
         {
           bind: "shift+tab",
-          title: "Previous field",
+          title: "上一个字段",
           group: "Form",
           run: () => selectTab((store.tab - 1 + tabs()) % tabs()),
         },
@@ -686,39 +686,39 @@ export function FormPrompt(props: { form: FormWithLocation }) {
                 bind: "return",
                 title:
                   store.answers[external.key] === true
-                    ? "Continue"
+                    ? "继续"
                     : store.externalReady[external.key]
-                      ? "Confirm completion"
-                      : "Open link",
+                      ? "确认完成"
+                      : "打开链接",
                 group: "Form",
                 run: acknowledgeExternal,
               },
-              { bind: "c", title: "Copy link", group: "Form", run: copyExternal },
-              { bind: "escape", title: "Dismiss form", group: "Form", run: cancel },
+              { bind: "c", title: "复制链接", group: "Form", run: copyExternal },
+              { bind: "escape", title: "关闭表单", group: "Form", run: cancel },
             ]
           : confirm()
             ? [
                 {
                   bind: "return",
-                  title: "Submit form",
+                  title: "提交表单",
                   group: "Form",
                   run: submit,
                 },
                 {
                   bind: "escape",
-                  title: "Dismiss form",
+                  title: "关闭表单",
                   group: "Form",
                   run: cancel,
                 },
-                { bind: "up", title: "Scroll review", group: "Form", run: () => review?.scrollBy(-1) },
-                { bind: "k", title: "Scroll review", group: "Form", run: () => review?.scrollBy(-1) },
-                { bind: "down", title: "Scroll review", group: "Form", run: () => review?.scrollBy(1) },
-                { bind: "j", title: "Scroll review", group: "Form", run: () => review?.scrollBy(1) },
+                { bind: "up", title: "滚动预览", group: "Form", run: () => review?.scrollBy(-1) },
+                { bind: "k", title: "滚动预览", group: "Form", run: () => review?.scrollBy(-1) },
+                { bind: "down", title: "滚动预览", group: "Form", run: () => review?.scrollBy(1) },
+                { bind: "j", title: "滚动预览", group: "Form", run: () => review?.scrollBy(1) },
               ]
             : [
                 ...Array.from({ length: max }, (_, index) => ({
                   bind: String(index + 1),
-                  title: `Select answer ${index + 1}`,
+                  title: `选择答案 ${index + 1}`,
                   group: "Form",
                   run: () => {
                     setStore("selected", index)
@@ -727,35 +727,35 @@ export function FormPrompt(props: { form: FormWithLocation }) {
                 })),
                 {
                   bind: "up",
-                  title: "Previous answer",
+                  title: "上一个答案",
                   group: "Form",
                   run: () => setStore("selected", (store.selected - 1 + total) % total),
                 },
                 {
                   bind: "k",
-                  title: "Previous answer",
+                  title: "上一个答案",
                   group: "Form",
                   run: () => setStore("selected", (store.selected - 1 + total) % total),
                 },
                 {
                   bind: "down",
-                  title: "Next answer",
+                  title: "下一个答案",
                   group: "Form",
                   run: () => setStore("selected", (store.selected + 1) % total),
                 },
                 {
                   bind: "j",
-                  title: "Next answer",
+                  title: "下一个答案",
                   group: "Form",
                   run: () => setStore("selected", (store.selected + 1) % total),
                 },
-                { bind: "return", title: "Select answer", group: "Form", run: () => selectOption() },
+                { bind: "return", title: "选择答案", group: "Form", run: () => selectOption() },
                 ...(multi()
-                  ? [{ bind: "space", title: "Toggle answer", group: "Form", run: () => selectOption() }]
+                  ? [{ bind: "space", title: "切换答案", group: "Form", run: () => selectOption() }]
                   : []),
                 {
                   bind: "escape",
-                  title: "Dismiss form",
+                  title: "关闭表单",
                   group: "Form",
                   run: cancel,
                 },
@@ -783,7 +783,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
         <Show when={!single() && !tabbed()}>
           <box flexDirection="row" gap={3} paddingLeft={1}>
             <text fg={theme.text.muted}>
-              {confirm() ? "Review" : `Field ${Math.min(store.tab, fields().length - 1) + 1} of ${fields().length}`}
+              {confirm() ? "预览" : `Field ${Math.min(store.tab, fields().length - 1) + 1} of ${fields().length}`}
             </text>
             <Show when={fields().length > 0}>
               <text fg={theme.text.muted}>
@@ -852,7 +852,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
                 }
                 attributes={confirm() ? TextAttributes.BOLD : undefined}
               >
-                Submit
+                提交
               </text>
             </box>
           </box>
@@ -880,7 +880,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
                 fg={store.answers[external().key] === true ? theme.text.feedback.success.base : theme.text.muted}
               >
                 {store.answers[external().key] === true
-                  ? "✓ Acknowledged"
+                  ? "✓ 已确认"
                   : store.externalReady[external().key]
                     ? "Complete the external action, then press enter to confirm."
                     : "Open or copy the URL, complete the external action, then confirm."}
@@ -908,7 +908,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
                     })
                   }}
                   initialValue={
-                    input() || formDisplayValue(answerField()!, store.answers[answerField()!.key], "(none)")
+                    input() || formDisplayValue(answerField()!, store.answers[answerField()!.key], "(无)")
                   }
                   placeholder={placeholder()}
                   placeholderColor={theme.text.muted}
@@ -1027,7 +1027,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
                           fallback={
                             <>
                               <text fg={other() ? theme.text.formfield.focused : theme.text.formfield.base}>
-                                {input() || "Type your own answer"}
+                                {input() || "输入自定义答案"}
                               </text>
                               <Show when={!multi() && customPicked()}>
                                 <text fg={theme.text.formfield.selected}>✓</text>
@@ -1049,7 +1049,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
                               })
                             }}
                             initialValue={input()}
-                            placeholder="Type your own answer"
+                            placeholder="输入自定义答案"
                             placeholderColor={theme.text.muted}
                             minHeight={1}
                             maxHeight={6}
@@ -1099,13 +1099,13 @@ export function FormPrompt(props: { form: FormWithLocation }) {
                                 : theme.text.feedback.error.base,
                             }}
                           >
-                            {acknowledged() ? "Acknowledged" : "(acknowledgement required)"}
+                            {acknowledged() ? "已确认" : "(acknowledgement required)"}
                           </span>
                         </text>
                       </box>
                     )
                   }
-                  const value = () => formDisplayValue(item, store.answers[item.key], "(none)")
+                  const value = () => formDisplayValue(item, store.answers[item.key], "(无)")
                   const answered = () => store.answers[item.key] !== undefined
                   const missing = () => !answered() && item.required === true
                   const invalid = () => formValidateValue(item, store.answers[item.key])
@@ -1123,7 +1123,7 @@ export function FormPrompt(props: { form: FormWithLocation }) {
                                   : theme.text.muted,
                           }}
                         >
-                          {invalid() ?? (answered() ? value() : missing() ? "(required)" : "(not answered)")}
+                          {invalid() ?? (answered() ? value() : missing() ? "(必填)" : "(not answered)")}
                         </span>
                       </text>
                     </box>

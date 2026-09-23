@@ -81,7 +81,7 @@ export const { use: useSessionTerminals, provider: SessionTerminalsProvider } = 
           sessionID,
           args: [],
           cwd: session?.location.directory,
-          title: "Terminal",
+          title: "终端",
           env: {},
         })
         await refresh(sessionID)

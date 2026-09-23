@@ -102,13 +102,13 @@ export function DialogIntegration(
     return integrations().map((integration) => {
       const methods = connectMethods(integration)
       const credentials = credentialConnections(integration)
-      let category = "Services"
-      if (integration.id in INTEGRATION_PRIORITY) category = "Popular"
+      let category = "服务"
+      if (integration.id in INTEGRATION_PRIORITY) category = "热门"
       if (integration.metadata?.source === "mcp") category = "MCP"
       return {
         title: integration.name,
         value: integration.id,
-        description: methods.length === 0 ? "Environment only" : undefined,
+        description: methods.length === 0 ? "仅环境变量" : undefined,
         footer: connectionSummary(integration) || undefined,
         category,
         disabled: methods.length === 0 && credentials.length === 0,
@@ -126,16 +126,16 @@ export function DialogIntegration(
 
   return (
     <DialogSelect
-      title="Connect an integration"
+      title="连接集成"
       options={options()}
       emptyView={
         <box paddingLeft={4} paddingRight={4}>
-          <text fg={theme.text.muted}>No integrations available</text>
+          <text fg={theme.text.muted}>暂无可用的集成</text>
         </box>
       }
       noMatchView={
         <box paddingLeft={4} paddingRight={4}>
-          <text fg={theme.text.muted}>No integrations found</text>
+          <text fg={theme.text.muted}>未找到集成</text>
         </box>
       }
     />
@@ -175,7 +175,7 @@ function manageConnections(
           ...(methods.length
             ? [
                 {
-                  title: "Add account",
+                  title: "添加账号",
                   value: "add",
                   onSelect: () => selectMethod(current() ?? integration, methods, location, dialog, onConnected),
                 },
@@ -190,7 +190,7 @@ function manageConnections(
                   ? `Press ${shortcuts.get("dialog.integration.delete")} again to confirm`
                   : connection.label,
                 value: connection.id,
-                category: "Connected accounts",
+                category: "已连接的账号",
                 bg: confirming ? theme.background.action.destructive.focused : undefined,
                 fg: confirming ? theme.text.action.destructive.focused : undefined,
                 onSelect: () => {
@@ -211,8 +211,8 @@ function manageConnections(
             onTrigger: (option) => {
               dialog.replace(() => (
                 <DialogPrompt
-                  title="Rename account"
-                  placeholder="Account name"
+                  title="重命名账号"
+                  placeholder="账号名称"
                   value={
                     credentialConnections(current() ?? integration).find((item) => item.id === option.value)?.label
                   }
@@ -268,7 +268,7 @@ function selectMethod(
     <DialogSelect
       title={`Connect ${integration.name}`}
       options={methods.map((method) => ({
-        title: method.type === "key" ? (method.label ?? "API key") : method.label,
+        title: method.type === "key" ? (method.label ?? "API 密钥") : method.label,
         value: method.type === "key" ? "key" : method.id,
         onSelect: () => openMethod(integration, method, location, dialog, onConnected),
       }))}
@@ -361,7 +361,7 @@ function CommandStarting(props: {
     if (!handedOff) closed = true
   })
 
-  return <CommandView title={props.method.label} output="" message="Starting command…" />
+  return <CommandView title={props.method.label} output="" message="正在启动命令…" />
 }
 
 function CommandPending(props: {
@@ -400,7 +400,7 @@ function CommandPending(props: {
         }
         toast.show({
           variant: "error",
-          message: status.status === "failed" ? status.message : "Authentication expired",
+          message: status.status === "failed" ? status.message : "身份验证已过期",
         })
         dialog.clear()
       })
@@ -422,7 +422,7 @@ function CommandPending(props: {
     })
   })
 
-  return <CommandView title={props.title} output={output()} message="Waiting for command to finish…" />
+  return <CommandView title={props.title} output={output()} message="正在等待命令完成…" />
 }
 
 function CommandView(props: { title: string; output: string; message: string }) {
@@ -473,7 +473,7 @@ function KeyMethod(props: {
   return (
     <DialogPrompt
       title={props.method.label ?? `Connect ${props.integration.name}`}
-      placeholder="API key"
+      placeholder="API 密钥"
       onConfirm={(key) => {
         if (!key) return
         void client.api.integration.connect
@@ -561,7 +561,7 @@ function OAuthStarting(props: {
       })
   })
 
-  return <OAuthView title={props.method.label} message="Starting authorization…" />
+  return <OAuthView title={props.method.label} message="正在开始授权…" />
 }
 
 function OAuthAuto(props: {
@@ -603,7 +603,7 @@ function OAuthAuto(props: {
           const value = props.attempt.instructions.match(/[A-Z0-9]{4}-[A-Z0-9]{4,5}/)?.[0] ?? props.attempt.url
           clipboard
             .write(value)
-            .then(() => toast.show({ message: "Copied to clipboard", variant: "info" }))
+            .then(() => toast.show({ message: "已复制到剪贴板", variant: "info" }))
             .catch(toast.error)
         },
       },
@@ -628,7 +628,7 @@ function OAuthAuto(props: {
           void connected(props.integration, props.location, data, dialog, toast, props.onConnected)
           return
         }
-        toast.show({ variant: "error", message: status.status === "failed" ? status.message : "Authorization expired" })
+        toast.show({ variant: "error", message: status.status === "failed" ? status.message : "授权已过期" })
         dialog.clear()
       })
       .catch((cause) => {
@@ -654,7 +654,7 @@ function OAuthAuto(props: {
       title={props.title}
       url={props.attempt.url}
       instructions={props.attempt.instructions}
-      message="Waiting for authorization…"
+      message="正在等待授权…"
       copy
       open
     />
@@ -688,7 +688,7 @@ function OAuthCode(props: {
   return (
     <DialogPrompt
       title={props.title}
-      placeholder="Authorization code"
+      placeholder="授权码"
       onConfirm={(code) => {
         if (!code) return
         void client.api.integration.oauth
@@ -825,7 +825,7 @@ async function selectAnswer(
           options={[
             ...options,
             ...(field.type === "string" && field.custom
-              ? [{ title: "Type your own answer", value: CUSTOM as typeof CUSTOM }]
+              ? [{ title: "手动输入答案", value: CUSTOM as typeof CUSTOM }]
               : []),
             ...(!field.required ? [{ title: "Skip", value: undefined }] : []),
           ]}
@@ -908,7 +908,7 @@ async function multiselectAnswer(
               })),
               ...(field.custom ? [{ title: "Type your own answer", value: CUSTOM as typeof CUSTOM }] : []),
               {
-                title: "Continue",
+                title: "继续",
                 value: SUBMIT as typeof SUBMIT,
                 description: invalid,
                 disabled: invalid !== undefined,
@@ -942,7 +942,7 @@ function customAnswer(
       () => (
         <DialogPrompt
           title={formLabel(field) || title}
-          placeholder="Type your own answer"
+          placeholder="手动输入答案"
           onConfirm={(value) => {
             if (value) resolve(value)
           }}
@@ -966,8 +966,8 @@ async function externalAnswer(
           <DialogSelect<true | typeof OPEN>
             title={formLabel(field) || title}
             options={[
-              { title: opened ? "Open link again" : "Open link", value: OPEN as typeof OPEN, description: field.url },
-              { title: "I finished", value: true as const, description: field.description, disabled: !opened },
+              { title: opened ? "打开链接 again" : "Open link", value: OPEN as typeof OPEN, description: field.url },
+              { title: "我已完成", value: true as const, description: field.description, disabled: !opened },
             ]}
             onSelect={(option) => resolve(option.value)}
           />
@@ -979,7 +979,7 @@ async function externalAnswer(
     if (choice === true) return true
     const result = await new Promise<boolean | typeof CANCELLED>((resolve) => {
       dialog.replace(
-        () => <OAuthView title={formLabel(field) || title} message="Opening link…" />,
+        () => <OAuthView title={formLabel(field) || title} message="正在打开链接…" />,
         () => resolve(CANCELLED),
       )
       void open(field.url).then(
@@ -1034,5 +1034,5 @@ function locationQuery(location: LocationRef) {
 
 function message(cause: unknown) {
   if (cause instanceof Error) return cause.message
-  return "Authentication failed"
+  return "身份验证失败"
 }

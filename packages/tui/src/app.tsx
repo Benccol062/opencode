@@ -267,7 +267,7 @@ export const run = Effect.fn("Tui.run")(function* (input: TuiInput) {
         Effect.sync(() => createTuiClipboard(renderer)),
         (clipboard) =>
           Effect.tryPromise(() => clipboard.dispose()).pipe(
-            Effect.catch((error) => Effect.sync(() => log("error", "Failed to dispose TUI clipboard", { error }))),
+            Effect.catch((error) => Effect.sync(() => log("error", "无法释放 TUI 剪贴板", { error }))),
           ),
       )
       const finalizers = new Set<() => Promise<void>>()
@@ -276,7 +276,7 @@ export const run = Effect.fn("Tui.run")(function* (input: TuiInput) {
           const results = await Promise.allSettled([...finalizers].reverse().map((finalizer) => finalizer()))
           results
             .filter((result): result is PromiseRejectedResult => result.status === "rejected")
-            .forEach((result) => log("error", "Failed to dispose TUI resource", { error: result.reason }))
+            .forEach((result) => log("error", "无法释放 TUI 资源", { error: result.reason }))
         }),
       )
       const shutdown = yield* Latch.make()
@@ -525,7 +525,7 @@ function App(props: { pair?: DialogPairCredentials }) {
     onCommit: (width) => {
       void updateLayout((draft) => {
         draft.verticalTabsWidth = width
-      }).catch((error) => console.error("Failed to persist TUI layout", error))
+      }).catch((error) => console.error("无法保存 TUI 布局", error))
     },
   })
   const [openSessions, setOpenSessions] = createSignal<SessionInfo[]>([])
@@ -545,16 +545,16 @@ function App(props: { pair?: DialogPairCredentials }) {
       if (status.status === "needs_auth")
         toast.show({
           variant: "warning",
-          title: "MCP server needs authentication",
+          title: "MCP 服务器需要身份验证",
           message: `Connect "${server.name}" to use its tools.`,
-          action: { label: "Open MCP servers", run: () => keymap.dispatch("mcp.list") },
+          action: { label: "打开 MCP 服务器", run: () => keymap.dispatch("mcp.list") },
         })
       else
         toast.show({
           variant: "error",
           title: `MCP server failed: ${server.name}`,
           message: "Run /mcps to view details.",
-          action: { label: "Open MCP servers", run: () => keymap.dispatch("mcp.list") },
+          action: { label: "打开 MCP 服务器", run: () => keymap.dispatch("mcp.list") },
         })
     }
   })
@@ -580,7 +580,7 @@ function App(props: { pair?: DialogPairCredentials }) {
 
     await clipboard
       .write(text)
-      .then(() => toast.show({ message: "Copied to clipboard", variant: "info" }))
+      .then(() => toast.show({ message: "已复制到剪贴板", variant: "info" }))
       .catch(toast.error)
 
     renderer.clearSelection()
@@ -705,8 +705,8 @@ function App(props: { pair?: DialogPairCredentials }) {
     [
       {
         name: COMMAND_PALETTE_COMMAND,
-        title: "Show command palette",
-        category: "System",
+        title: "显示命令面板",
+        category: "系统",
         palette: undefined,
         run: () => {
           dialog.replace(() => <CommandPaletteDialog />)
@@ -714,8 +714,8 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "session.list",
-        title: "Switch session",
-        category: "Session",
+        title: "切换会话",
+        category: "会话",
         suggested: data.session.list().length > 0,
         slash: { name: "sessions", aliases: ["resume", "continue"] },
         run: () => {
@@ -724,7 +724,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "session.new",
-        title: "New session",
+        title: "新建会话",
         suggested: route.data.type === "session",
         category: "Session",
         slash: { name: "new" },
@@ -751,7 +751,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "session.clear",
-        title: "Clear session",
+        title: "清空会话",
         category: "Session",
         slash: { name: "clear" },
         run: () => {
@@ -778,7 +778,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "open.menu",
-        title: "Open session or project",
+        title: "打开会话或项目",
         category: "Session",
         slash: { name: "open", aliases: ["projects", "project"] },
         run: () => {
@@ -791,7 +791,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       ...Array.from({ length: 9 }, (_, i) => ({
         name: `session.quick_switch.${i + 1}`,
-        title: `Switch to session in quick slot ${i + 1}`,
+        title: `切换到快捷槽位 ${i + 1} 的会话`,
         category: "Session",
         palette: undefined,
         enabled: () => !sessionTabs.enabled(),
@@ -799,7 +799,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       })),
       {
         name: "session.tab.next",
-        title: "Next tab",
+        title: "下一个标签页",
         category: "Session",
         palette: undefined,
         enabled: sessionTabs.enabled,
@@ -807,7 +807,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "session.tab.previous",
-        title: "Previous tab",
+        title: "上一个标签页",
         category: "Session",
         palette: undefined,
         enabled: sessionTabs.enabled,
@@ -815,7 +815,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "session.tab.next_unread",
-        title: "Next unread tab",
+        title: "下一个未读标签页",
         category: "Session",
         palette: undefined,
         enabled: sessionTabs.enabled,
@@ -823,7 +823,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "session.tab.previous_unread",
-        title: "Previous unread tab",
+        title: "上一个未读标签页",
         category: "Session",
         palette: undefined,
         enabled: sessionTabs.enabled,
@@ -831,21 +831,21 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "session.tab.close",
-        title: "Close tab",
+        title: "关闭标签页",
         category: "Session",
         enabled: sessionTabs.enabled,
         run: () => sessionTabs.close(),
       },
       {
         name: "session.tab.reopen",
-        title: "Reopen closed tab",
+        title: "重新打开已关闭的标签页",
         category: "Session",
         enabled: sessionTabs.enabled,
         run: () => sessionTabs.reopen(),
       },
       ...Array.from({ length: 10 }, (_, i) => ({
         name: `session.tab.select.${i + 1}`,
-        title: `Switch to tab ${i + 1}`,
+        title: `切换到标签页 ${i + 1}`,
         category: "Session",
         palette: undefined,
         enabled: sessionTabs.enabled,
@@ -853,9 +853,9 @@ function App(props: { pair?: DialogPairCredentials }) {
       })),
       {
         name: "model.list",
-        title: "Switch model",
+        title: "切换模型",
         suggested: true,
-        category: "Agent",
+        category: "智能体",
         slash: { name: "models" },
         run: () => {
           dialog.replace(() => <DialogModel />)
@@ -863,7 +863,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "model.cycle_recent",
-        title: "Model cycle",
+        title: "轮换模型",
         category: "Agent",
         palette: undefined,
         run: () => {
@@ -872,7 +872,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "model.cycle_recent_reverse",
-        title: "Model cycle reverse",
+        title: "反向轮换模型",
         category: "Agent",
         palette: undefined,
         run: () => {
@@ -881,7 +881,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "model.cycle_favorite",
-        title: "Favorite cycle",
+        title: "轮换收藏模型",
         category: "Agent",
         palette: undefined,
         run: () => {
@@ -890,7 +890,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "model.cycle_favorite_reverse",
-        title: "Favorite cycle reverse",
+        title: "反向轮换收藏模型",
         category: "Agent",
         palette: undefined,
         run: () => {
@@ -899,7 +899,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "agent.list",
-        title: "Switch agent",
+        title: "切换智能体",
         category: "Agent",
         slash: { name: "agents" },
         run: () => {
@@ -908,7 +908,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "mcp.list",
-        title: "MCP servers",
+        title: "MCP 服务",
         category: "Agent",
         slash: { name: "mcps" },
         run: () => {
@@ -917,7 +917,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "agent.cycle",
-        title: "Agent cycle",
+        title: "轮换智能体",
         category: "Agent",
         palette: undefined,
         run: () => {
@@ -926,7 +926,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "variant.cycle",
-        title: "Variant cycle",
+        title: "轮换变体",
         category: "Agent",
         run: () => {
           local.model.variant.cycle()
@@ -934,14 +934,14 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "variant.list",
-        title: "Switch model variant",
+        title: "切换模型变体",
         category: "Agent",
         palette: local.model.variant.list().length === 0 ? undefined : (true as const),
         slash: { name: "variants", aliases: ["thinking", "effort"] },
         run: () => {
           if (local.model.variant.list().length === 0) {
             return toast.show({
-              title: "No variants available",
+              title: "无可用变体",
               message: "The current model does not support any variants.",
               variant: "info",
             })
@@ -951,7 +951,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "agent.cycle.reverse",
-        title: "Agent cycle reverse",
+        title: "反向轮换智能体",
         category: "Agent",
         palette: undefined,
         run: () => {
@@ -960,7 +960,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "provider.connect",
-        title: "Connect an integration",
+        title: "连接集成",
         suggested: !connected(),
         slash: { name: "connect" },
         run: () => {
@@ -970,11 +970,11 @@ function App(props: { pair?: DialogPairCredentials }) {
             />
           ))
         },
-        category: "Integration",
+        category: "集成",
       },
       {
         name: "opencode.settings",
-        title: "Open settings",
+        title: "打开设置",
         suggested: true,
         slash: { name: "settings" },
         run: () => {
@@ -984,7 +984,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "opencode.status",
-        title: "View status",
+        title: "查看状态",
         slash: { name: "status" },
         run: () => {
           dialog.replace(() => <DialogStatus />)
@@ -995,8 +995,8 @@ function App(props: { pair?: DialogPairCredentials }) {
         ? [
             {
               name: "opencode.update",
-              title: "Update OpenCode",
-              description: "Update OpenCode (upgrade)",
+              title: "更新 OpenCode",
+              description: "更新 OpenCode(升级)",
               slash: { name: "update" },
               run: () => updater.open?.("manual"),
               category: "System",
@@ -1005,7 +1005,7 @@ function App(props: { pair?: DialogPairCredentials }) {
         : []),
       {
         name: "server.pair",
-        title: "Pair device",
+        title: "配对设备",
         slash: { name: "pair", aliases: ["web"] },
         run: () => {
           dialog.replace(() => <DialogPair credentials={props.pair} />)
@@ -1016,17 +1016,17 @@ function App(props: { pair?: DialogPairCredentials }) {
         ? [
             {
               name: "service.restart",
-              title: "Restart service",
+              title: "重启服务",
               slash: { name: "restart" },
               run: async () => {
                 const restart = client.restart
                 if (!restart) return
                 dialog.clear()
-                toast.show({ variant: "info", message: "Restarting service…", duration: 30000 })
+                toast.show({ variant: "info", message: "正在重启服务…", duration: 30000 })
                 // restart resolves once the replacement service is healthy; the
                 // event stream reattaches through the reconnect loop.
                 await restart()
-                  .then(() => toast.show({ variant: "success", message: "Service restarted" }))
+                  .then(() => toast.show({ variant: "success", message: "服务已重启" }))
                   .catch(toast.error)
               },
               category: "System",
@@ -1035,15 +1035,15 @@ function App(props: { pair?: DialogPairCredentials }) {
         : []),
       {
         name: "location.reload",
-        title: "Reload configuration",
+        title: "重新加载配置",
         slash: { name: "reload" },
         run: async () => {
           dialog.clear()
-          toast.show({ variant: "info", message: "Reloading configuration…", duration: 30000 })
+          toast.show({ variant: "info", message: "正在重新加载配置…", duration: 30000 })
           await client.api.location
             .reload()
             .then(() => {
-              toast.show({ variant: "success", message: "Configuration reloaded" })
+              toast.show({ variant: "success", message: "配置已重新加载" })
             })
             .catch(toast.error)
         },
@@ -1051,7 +1051,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "opencode.debug",
-        title: "View debug info",
+        title: "查看调试信息",
         slash: { name: "debug" },
         run: () => {
           dialog.replace(() => <DialogDebug />)
@@ -1060,7 +1060,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "theme.switch",
-        title: "Switch theme",
+        title: "切换主题",
         slash: { name: "themes" },
         run: () => {
           dialog.replace(() => <DialogThemeList />)
@@ -1069,7 +1069,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "theme.switch_mode",
-        title: mode() === "dark" ? "Switch to light mode" : "Switch to dark mode",
+        title: mode() === "dark" ? "切换到浅色模式" : "Switch to dark mode",
         palette: undefined,
         enabled: () => supports(mode() === "dark" ? "light" : "dark"),
         run: () => {
@@ -1080,7 +1080,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "theme.mode.lock",
-        title: locked() ? "Unlock theme mode" : "Lock theme mode",
+        title: locked() ? "解锁主题模式" : "Lock theme mode",
         palette: undefined,
         run: () => {
           if (locked()) unlock()
@@ -1100,7 +1100,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "docs.open",
-        title: "Open docs",
+        title: "打开文档",
         run: () => {
           open("https://opencode.ai/docs").catch(() => {})
           dialog.clear()
@@ -1109,14 +1109,14 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "app.exit",
-        title: "Exit the app",
+        title: "退出应用",
         slash: { name: "exit", aliases: ["quit", "q"] },
         run: () => exit(),
         category: "System",
       },
       {
         name: "app.debug",
-        title: "Toggle debug panel",
+        title: "切换调试面板",
         category: "System",
         palette: undefined,
         run: () => {
@@ -1126,7 +1126,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "app.console",
-        title: "Toggle console",
+        title: "切换控制台",
         category: "System",
         run: () => {
           renderer.console.toggle()
@@ -1135,7 +1135,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "terminal.suspend",
-        title: "Suspend terminal",
+        title: "挂起终端",
         category: "System",
         palette: undefined,
         enabled: process.platform !== "win32",
@@ -1147,7 +1147,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "terminal.title.toggle",
-        title: terminalTitleEnabled() ? "Disable terminal title" : "Enable terminal title",
+        title: terminalTitleEnabled() ? "禁用终端标题" : "Enable terminal title",
         category: "System",
         palette: undefined,
         run: () => {
@@ -1163,7 +1163,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "app.toggle.animations",
-        title: (config.data.animations ?? true) ? "Disable animations" : "Enable animations",
+        title: (config.data.animations ?? true) ? "禁用动画" : "Enable animations",
         category: "System",
         palette: undefined,
         run: () => {
@@ -1177,7 +1177,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "app.toggle.file_context",
-        title: (config.data.prompt?.editor ?? true) ? "Disable file context" : "Enable file context",
+        title: (config.data.prompt?.editor ?? true) ? "禁用文件上下文" : "Enable file context",
         category: "System",
         palette: undefined,
         run: () => {
@@ -1191,7 +1191,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "app.toggle.diffwrap",
-        title: (config.data.diffs?.wrap ?? "word") === "word" ? "Disable diff wrapping" : "Enable diff wrapping",
+        title: (config.data.diffs?.wrap ?? "word") === "word" ? "禁用差异换行" : "Enable diff wrapping",
         category: "System",
         palette: undefined,
         run: () => {
@@ -1208,7 +1208,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       },
       {
         name: "app.toggle.paste_summary",
-        title: pasteSummaryEnabled() ? "Disable paste summary" : "Enable paste summary",
+        title: pasteSummaryEnabled() ? "禁用粘贴摘要" : "Enable paste summary",
         category: "System",
         palette: undefined,
         run: () => {
@@ -1303,7 +1303,7 @@ function App(props: { pair?: DialogPairCredentials }) {
       route.navigate({ type: "home" })
       toast.show({
         variant: "info",
-        message: title ? `Session "${title}" was deleted` : "The current session was deleted",
+        message: title ? `会话“${title}”已被删除` : "The current session was deleted",
       })
     }
   })

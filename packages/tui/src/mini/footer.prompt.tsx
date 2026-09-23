@@ -292,7 +292,7 @@ export function RunPromptBody(props: {
                 const [failed, setFailed] = createSignal(false)
                 return (
                   <box width={props.layout().images * 2} height="100%" flexShrink={1}>
-                    <Show when={!failed()} fallback={<text fg={props.theme().muted}>No preview</text>}>
+                    <Show when={!failed()} fallback={<text fg={props.theme().muted}>无预览</text>}>
                       <image
                         id={`mini-prompt-image-${index()}`}
                         source={image}
@@ -350,7 +350,7 @@ export function createPromptState(input: PromptInput): PromptState {
   const [shell, setShell] = createSignal(false)
   const placeholder = createMemo(() => {
     if (shell()) {
-      return new StyledText([fg(input.theme().muted)('Run a command… "git status"')])
+      return new StyledText([fg(input.theme().muted)('运行命令… "git status"')])
     }
 
     if (!input.state().first) {
@@ -516,24 +516,24 @@ export function createPromptState(input: PromptInput): PromptState {
         action: "editor" as const,
         name: "editor",
         display: "/editor",
-        description: "compose in your external editor",
+        description: "在外部编辑器中撰写",
       } satisfies SlashOption,
       {
         kind: "slash",
         action: "settings" as const,
         name: "settings",
         display: "/settings",
-        description: "configure Mini transcript output",
+        description: "配置 Mini 转录输出",
       } satisfies SlashOption,
       { kind: "slash", name: "new", display: "/new", description: "start a new session" } satisfies SlashOption,
       {
         kind: "slash",
         name: "compact",
         display: "/compact",
-        description: "compact older session context to free space",
+        description: "压缩较旧的会话上下文以释放空间",
       } satisfies SlashOption,
       ...EXIT_COMMANDS.map(
-        (name) => ({ kind: "slash", name, display: `/${name}`, description: "close OpenCode" }) satisfies SlashOption,
+        (name) => ({ kind: "slash", name, display: `/${name}`, description: "关闭 OpenCode" }) satisfies SlashOption,
       ),
     ]
     const hidden = new Set(builtins.map((item) => item.name))
@@ -873,7 +873,7 @@ export function createPromptState(input: PromptInput): PromptState {
         if (!content || changed()) return
         const image = content.mime.startsWith("image/")
         if (image && shell()) {
-          input.onStatus("image attachments are unavailable in shell mode")
+          input.onStatus("Shell 模式下不支持图片附件")
           return
         }
         if (!image && content.mime !== "text/plain") return
@@ -1027,7 +1027,7 @@ export function createPromptState(input: PromptInput): PromptState {
       })
     } catch {
       restore(current)
-      input.onStatus("failed to open editor")
+      input.onStatus("打开编辑器失败")
     }
   }
 
@@ -1169,7 +1169,7 @@ export function createPromptState(input: PromptInput): PromptState {
     commands: [
       {
         id: "prompt.clear",
-        title: "Clear prompt or exit",
+        title: "清空输入或退出",
         group: "Prompt",
         run() {
           if (requestExit()) return
@@ -1184,13 +1184,13 @@ export function createPromptState(input: PromptInput): PromptState {
     commands: [
       {
         id: "prompt.paste",
-        title: "Paste",
+        title: "粘贴",
         group: "Prompt",
         run: () => paste(),
       },
       {
         id: "session.interrupt",
-        title: "Interrupt session",
+        title: "中断会话",
         group: "Session",
         run() {
           if (input.onInterrupt()) return
@@ -1206,7 +1206,7 @@ export function createPromptState(input: PromptInput): PromptState {
     commands: [
       {
         id: "prompt.queue",
-        title: "Queue prompt",
+        title: "排队提示",
         group: "Prompt",
         palette: true,
         run() {
@@ -1222,7 +1222,7 @@ export function createPromptState(input: PromptInput): PromptState {
     commands: [
       {
         id: "prompt.editor",
-        title: "Open editor",
+        title: "打开编辑器",
         group: "Prompt",
         run() {
           void openEditor()
@@ -1237,7 +1237,7 @@ export function createPromptState(input: PromptInput): PromptState {
     commands: [
       {
         id: "prompt.history.previous",
-        title: "Previous prompt history",
+        title: "上一条输入历史",
         group: "Prompt",
         run(_input: string | undefined, event?: KeyEvent) {
           if (!event) return false
@@ -1246,7 +1246,7 @@ export function createPromptState(input: PromptInput): PromptState {
       },
       {
         id: "prompt.history.next",
-        title: "Next prompt history",
+        title: "下一条输入历史",
         group: "Prompt",
         run(_input: string | undefined, event?: KeyEvent) {
           if (!event) return false
@@ -1261,7 +1261,7 @@ export function createPromptState(input: PromptInput): PromptState {
     commands: [
       {
         bind: "!",
-        title: "Shell mode",
+        title: "Shell 模式",
         group: "Prompt",
         run() {
           if (shell()) return false
@@ -1278,7 +1278,7 @@ export function createPromptState(input: PromptInput): PromptState {
     commands: [
       {
         bind: "escape",
-        title: "Exit shell mode",
+        title: "退出 Shell 模式",
         group: "Prompt",
         run: () => setShellMode(false),
       },
@@ -1300,25 +1300,25 @@ export function createPromptState(input: PromptInput): PromptState {
     commands: [
       {
         id: "prompt.autocomplete.prev",
-        title: "Previous autocomplete item",
+        title: "上一个补全项",
         group: "Autocomplete",
         run: () => menu.move(-1),
       },
       {
         id: "prompt.autocomplete.next",
-        title: "Next autocomplete item",
+        title: "下一个补全项",
         group: "Autocomplete",
         run: () => menu.move(1),
       },
       {
         id: "prompt.autocomplete.hide",
-        title: "Hide autocomplete",
+        title: "隐藏补全",
         group: "Autocomplete",
         run: cancelAutocomplete,
       },
       {
         id: "prompt.autocomplete.select",
-        title: "Select autocomplete item",
+        title: "选择补全项",
         group: "Autocomplete",
         run() {
           if (mode() === "slash" && options().length === 0) {
@@ -1330,7 +1330,7 @@ export function createPromptState(input: PromptInput): PromptState {
       },
       {
         id: "prompt.autocomplete.complete",
-        title: "Complete autocomplete item",
+        title: "展开补全项",
         group: "Autocomplete",
         run() {
           if (mode() === "slash" && options().length === 0) {
@@ -1380,7 +1380,7 @@ export function createPromptState(input: PromptInput): PromptState {
         })
         return
       }
-      input.onStatus(input.state().phase === "running" ? "waiting for current response" : "empty prompt ignored")
+      input.onStatus(input.state().phase === "running" ? "正在等待当前响应" : "empty prompt ignored")
       return
     }
 
@@ -1393,7 +1393,7 @@ export function createPromptState(input: PromptInput): PromptState {
         isExitCommand(next.text) ||
         next.text.trim().toLowerCase() === "/settings")
     ) {
-      input.onStatus("this prompt cannot be queued")
+      input.onStatus("此输入无法排队")
       return
     }
     if (!command && next.mode !== "shell" && isExitCommand(next.text)) {

@@ -17,5 +17,5 @@ export function switchLabel(
   const display = models?.find((item) => item.providerID === model.providerID && item.id === model.id)?.name
   if (display === undefined) return `Switched model to ${formatRef(model)}`
   const variant = model.variant && model.variant !== "default" ? ` (${model.variant})` : ""
-  return `Switched model to ${display}${variant}`
+  return `已切换模型为 ${display}${variant}`
 }

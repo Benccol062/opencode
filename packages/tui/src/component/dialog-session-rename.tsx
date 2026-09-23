@@ -11,8 +11,8 @@ export function DialogSessionRename(props: { sessionID: string; currentTitle?: s
 
   return (
     <DialogPrompt
-      title="Rename session"
-      placeholder="Session title"
+      title="重命名会话"
+      placeholder="会话标题"
       value={props.currentTitle}
       onConfirm={(value) => {
         const title = value.trim()

@@ -28,9 +28,9 @@ export function createClipboardAdapter(clipboard: CoreClipboardService): OwnedCl
       })
       if (result.status !== "read") {
         if (result.status === "failed") throw result.error
-        if (result.status === "timed-out") throw new Error("Clipboard read timed out")
+        if (result.status === "timed-out") throw new Error("剪贴板读取超时")
         if (result.status === "limit-exceeded") {
-          throw new RangeError("Clipboard content exceeded configured read or image conversion limits")
+          throw new RangeError("剪贴板内容超出配置的读取或图像转换限制")
         }
         return undefined
       }

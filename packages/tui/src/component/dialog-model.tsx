@@ -55,12 +55,12 @@ export function DialogModel(props: { providerID?: string }) {
       })
     }
 
-    const favoriteOptions = toOptions(favorites, "Favorites")
+    const favoriteOptions = toOptions(favorites, "收藏")
     const recentOptions = toOptions(
       recents.filter(
         (item) => !favorites.some((fav) => fav.providerID === item.providerID && fav.modelID === item.modelID),
       ),
-      "Recent",
+      "最近",
     )
 
     const modelOptions = sortModelOptions(
@@ -77,7 +77,7 @@ export function DialogModel(props: { providerID?: string }) {
             providerName: provider?.name ?? model.providerID,
             title: model.name,
             releaseDate: model.time.released,
-            description: favorite ? "(Favorite)" : undefined,
+            description: favorite ? "(收藏)" : undefined,
             category: connected() ? (provider?.name ?? model.providerID) : undefined,
             footer: free(model) ? "Free" : undefined,
             onSelect() {
@@ -119,7 +119,7 @@ export function DialogModel(props: { providerID?: string }) {
 
   const title = createMemo(() => {
     const value = provider()
-    if (!value) return "Select model"
+    if (!value) return "选择模型"
     return value.name
   })
 

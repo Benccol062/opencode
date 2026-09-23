@@ -65,13 +65,13 @@ export function DialogExecute(props: { part: SessionMessageAssistantTool }) {
   })
   const status = createMemo(() => {
     const state = props.part.state
-    if (state.status === "streaming") return "Receiving code…"
-    if (state.status === "running") return "Running"
+    if (state.status === "streaming") return "正在接收代码…"
+    if (state.status === "running") return "运行中"
     const duration = props.part.time.completed
       ? ` · ${Locale.duration(props.part.time.completed - (props.part.time.ran ?? props.part.time.created))}`
       : ""
-    if (failed()) return `Failed${duration}`
-    return `Completed${duration}`
+    if (failed()) return `失败${duration}`
+    return `已完成${duration}`
   })
 
   const copy = (kind: "code" | "output") => {
@@ -86,16 +86,16 @@ export function DialogExecute(props: { part: SessionMessageAssistantTool }) {
   Keymap.createLayer(() => ({
     mode: "modal",
     commands: [
-      { bind: "up", title: "Scroll up", group: "Execute", run: () => scroll?.scrollBy(-1) },
-      { bind: "down", title: "Scroll down", group: "Execute", run: () => scroll?.scrollBy(1) },
-      { bind: "pageup", title: "Previous page", group: "Execute", run: () => scroll?.scrollBy(-maxHeight()) },
-      { bind: "pagedown", title: "Next page", group: "Execute", run: () => scroll?.scrollBy(maxHeight()) },
-      { bind: "left", title: "Scroll left", group: "Execute", run: () => pan(-8) },
-      { bind: "right", title: "Scroll right", group: "Execute", run: () => pan(8) },
-      { bind: "home", title: "Scroll to code", group: "Execute", run: () => scroll?.scrollTo(0) },
-      { bind: "end", title: "Scroll to output", group: "Execute", run: () => scroll?.scrollTo(Infinity) },
-      { bind: "c", title: "Copy code", group: "Execute", run: () => copy("code") },
-      { bind: "o", title: "Copy output", group: "Execute", run: () => copy("output") },
+      { bind: "up", title: "向上滚动", group: "Execute", run: () => scroll?.scrollBy(-1) },
+      { bind: "down", title: "向下滚动", group: "Execute", run: () => scroll?.scrollBy(1) },
+      { bind: "pageup", title: "上一页", group: "Execute", run: () => scroll?.scrollBy(-maxHeight()) },
+      { bind: "pagedown", title: "下一页", group: "Execute", run: () => scroll?.scrollBy(maxHeight()) },
+      { bind: "left", title: "向左滚动", group: "Execute", run: () => pan(-8) },
+      { bind: "right", title: "向右滚动", group: "Execute", run: () => pan(8) },
+      { bind: "home", title: "滚动到代码", group: "Execute", run: () => scroll?.scrollTo(0) },
+      { bind: "end", title: "滚动到输出", group: "Execute", run: () => scroll?.scrollTo(Infinity) },
+      { bind: "c", title: "复制代码", group: "Execute", run: () => copy("code") },
+      { bind: "o", title: "复制输出", group: "Execute", run: () => copy("output") },
     ],
   }))
 
@@ -122,13 +122,13 @@ export function DialogExecute(props: { part: SessionMessageAssistantTool }) {
             <text fg={theme.text.muted} attributes={TextAttributes.BOLD}>
               Code
             </text>
-            <Show when={code()} fallback={<text fg={theme.text.muted}>Waiting for code…</text>}>
+            <Show when={code()} fallback={<text fg={theme.text.muted}>等待代码…</text>}>
               {(value) => <GutteredCode content={value()} filetype="typescript" digits={digits()} blocks={blocks} />}
             </Show>
           </box>
           <box>
             <text fg={theme.text.muted} attributes={TextAttributes.BOLD}>
-              Output
+              输出
             </text>
             <Show
               when={highlighted()}
@@ -137,7 +137,7 @@ export function DialogExecute(props: { part: SessionMessageAssistantTool }) {
                   fg={text() ? (failed() ? theme.text.feedback.error.base : theme.text.base) : theme.text.muted}
                   wrapMode="word"
                 >
-                  {text() ?? (props.part.state.status === "completed" ? "No output" : "Waiting for output…")}
+                  {text() ?? (props.part.state.status === "completed" ? "无输出" : "Waiting for output…")}
                 </text>
               }
             >
@@ -163,13 +163,13 @@ export function DialogExecute(props: { part: SessionMessageAssistantTool }) {
         <text fg={theme.text.muted}>↑/↓ ←/→ scroll</text>
         <text onMouseUp={() => copy("code")}>
           <span style={{ fg: copied() === "code" ? theme.text.feedback.success.base : theme.text.base }}>
-            <b>{copied() === "code" ? "✓ copied" : "c"}</b>
+            <b>{copied() === "code" ? "✓ 已复制" : "c"}</b>
           </span>
           <span style={{ fg: theme.text.muted }}>{copied() === "code" ? "" : " copy code"}</span>
         </text>
         <text onMouseUp={() => copy("output")}>
           <span style={{ fg: copied() === "output" ? theme.text.feedback.success.base : theme.text.base }}>
-            <b>{copied() === "output" ? "✓ copied" : "o"}</b>
+            <b>{copied() === "output" ? "✓ 已复制" : "o"}</b>
           </span>
           <span style={{ fg: theme.text.muted }}>{copied() === "output" ? "" : " copy output"}</span>
         </text>

@@ -804,7 +804,7 @@ export class RunFooter implements FooterApi {
     }
 
     if (this.prompts.size === 0) {
-      this.setNotice("input queue unavailable")
+      this.setNotice("输入队列不可用")
       return false
     }
 
@@ -836,7 +836,7 @@ export class RunFooter implements FooterApi {
   private handleCycle = (): void => {
     const result = this.options.onCycleVariant?.()
     if (!result) {
-      this.setNotice("no variants available")
+      this.setNotice("无可用变体")
       return
     }
 
@@ -910,7 +910,7 @@ export class RunFooter implements FooterApi {
 
   private handleMiniSettingChange = async (change: MiniSettingChange): Promise<void> => {
     if (!this.options.miniSettings.update) {
-      this.setNotice("settings are unavailable")
+      this.setNotice("设置不可用")
       return
     }
 
@@ -939,7 +939,7 @@ export class RunFooter implements FooterApi {
       await this.flushing
       this.setNotice("settings updated")
     } catch (error) {
-      this.setNotice("failed to save settings")
+      this.setNotice("保存设置失败")
       throw error
     }
   }

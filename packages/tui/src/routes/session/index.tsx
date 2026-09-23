@@ -129,7 +129,7 @@ const BACKGROUND_TOOL_HINT_DELAY = 3_000
 const TRANSCRIPT_TAIL_ROWS = 40
 const TRANSCRIPT_BACKFILL_CHUNK = 60
 
-export function Session(props: {
+export function 会话(props: {
   scrollRef?: (scroll: ScrollBoxRenderable | undefined) => void
   verticalTabsWidth: number
   promptMuted?: boolean
@@ -232,7 +232,7 @@ export function Session(props: {
   Keymap.createLayer(() => ({
     priority: 10,
     enabled: () => props.sidebarVisible && dimensions().width - props.verticalTabsWidth <= 120 && !disabled(),
-    commands: [{ bind: "escape,ctrl+c", title: "Close sidebar", group: "Session", run: props.onToggleSidebar }],
+    commands: [{ bind: "escape,ctrl+c", title: "关闭侧边栏", group: "Session", run: props.onToggleSidebar }],
   }))
   const contentWidth = createMemo(() => (props.width ?? dimensions().width - props.verticalTabsWidth) - 4)
   const models = createMemo(() => data.location.model.list(location()) ?? [])
@@ -322,7 +322,7 @@ export function Session(props: {
       const info = data.session.get(sessionID)
       if (!info) {
         toast.show({
-          message: `Session not found: ${sessionID}`,
+          message: `会话 not found: ${sessionID}`,
           variant: "error",
           duration: 5000,
         })
@@ -560,7 +560,7 @@ export function Session(props: {
       )
       if (!error) return true
       const label = action === "cancel" ? "delete" : action
-      toast.show({ title: `Failed to ${label} pending prompt`, message: errorMessage(error), variant: "error" })
+      toast.show({ title: `${label} 待处理提示失败`, message: errorMessage(error), variant: "error" })
       return false
     })
     return result ?? false
@@ -568,7 +568,7 @@ export function Session(props: {
   const openQueuedPrompts = () =>
     dialog.replace(() => (
       <DialogSelect
-        title="Queued prompts"
+        title="排队的提示"
         options={queuedPrompts().map((prompt, index) => ({
           title: prompt.text,
           value: prompt.id,
@@ -595,7 +595,7 @@ export function Session(props: {
       />
     ))
   const unavailable = (feature: string) => {
-    toast.show({ message: `${feature} is not implemented for V2 sessions yet`, variant: "error", duration: 5000 })
+    toast.show({ message: `${feature} 尚未在 V2 会话中实现`, variant: "error", duration: 5000 })
     dialog.clear()
   }
 
@@ -684,42 +684,42 @@ export function Session(props: {
   const globalCommands = [
     {
       id: "session.page.up",
-      title: "Page up",
+      title: "上翻页",
       group: "Session",
       palette: undefined,
       run: () => moveTranscript(-scroll.height / 2),
     },
     {
       id: "session.page.down",
-      title: "Page down",
+      title: "下翻页",
       group: "Session",
       palette: undefined,
       run: () => moveTranscript(scroll.height / 2),
     },
     {
       id: "session.line.up",
-      title: "Line up",
+      title: "上滚一行",
       group: "Session",
       palette: undefined,
       run: () => moveTranscript(-1),
     },
     {
       id: "session.line.down",
-      title: "Line down",
+      title: "下滚一行",
       group: "Session",
       palette: undefined,
       run: () => moveTranscript(1),
     },
     {
       id: "session.half.page.up",
-      title: "Half page up",
+      title: "上翻半页",
       group: "Session",
       palette: undefined,
       run: () => moveTranscript(-scroll.height / 4),
     },
     {
       id: "session.half.page.down",
-      title: "Half page down",
+      title: "下翻半页",
       group: "Session",
       palette: undefined,
       run: () => moveTranscript(scroll.height / 4),
@@ -729,7 +729,7 @@ export function Session(props: {
   const baseAndUnfocusedCommands = [
     {
       id: "session.first",
-      title: "First message",
+      title: "首条消息",
       group: "Session",
       palette: undefined,
       run: () => {
@@ -797,7 +797,7 @@ export function Session(props: {
     },
     {
       id: "session.last",
-      title: "Last message",
+      title: "末条消息",
       group: "Session",
       palette: undefined,
       run: () => {
@@ -809,7 +809,7 @@ export function Session(props: {
 
   const baseCommands = createMemo(() => [
     {
-      title: "Share session",
+      title: "分享会话",
       id: "session.share",
       suggested: route.type === "session",
       group: "Session",
@@ -817,7 +817,7 @@ export function Session(props: {
       run: () => unavailable("Sharing"),
     },
     {
-      title: "Rename session",
+      title: "重命名会话",
       id: "session.rename",
       group: "Session",
       slash: { name: "rename", arguments: true as const },
@@ -832,7 +832,7 @@ export function Session(props: {
       },
     },
     {
-      title: "Jump to message",
+      title: "跳转到消息",
       id: "session.timeline",
       group: "Session",
       slash: { name: "timeline" },
@@ -847,7 +847,7 @@ export function Session(props: {
       },
     },
     {
-      title: "Fork session",
+      title: "复刻会话",
       id: "session.fork",
       group: "Session",
       slash: { name: "fork" },
@@ -864,7 +864,7 @@ export function Session(props: {
       },
     },
     {
-      title: "Compact session",
+      title: "压缩会话",
       id: "session.compact",
       group: "Session",
       slash: {
@@ -888,7 +888,7 @@ export function Session(props: {
       },
     },
     {
-      title: "Unshare session",
+      title: "取消分享会话",
       id: "session.unshare",
       group: "Session",
       enabled: false,
@@ -896,7 +896,7 @@ export function Session(props: {
       run: () => unavailable("Unsharing"),
     },
     {
-      title: "Undo previous message",
+      title: "撤销上一条消息",
       id: "session.undo",
       group: "Session",
       slash: { name: "undo" },
@@ -905,7 +905,7 @@ export function Session(props: {
           (message): message is SessionMessageUser => message.type === "user" && !!message.text.trim(),
         )
         if (!message) {
-          toast.show({ message: "Nothing to undo", variant: "error", duration: 3000 })
+          toast.show({ message: "没有可撤销的内容", variant: "error", duration: 3000 })
           dialog.clear()
           return
         }
@@ -947,8 +947,8 @@ export function Session(props: {
     {
       title: (() => {
         const next = nextThinkingMode(thinkingMode())
-        if (next === "hide") return "Collapse thinking"
-        return "Expand thinking"
+        if (next === "hide") return "折叠思考过程"
+        return "展开思考过程"
       })(),
       id: "session.toggle.thinking",
       group: "Session",
@@ -963,7 +963,7 @@ export function Session(props: {
       },
     },
     {
-      title: "Toggle session scrollbar",
+      title: "切换会话滚动条",
       id: "session.toggle.scrollbar",
       group: "Session",
       palette: undefined,
@@ -977,7 +977,7 @@ export function Session(props: {
       },
     },
     {
-      title: groupExploration() ? "Show tool calls individually" : "Group related tool calls",
+      title: groupExploration() ? "逐个显示工具调用" : "Group related tool calls",
       id: "session.toggle.exploration_grouping",
       group: "Session",
       palette: undefined,
@@ -991,7 +991,7 @@ export function Session(props: {
       },
     },
     {
-      title: "Jump to last user message",
+      title: "跳转到最后一条用户消息",
       id: "session.messages_last_user",
       group: "Session",
       palette: undefined,
@@ -1011,35 +1011,35 @@ export function Session(props: {
       },
     },
     {
-      title: "Next message",
+      title: "下一条消息",
       id: "session.message.next",
       group: "Session",
       palette: undefined,
       run: () => scrollToMessage("next", dialog),
     },
     {
-      title: "Previous message",
+      title: "上一条消息",
       id: "session.message.previous",
       group: "Session",
       palette: undefined,
       run: () => scrollToMessage("prev", dialog),
     },
     {
-      title: "Next user message",
+      title: "下一条用户消息",
       id: "session.message.user.next",
       group: "Session",
       palette: undefined,
       run: () => scrollToMessage("next", dialog, true),
     },
     {
-      title: "Previous user message",
+      title: "上一条用户消息",
       id: "session.message.user.previous",
       group: "Session",
       palette: undefined,
       run: () => scrollToMessage("prev", dialog, true),
     },
     {
-      title: "Copy last assistant message",
+      title: "复制最后一条助手消息",
       id: "messages.copy",
       group: "Session",
       run: () => {
@@ -1047,14 +1047,14 @@ export function Session(props: {
           (msg): msg is SessionMessageAssistant => msg.type === "assistant",
         )
         if (!lastAssistantMessage) {
-          toast.show({ message: "No assistant messages found", variant: "error" })
+          toast.show({ message: "未找到助手消息", variant: "error" })
           dialog.clear()
           return
         }
 
         const textParts = lastAssistantMessage.content.filter((part) => part.type === "text")
         if (textParts.length === 0) {
-          toast.show({ message: "No text parts found in last assistant message", variant: "error" })
+          toast.show({ message: "最后一条助手消息中未找到文本部分", variant: "error" })
           dialog.clear()
           return
         }
@@ -1065,7 +1065,7 @@ export function Session(props: {
           .trim()
         if (!text) {
           toast.show({
-            message: "No text content found in last assistant message",
+            message: "最后一条助手消息中未找到文本内容",
             variant: "error",
           })
           dialog.clear()
@@ -1074,25 +1074,25 @@ export function Session(props: {
 
         clipboard
           .write(text)
-          .then(() => toast.show({ message: "Message copied to clipboard!", variant: "success" }))
-          .catch(() => toast.show({ message: "Failed to copy to clipboard", variant: "error" }))
+          .then(() => toast.show({ message: "消息已复制到剪贴板！", variant: "success" }))
+          .catch(() => toast.show({ message: "复制到剪贴板失败", variant: "error" }))
         dialog.clear()
       },
     },
     {
-      title: "Copy session ID",
+      title: "复制会话 ID",
       id: "session.copy.id",
       group: "Session",
       run: () => {
         clipboard
           .write(route.sessionID)
-          .then(() => toast.show({ message: "Session ID copied to clipboard!", variant: "success" }))
-          .catch(() => toast.show({ message: "Failed to copy session ID", variant: "error" }))
+          .then(() => toast.show({ message: "会话 ID 已复制到剪贴板！", variant: "success" }))
+          .catch(() => toast.show({ message: "复制会话 ID 失败", variant: "error" }))
         dialog.clear()
       },
     },
     {
-      title: "Copy session transcript",
+      title: "复制会话记录",
       id: "session.copy",
       group: "Session",
       slash: {
@@ -1104,15 +1104,15 @@ export function Session(props: {
           if (!sessionData) return
           const transcript = formatSessionTranscript(sessionData, messages(), true)
           await clipboard.write(transcript)
-          toast.show({ message: "Session transcript copied to clipboard!", variant: "success" })
+          toast.show({ message: "会话记录已复制到剪贴板！", variant: "success" })
         } catch {
-          toast.show({ message: "Failed to copy session transcript", variant: "error" })
+          toast.show({ message: "复制会话记录失败", variant: "error" })
         }
         dialog.clear()
       },
     },
     {
-      title: "Export session transcript",
+      title: "导出会话记录",
       id: "session.export",
       group: "Session",
       slash: {
@@ -1139,7 +1139,7 @@ export function Session(props: {
           if (options.action === "copy") {
             await clipboard.write(content)
             dialog.clear()
-            toast.show({ message: "Copied to clipboard", variant: "success" })
+            toast.show({ message: "已复制到剪贴板", variant: "success" })
             return
           }
 
@@ -1150,13 +1150,13 @@ export function Session(props: {
           await writeExport(filepath, content)
           await DialogExportResult.show(dialog, filepath)
         } catch {
-          toast.show({ message: "Failed to export session", variant: "error" })
+          toast.show({ message: "导出会话失败", variant: "error" })
         }
         dialog.clear()
       },
     },
     {
-      title: "Background blocking tools",
+      title: "将阻塞工具移至后台",
       id: "session.background",
       group: "Session",
       palette: undefined,
@@ -1166,7 +1166,7 @@ export function Session(props: {
       },
     },
     {
-      title: "Toggle subagent picker",
+      title: "切换子代理选择器",
       id: "session.child.first",
       group: "Session",
       run: () => {
@@ -1176,14 +1176,14 @@ export function Session(props: {
       },
     },
     {
-      title: "View queued prompts",
+      title: "查看排队的提示",
       id: "session.queued_prompts",
-      group: "Prompt",
+      group: "提示",
       enabled: queuedPrompts().length > 0,
       run: openQueuedPrompts,
     },
     {
-      title: "Go to parent session",
+      title: "前往父会话",
       id: "session.parent",
       group: "Session",
       palette: undefined,
@@ -1330,7 +1330,7 @@ export function Session(props: {
             </box>
             <box height={1} flexShrink={0} flexDirection="row" justifyContent="flex-end">
               <Show when={firstJump()}>
-                <text fg={theme.text.feedback.info.base}>Loading session history…</text>
+                <text fg={theme.text.feedback.info.base}>正在加载会话历史…</text>
               </Show>
               <Show when={!firstJump() && awayFromBottom()}>
                 <box
@@ -1343,7 +1343,7 @@ export function Session(props: {
                   <text
                     fg={latestHovered() ? theme.text.action.secondary.hovered : theme.text.action.secondary.base}
                   >
-                    Jump to latest ↓
+                    跳转到最新 ↓
                   </text>
                 </box>
               </Show>
@@ -1400,7 +1400,7 @@ export function Session(props: {
                   />
                 </Match>
                 <Match when={!disabled()}>
-                  <Prompt
+                  <提示
                     visible={true}
                     ref={bind}
                     muted={props.promptMuted}
@@ -1525,8 +1525,8 @@ function TurnTokenUsage(props: {
   const columns = createMemo(() => ({
     step: Math.max("Step".length, ...steps().map((item) => item.finish.length)),
     newTokens: Math.max("New".length, ...steps().map((item) => item.newTokens.toLocaleString().length)),
-    cached: Math.max("Cached".length, ...steps().map((item) => item.cached.toLocaleString().length)),
-    total: Math.max("Total".length, ...steps().map((item) => item.total.toLocaleString().length)),
+    cached: Math.max("缓存".length, ...steps().map((item) => item.cached.toLocaleString().length)),
+    total: Math.max("总计".length, ...steps().map((item) => item.total.toLocaleString().length)),
   }))
   const summary = createMemo(() => {
     const items = steps()
@@ -1552,7 +1552,7 @@ function TurnTokenUsage(props: {
         >
           <text fg={hover() ? theme.text.base : theme.text.muted} wrapMode="none">
             <span>{expanded() ? "- " : "+ "}</span>
-            <span style={{ attributes: TextAttributes.BOLD }}>Tokens</span>
+            <span style={{ attributes: TextAttributes.BOLD }}>Token</span>
             <span>
               : {summary().count} {summary().count === 1 ? "step" : "steps"} · {summary().newTokens.toLocaleString()}{" "}
               new · {summary().cached.toLocaleString()} cached · {summary().total.toLocaleString()} total
@@ -1571,9 +1571,9 @@ function TurnTokenUsage(props: {
               {"Step".padEnd(columns().step + 2)}
               {"New".padStart(columns().newTokens)}
               {"  "}
-              {"Cached".padStart(columns().cached)}
+              {"缓存".padStart(columns().cached)}
               {"  "}
-              {"Total".padStart(columns().total)}
+              {"总计".padStart(columns().total)}
             </text>
           </box>
           <For each={steps()}>
@@ -1798,7 +1798,7 @@ function SessionReasoningGroupView(props: {
                     )
             }
             complete={props.completed}
-            pending={latest() ? `Thinking: ${latest()}` : "Thinking"}
+            pending={latest() ? `思考中: ${latest()}` : "Thinking"}
             spinner={!props.completed}
             onMouseOver={() => setHover(true)}
             onMouseOut={() => setHover(false)}
@@ -1807,7 +1807,7 @@ function SessionReasoningGroupView(props: {
               setExpanded((value) => !value)
             }}
           >
-            {props.completed ? "Thought" : latest() ? `Thinking: ${latest()}` : "Thinking"}
+            {props.completed ? "已思考" : latest() ? `思考中：${latest()}` : "思考中"}
             <Show when={props.completed && !expanded() && latest()}>: {latest()}</Show>
             <Show when={props.completed && parts().length > 1}> · {parts().length} steps</Show>
             <Show when={props.completed && duration()}> · {Locale.duration(duration())}</Show>
@@ -1896,7 +1896,7 @@ function SessionGroupView(props: {
     const tools = Object.entries(counts).map(
       ([name, count]) => `${count} ${count === 1 ? name : name === "search" ? "searches" : `${name}s`}`,
     )
-    return `${completed() ? "Explored" : "Exploring"} — ${tools.join(", ")}`
+    return `${completed() ? "已探索" : "Exploring"} — ${tools.join(", ")}`
   })
   return (
     <Show when={grouped().length > 0 || pending().length > 0}>
@@ -1975,7 +1975,7 @@ function AssistantFooter(props: { message: SessionMessageAssistant }) {
             {(value) => <span style={{ fg: theme.text.muted }}> · {value().toFixed(1)} tok/s</span>}
           </Show>
           <Show when={interrupted()}>
-            <span style={{ fg: theme.text.muted }}> · interrupted</span>
+            <span style={{ fg: theme.text.muted }}> · 已中断</span>
           </Show>
         </text>
       </box>
@@ -1990,7 +1990,7 @@ function SessionSwitchMessageV2(props: { message: SessionMessageInfo }) {
     return (
       <box paddingLeft={3}>
         <text>
-          <span style={{ fg: theme.text.muted }}>↳ Moved to </span>
+          <span style={{ fg: theme.text.muted }}>↳ 已移至 </span>
           <span style={{ fg: theme.text.feedback.info.base }}>{props.message.location.directory}</span>
         </text>
       </box>
@@ -2024,9 +2024,9 @@ function SessionNoticeMessageV2(props: { message: SessionMessageInfo }) {
   const completion = () => source() === "subagent" || source() === "shell"
   const childID = () => (source() === "subagent" ? stringValue(metadata()?.childID) : undefined)
   const state = () => stringValue(metadata()?.state)
-  const actor = () => (source() === "shell" ? "Shell" : Locale.titlecase(stringValue(metadata()?.agent) ?? "Subagent"))
+  const actor = () => (source() === "shell" ? "Shell" : Locale.titlecase(stringValue(metadata()?.agent) ?? "子代理"))
   const text = () => {
-    if (props.message.type === "system") return props.message.description ?? "Instructions updated"
+    if (props.message.type === "system") return props.message.description ?? "指令已更新"
     if (props.message.type === "synthetic") return props.message.description ?? ""
     return ""
   }
@@ -2048,7 +2048,7 @@ function SessionNoticeMessageV2(props: { message: SessionMessageInfo }) {
     <Show
       when={completion()}
       fallback={
-        <InlineToolRow icon="◈" color={theme.text.muted} pending="Notice" complete={true}>
+        <InlineToolRow icon="◈" color={theme.text.muted} pending="通知" complete={true}>
           {text()}
         </InlineToolRow>
       }
@@ -2075,7 +2075,7 @@ function SessionNoticeMessageV2(props: { message: SessionMessageInfo }) {
 function SessionSkillMessage(props: { message: Extract<SessionMessageInfo, { type: "skill" }> }) {
   const theme = useTheme()
   return (
-    <InlineToolRow icon="→" color={theme.text.muted} pending="Skill" complete={true}>
+    <InlineToolRow icon="→" color={theme.text.muted} pending="技能" complete={true}>
       Skill {props.message.name}
     </InlineToolRow>
   )
@@ -2118,11 +2118,11 @@ function CompactionMessage(props: { message: Extract<SessionMessageInfo, { type:
           </Switch>
           <text fg={color()}>
             {props.message.status === "completed" && props.message.providerContext
-              ? "Provider compaction"
-              : "Compaction"}
+              ? "提供商压缩"
+              : "压缩"}
           </text>
           <Show when={cancelled()}>
-            <text fg={color()}>· cancelled</text>
+            <text fg={color()}>· 已取消</text>
           </Show>
           <Show when={usage()}>
             <text fg={color()}>· {usage()}</text>
@@ -2156,7 +2156,7 @@ function CompactionQueued() {
       <box border={["top"]} borderColor={theme.border.base} flexGrow={1} />
       <box flexDirection="row" gap={1} paddingLeft={1} paddingRight={1}>
         <text fg={theme.text.muted}>◇</text>
-        <text fg={theme.text.muted}>Compaction queued</text>
+        <text fg={theme.text.muted}>压缩已排队</text>
       </box>
       <box border={["top"]} borderColor={theme.border.base} flexGrow={1} />
     </box>
@@ -2253,8 +2253,8 @@ function RevertMessage(props: {
 
 function ShellMessage(props: { message: Extract<SessionMessageInfo, { type: "shell" }> }) {
   const error = createMemo(() => {
-    if (props.message.status === "killed") return "Command cancelled"
-    if (props.message.status === "timeout") return "Command timed out"
+    if (props.message.status === "killed") return "命令已取消"
+    if (props.message.status === "timeout") return "命令超时"
     if (props.message.exit !== undefined && props.message.exit !== 0)
       return `Command exited with code ${props.message.exit}`
   })
@@ -2316,10 +2316,10 @@ function UserMessage(props: { message: SessionMessageUser }) {
             if (delivery() === "steer") {
               dialog.replace(() => (
                 <DialogSelect
-                  title="Pending steer"
+                  title="待处理的引导"
                   options={[
-                    { title: "Move to queue", value: "queue" as const },
-                    { title: "Delete", value: "cancel" as const },
+                    { title: "移至队列", value: "queue" as const },
+                    { title: "删除", value: "cancel" as const },
                   ]}
                   onSelect={(option) => {
                     void updatePendingSteer(option.value)
@@ -2447,7 +2447,7 @@ function AssistantRetry(props: { retry: SessionMessageAssistant["retry"] }) {
       {(retry) => (
         <box paddingLeft={3}>
           <text fg={theme.text.feedback.warning.base}>
-            ⚠ {seconds() > 0 ? `Retrying in ${seconds()}s` : "Retry due"} · attempt {retry().attempt} ·{" "}
+            ⚠ {seconds() > 0 ? `Retrying in ${seconds()}s` : "等待重试"} · attempt {retry().attempt} ·{" "}
             {retry().error.message}
           </text>
         </box>
@@ -2509,7 +2509,7 @@ function ToolPart(props: { part: SessionMessageAssistantTool; images?: boolean }
         <Edit {...toolprops} />
       </Match>
       <Match when={display() === "subagent"}>
-        <Subagent {...toolprops} />
+        <子代理 {...toolprops} />
       </Match>
       <Match when={display() === "execute"}>
         <Execute {...toolprops} />
@@ -2576,7 +2576,7 @@ function SessionImages(props: { images: readonly { uri: string }[]; paddingLeft?
                   dialog.replace(() => <DialogImagePreview images={images()} initial={index()} />)
                 }}
               >
-                <Show when={!failed()} fallback={<text>No preview</text>}>
+                <Show when={!failed()} fallback={<text>无预览</text>}>
                   <image
                     source={image.uri}
                     fit="cover"
@@ -2973,7 +2973,7 @@ function ShellDisplay(props: {
       if (props.background && !expanded()) return ""
       if (props.status === "completed" && props.output !== undefined) return stripAnsi(props.output.trim())
       const text = stripAnsi((backgroundOutput() || props.output || "").trim())
-      return outputTruncated() ? `[earlier output omitted]\n${text}` : text
+      return outputTruncated() ? `[已省略早期输出]\n${text}` : text
     }
     return stripAnsi(props.output?.trim() ?? "")
   })
@@ -2998,9 +2998,9 @@ function ShellDisplay(props: {
           when={props.command}
           fallback={
             isRunning() || props.status === "streaming" ? (
-              <Spinner color={color()}>Writing command…</Spinner>
+              <Spinner color={color()}>正在写入命令…</Spinner>
             ) : (
-              <text fg={theme.text.muted}>Writing command…</text>
+              <text fg={theme.text.muted}>正在写入命令…</text>
             )
           }
         >
@@ -3034,7 +3034,7 @@ function ShellDisplay(props: {
           </Show>
         </Show>
         <Show when={props.background}>
-          <StatusBadge raised>Background</StatusBadge>
+          <StatusBadge raised>后台</StatusBadge>
         </Show>
       </box>
     </BlockTool>
@@ -3053,7 +3053,7 @@ function Write(props: ToolProps) {
     <Switch>
       <Match when={props.part.state.status === "completed"}>
         <BlockTool
-          path={{ label: "# Wrote", value: pathFormatter.format(stringValue(props.input.path)) }}
+          path={{ label: "# 已写入", value: pathFormatter.format(stringValue(props.input.path)) }}
           part={props.part}
         >
           <line_number fg={theme.text.muted} minWidth={3} paddingRight={1}>
@@ -3069,7 +3069,7 @@ function Write(props: ToolProps) {
         </BlockTool>
       </Match>
       <Match when={true}>
-        <InlineTool icon="←" pending="Preparing write…" complete={stringValue(props.input.path)} part={props.part}>
+        <InlineTool icon="←" pending="正在准备写入…" complete={stringValue(props.input.path)} part={props.part}>
           Write {pathFormatter.format(stringValue(props.input.path))}
         </InlineTool>
       </Match>
@@ -3080,7 +3080,7 @@ function Write(props: ToolProps) {
 function Glob(props: ToolProps) {
   const pathFormatter = usePathFormatter()
   return (
-    <InlineTool icon="✱" pending="Finding files…" complete={stringValue(props.input.pattern)} part={props.part}>
+    <InlineTool icon="✱" pending="正在查找文件…" complete={stringValue(props.input.pattern)} part={props.part}>
       Glob "{stringValue(props.input.pattern)}"{" "}
       <Show when={stringValue(props.input.path)}>in {pathFormatter.format(stringValue(props.input.path))} </Show>
       <Show when={finiteNumber(props.metadata.count)}>
@@ -3104,7 +3104,7 @@ function Read(props: ToolProps) {
     <>
       <InlineTool
         icon="→"
-        pending="Reading file…"
+        pending="正在读取文件…"
         complete={stringValue(props.input.path)}
         spinner={isRunning()}
         part={props.part}
@@ -3127,7 +3127,7 @@ function Read(props: ToolProps) {
 function Grep(props: ToolProps) {
   const pathFormatter = usePathFormatter()
   return (
-    <InlineTool icon="✱" pending="Searching content…" complete={stringValue(props.input.pattern)} part={props.part}>
+    <InlineTool icon="✱" pending="正在搜索内容…" complete={stringValue(props.input.pattern)} part={props.part}>
       Grep "{stringValue(props.input.pattern)}"{" "}
       <Show when={stringValue(props.input.path)}>in {pathFormatter.format(stringValue(props.input.path))} </Show>
       <Show when={finiteNumber(props.metadata.matches)}>
@@ -3139,7 +3139,7 @@ function Grep(props: ToolProps) {
 
 function WebFetch(props: ToolProps) {
   return (
-    <InlineTool icon="%" pending="Fetching from the web…" complete={stringValue(props.input.url)} part={props.part}>
+    <InlineTool icon="%" pending="正在从网络获取…" complete={stringValue(props.input.url)} part={props.part}>
       WebFetch {stringValue(props.input.url)}
     </InlineTool>
   )
@@ -3149,11 +3149,11 @@ function WebSearch(props: ToolProps) {
   const ctx = use()
   const provider = createMemo(() => stringValue(props.metadata.provider))
   return (
-    <InlineTool icon="◈" pending="Searching web…" complete={stringValue(props.input.query)} part={props.part}>
-      <Show when={provider()} fallback="Web Search">
+    <InlineTool icon="◈" pending="正在搜索网络…" complete={stringValue(props.input.query)} part={props.part}>
+      <Show when={provider()} fallback="网络搜索">
         {(value) => (
           <>
-            Web Search via{" "}
+            网络搜索经由{" "}
             <RetryProvider
               value={{
                 id: `${ctx.sessionID}:${props.part.time.created}:${props.part.id}`,
@@ -3170,7 +3170,7 @@ function WebSearch(props: ToolProps) {
   )
 }
 
-function Subagent(props: ToolProps) {
+function 子代理(props: ToolProps) {
   const { navigate } = useRoute()
   const data = useData()
   const sessionID = createMemo(() => stringValue(props.metadata.sessionID) ?? stringValue(props.metadata.sessionId))
@@ -3188,7 +3188,7 @@ function Subagent(props: ToolProps) {
       spinner={!continuation() && isRunning()}
       running={isRunning()}
       complete={description()}
-      pending="Delegating…"
+      pending="正在委派…"
       part={props.part}
       onClick={() => {
         const id = sessionID()
@@ -3196,11 +3196,11 @@ function Subagent(props: ToolProps) {
       }}
       status={
         isBackgroundSubagent(props.metadata, props.part.state.status) ? (
-          <StatusBadge>Background</StatusBadge>
+          <StatusBadge>后台</StatusBadge>
         ) : undefined
       }
     >
-      {`${continuation() ? "Continue subagent" : `${Locale.titlecase(stringValue(props.input.agent) ?? stringValue(props.input.subagent_type) ?? "General")} Subagent`} — ${description() ?? "Subagent"}${model() ? ` · ${model()}` : ""}`}
+      {`${continuation() ? "继续子代理" : `${Locale.titlecase(stringValue(props.input.agent) ?? stringValue(props.input.subagent_type) ?? "General")} Subagent`} — ${description() ?? "Subagent"}${model() ? ` · ${model()}` : ""}`}
     </InlineTool>
   )
 }
@@ -3342,7 +3342,7 @@ function Edit(props: ToolProps) {
     <Switch>
       <Match when={file()}>
         {(item) => (
-          <BlockTool path={{ label: "← Edit", value: pathFormatter.format(path()) }} part={props.part}>
+          <BlockTool path={{ label: "← 编辑", value: pathFormatter.format(path()) }} part={props.part}>
             <box paddingLeft={1}>
               <PatchDiff
                 diff={item().patch}
@@ -3373,10 +3373,10 @@ function Edit(props: ToolProps) {
         <BlockTool
           path={
             stringValue(props.input.path)
-              ? { label: "← Edit", value: pathFormatter.format(stringValue(props.input.path)) }
+              ? { label: "← 编辑", value: pathFormatter.format(stringValue(props.input.path)) }
               : undefined
           }
-          title={stringValue(props.input.path) ? undefined : "# Preparing edit…"}
+          title={stringValue(props.input.path) ? undefined : "# 正在准备编辑…"}
           part={props.part}
           spinner={props.part.state.status === "streaming"}
         />
@@ -3394,7 +3394,7 @@ function ApplyPatch(props: ToolProps) {
   const targets = createMemo(() => {
     const patch = stringValue(props.input.patchText)
     if (!patch) return []
-    return [...patch.matchAll(/\*\*\* (?:Add|Update|Delete) File: ([^\r\n]+)/g)].map((match) => match[1].trim())
+    return [...patch.matchAll(/\*\*\* (?:Add|Update|删除) File: ([^\r\n]+)/g)].map((match) => match[1].trim())
   })
   const applied = createMemo(() => {
     const applied = props.metadata.applied
@@ -3420,7 +3420,7 @@ function ApplyPatch(props: ToolProps) {
             {(file) => (
               <BlockTool
                 path={{
-                  label: file.type === "add" ? "# Created" : file.type === "delete" ? "# Deleted" : "← Patched",
+                  label: file.type === "add" ? "# 已创建" : file.type === "delete" ? "# Deleted" : "← Patched",
                   value: pathFormatter.format(file.relativePath),
                 }}
                 part={props.part}
@@ -3467,7 +3467,7 @@ function ApplyPatch(props: ToolProps) {
             {(file) => (
               <BlockTool
                 path={{
-                  label: file.type === "add" ? "# Created" : file.type === "delete" ? "# Deleted" : "← Patched",
+                  label: file.type === "add" ? "# Created" : file.type === "delete" ? "# 已删除" : "← Patched",
                   value: pathFormatter.format(file.resource),
                 }}
                 part={props.part}
@@ -3487,13 +3487,13 @@ function ApplyPatch(props: ToolProps) {
           path={
             targets().length === 1
               ? {
-                  label: props.part.state.status === "error" ? "# Patch failed" : "Patching",
+                  label: props.part.state.status === "error" ? "# 补丁失败" : "Patching",
                   value: pathFormatter.format(targets()[0]),
                 }
               : undefined
           }
           title={
-            targets().length === 1 ? undefined : props.part.state.status === "error" ? "# Patch failed" : "Patching"
+            targets().length === 1 ? undefined : props.part.state.status === "error" ? "# Patch failed" : "正在打补丁"
           }
           part={props.part}
           spinner={props.part.state.status === "streaming" || props.part.state.status === "running"}
@@ -3512,14 +3512,14 @@ function Question(props: ToolProps) {
   const count = createMemo(() => questions().length)
 
   function format(answer?: ReadonlyArray<string>) {
-    if (!answer?.length) return "(no answer)"
+    if (!answer?.length) return "(未回答)"
     return answer.join(", ")
   }
 
   return (
     <Switch>
       <Match when={answers()}>
-        <BlockTool title="# Questions" part={props.part}>
+        <BlockTool title="# 问题" part={props.part}>
           <box gap={1}>
             <For each={questions()}>
               {(q, i) => (
@@ -3533,7 +3533,7 @@ function Question(props: ToolProps) {
         </BlockTool>
       </Match>
       <Match when={true}>
-        <InlineTool icon="→" pending="Asking questions…" complete={count()} part={props.part}>
+        <InlineTool icon="→" pending="正在提问…" complete={count()} part={props.part}>
           Asked {count()} question{count() !== 1 ? "s" : ""}
         </InlineTool>
       </Match>
@@ -3544,7 +3544,7 @@ function Question(props: ToolProps) {
 function Skill(props: ToolProps) {
   const name = createMemo(() => stringValue(props.metadata.name) ?? stringValue(props.input.id))
   return (
-    <InlineTool icon="→" pending="Loading skill…" complete={name()} part={props.part}>
+    <InlineTool icon="→" pending="正在加载技能…" complete={name()} part={props.part}>
       Skill "{name()}"
     </InlineTool>
   )
@@ -3607,7 +3607,7 @@ function recordValue(value: unknown): Record<string, unknown> | undefined {
 
 function formatSessionTranscript(session: SessionInfo, messages: SessionMessageInfo[], thinking: boolean, tools = true) {
   const body = messages.flatMap((message) => {
-    if (message.type === "user") return [`## User\n\n${message.text}`]
+    if (message.type === "user") return [`## 用户\n\n${message.text}`]
     if (message.type === "shell")
       return [`## Shell\n\n\`\`\`\n$ ${message.command}\n${message.output?.output ?? ""}\n\`\`\``]
     if (message.type !== "assistant") return []
@@ -3627,7 +3627,7 @@ function formatSessionTranscript(session: SessionInfo, messages: SessionMessageI
       return [`**Tool: ${item.name}**\n\n**Input:**\n\`\`\`json\n${input}\n\`\`\`\n\n${output}`]
     })
     if (content.length === 0) return []
-    return [`## Assistant\n\n${content.join("\n\n")}`]
+    return [`## 助手\n\n${content.join("\n\n")}`]
   })
   return `# ${withTimestampedFallback(session)}\n\n**Session ID:** ${session.id}\n**Created:** ${new Date(session.time.created).toLocaleString()}\n**Updated:** ${new Date(session.time.updated).toLocaleString()}\n\n---\n\n${body.join("\n\n---\n\n")}\n`
 }

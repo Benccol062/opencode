@@ -264,11 +264,11 @@ export function Prompt(props: PromptProps) {
     commands: [
       {
         id: "session.cd",
-        title: "Change working directory",
+        title: "更改工作目录",
         slash: { name: "cd", arguments: true },
         run: async (input) => {
           if (!input?.trim()) {
-            toast.show({ message: "Directory is required", variant: "error" })
+            toast.show({ message: "需要填写目录", variant: "error" })
             return
           }
           const sessionID = props.sessionID
@@ -284,7 +284,7 @@ export function Prompt(props: PromptProps) {
           if (!sessionID) {
             setPendingDirectory(directory)
             const location = await client.api.location.get({ location: { directory } }).catch((error) => {
-              toast.show({ title: "Failed to change directory", message: errorMessage(error), variant: "error" })
+              toast.show({ title: "更改目录失败", message: errorMessage(error), variant: "error" })
               return undefined
             })
             if (!location) {
@@ -301,7 +301,7 @@ export function Prompt(props: PromptProps) {
             (error) => error,
           )
           if (error) {
-            toast.show({ title: "Failed to change directory", message: errorMessage(error), variant: "error" })
+            toast.show({ title: "更改目录失败", message: errorMessage(error), variant: "error" })
             return
           }
           if (sourceProjectID) directoryRecents.touch(sourceProjectID, directory)
@@ -316,7 +316,7 @@ export function Prompt(props: PromptProps) {
   function promptModelWarning() {
     toast.show({
       variant: "warning",
-      message: "Connect an integration to send prompts",
+      message: "连接集成后即可发送提示",
       duration: 3000,
     })
     if (!connected()) {
@@ -417,9 +417,9 @@ export function Prompt(props: PromptProps) {
   const promptCommands = createMemo(() =>
     [
       {
-        title: "Clear prompt",
+        title: "清空输入",
         name: "prompt.clear",
-        category: "Prompt",
+        category: "提示",
         palette: undefined,
         run: () => {
           clearPrompt()
@@ -427,9 +427,9 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Submit prompt",
+        title: "提交提示词",
         name: "prompt.submit",
-        category: "Prompt",
+        category: "提示",
         palette: undefined,
         run: async (_input: string | undefined, event?: KeyEvent) => {
           event?.preventDefault()
@@ -442,9 +442,9 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Queue prompt",
+        title: "排队提示",
         name: "prompt.queue",
-        category: "Prompt",
+        category: "提示",
         run: async (_input: string | undefined, event?: KeyEvent) => {
           event?.preventDefault()
           event?.stopPropagation()
@@ -456,9 +456,9 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Remove editor context",
+        title: "移除编辑器上下文",
         name: "prompt.editor_context.clear",
-        category: "Prompt",
+        category: "提示",
         enabled: Boolean(editorContext()),
         run: () => {
           dismissEditorContext()
@@ -466,9 +466,9 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Paste",
+        title: "粘贴",
         name: "prompt.paste",
-        category: "Prompt",
+        category: "提示",
         palette: undefined,
         run: (_input: string | undefined, event?: KeyEvent) => {
           event?.preventDefault()
@@ -490,16 +490,16 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "View image attachments",
+        title: "查看图片附件",
         name: "prompt.images.view",
-        category: "Prompt",
+        category: "提示",
         enabled: imageAttachments().length > 0,
         run: () => openImagePreview(0),
       },
       {
-        title: "Interrupt session",
+        title: "中断会话",
         name: "session.interrupt",
-        category: "Session",
+        category: "会话",
         palette: undefined,
         enabled: status() === "running",
         run: () => {
@@ -529,9 +529,9 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Background blocking tools",
+        title: "将阻塞工具移至后台",
         name: "session.background",
-        category: "Session",
+        category: "会话",
         palette: undefined,
         enabled: status() === "running",
         run: () => {
@@ -546,8 +546,8 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Open editor",
-        category: "Session",
+        title: "打开编辑器",
+        category: "会话",
         name: "prompt.editor",
         slash: { name: "editor" },
         run: async () => {
@@ -577,9 +577,9 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Skills",
+        title: "技能",
         name: "prompt.skills",
-        category: "Prompt",
+        category: "提示",
         slash: { name: "skills" },
         run: () => {
           dialog.replace(() => (
@@ -615,10 +615,10 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Manage workspaces",
-        desc: "Manage workspaces",
+        title: "管理工作区",
+        desc: "管理工作区",
         name: "session.move",
-        category: "Session",
+        category: "会话",
         slash: { name: "worktrees" },
         run: () => {
           move.open()
@@ -870,9 +870,9 @@ export function Prompt(props: PromptProps) {
   const stashCommands = createMemo(() =>
     [
       {
-        title: "Stash prompt",
+        title: "暂存提示词",
         name: "prompt.stash",
-        category: "Prompt",
+        category: "提示",
         enabled: !!store.prompt.text,
         run: () => {
           if (!store.prompt.text) return
@@ -882,9 +882,9 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Stash pop",
+        title: "取回暂存",
         name: "prompt.stash.pop",
-        category: "Prompt",
+        category: "提示",
         enabled: stash.list().length > 0,
         run: () => {
           const entry = stash.pop()
@@ -898,9 +898,9 @@ export function Prompt(props: PromptProps) {
         },
       },
       {
-        title: "Stash list",
+        title: "暂存列表",
         name: "prompt.stash.list",
-        category: "Prompt",
+        category: "提示",
         enabled: stash.list().length > 0,
         run: () => {
           dialog.replace(() => (
@@ -965,8 +965,8 @@ export function Prompt(props: PromptProps) {
       commands: [
         {
           bind: "!",
-          title: "Shell mode",
-          group: "Prompt",
+          title: "Shell 模式",
+          group: "提示",
           run: () => {
             setStore("placeholder", randomIndex(shell().length))
             setStore("mode", "shell")
@@ -982,11 +982,11 @@ export function Prompt(props: PromptProps) {
       target: inputTarget,
       enabled: inputTarget() !== undefined && !disabled() && store.mode === "shell",
       commands: [
-        { bind: "escape", title: "Exit shell mode", group: "Prompt", run: () => setStore("mode", "normal") },
+        { bind: "escape", title: "退出 Shell 模式", group: "Prompt", run: () => setStore("mode", "normal") },
         {
           bind: "ctrl+c",
-          title: "Exit shell mode",
-          group: "Prompt",
+          title: "退出 Shell 模式",
+          group: "提示",
           enabled: () => store.prompt.text === "",
           run: () => setStore("mode", "normal"),
         },
@@ -1002,7 +1002,7 @@ export function Prompt(props: PromptProps) {
         return inputTarget() !== undefined && !disabled() && store.mode === "shell" && input?.visualCursor.offset === 0
       })(),
       commands: [
-        { bind: "backspace", title: "Exit shell mode", group: "Prompt", run: () => setStore("mode", "normal") },
+        { bind: "backspace", title: "退出 Shell 模式", group: "Prompt", run: () => setStore("mode", "normal") },
       ],
     }
   })
@@ -1018,8 +1018,8 @@ export function Prompt(props: PromptProps) {
       commands: [
         {
           id: "prompt.history.previous",
-          title: "Previous prompt history",
-          group: "Prompt",
+          title: "上一条输入历史",
+          group: "提示",
           run() {
             if (input.cursorOffset !== 0) {
               if (input.scrollY + input.visualCursor.visualRow === 0) {
@@ -1054,8 +1054,8 @@ export function Prompt(props: PromptProps) {
       commands: [
         {
           id: "prompt.history.next",
-          title: "Next prompt history",
-          group: "Prompt",
+          title: "下一条输入历史",
+          group: "提示",
           run() {
             if (input.cursorOffset !== input.plainText.length) {
               if (
@@ -1126,7 +1126,7 @@ export function Prompt(props: PromptProps) {
     )
     const slash = argumentSlash(inputText, keymapCommands())
     if (delivery === "queue" && (store.mode === "shell" || exitWord || slash)) {
-      toast.show({ message: "This prompt cannot be queued", variant: "warning" })
+      toast.show({ message: "此提示无法加入队列", variant: "warning" })
       return false
     }
     if (exitWord) {
@@ -1145,7 +1145,7 @@ export function Prompt(props: PromptProps) {
     const editorSelection = editorContext()
     const pendingEditorSelection = editorSelection && editor.labelState() === "pending" ? editorSelection : undefined
     if (delivery === "queue" && pendingEditorSelection) {
-      toast.show({ message: "Editor context cannot be queued", variant: "warning" })
+      toast.show({ message: "编辑器上下文无法加入队列", variant: "warning" })
       return false
     }
     const agent = local.agent.current()
@@ -1158,7 +1158,7 @@ export function Prompt(props: PromptProps) {
     const usesModel = !props.sessionID || store.mode !== "shell"
     if (usesModel && !local.model.available(selection)) {
       toast.show({
-        title: "Model unavailable",
+        title: "模型不可用",
         message: `${selection.providerID}/${selection.modelID} is not available in this session's location`,
         variant: "warning",
       })
@@ -1240,7 +1240,7 @@ export function Prompt(props: PromptProps) {
         }),
         recover: (error) => {
           toast.show({
-            title: data.session.get(created.id) ? "Failed to set up session" : "Creating a session failed",
+            title: data.session.get(created.id) ? "会话初始化失败" : "Creating a session failed",
             message: errorMessage(error),
             variant: "error",
           })
@@ -1286,7 +1286,7 @@ export function Prompt(props: PromptProps) {
     if (!trimmed) {
       // Blank Enter in an existing session commits the composer's agent and
       // model selection, then hands off to the route (queued prompt promotion).
-      await attempt("Failed to prepare session", async () => {
+      await attempt("会话准备失败", async () => {
         await commitSelection()
         await props.onEmptySubmit?.()
       })
@@ -1314,17 +1314,17 @@ export function Prompt(props: PromptProps) {
         })
       }
       void (newSession ? newSession.gate.then(send) : send()).catch((error) =>
-        newSession ? newSession.recover(error) : fail("Failed to run command", error),
+        newSession ? newSession.recover(error) : fail("运行命令失败", error),
       )
     } else {
       move.startSubmit()
-      if (!(await attempt("Failed to prepare session", prepareAgent))) return true
+      if (!(await attempt("会话准备失败", prepareAgent))) return true
       // Revert must settle before optimistic admission: its committed echo
       // splices every local row at or after the boundary, which would include
       // a freshly admitted prompt.
       if (
         session?.revert &&
-        !(await attempt("Failed to commit revert", () => client.api.session.revert.commit({ sessionID: target })))
+        !(await attempt("提交回滚失败", () => client.api.session.revert.commit({ sessionID: target })))
       )
         return false
       if (pendingEditorSelection) {
@@ -1338,7 +1338,7 @@ export function Prompt(props: PromptProps) {
         // Fold into the setup gate so the context still admits before the
         // user prompt once the session exists.
         if (newSession) newSession.gate = newSession.gate.then(send)
-        else if (!(await attempt("Failed to send editor context", send))) return false
+        else if (!(await attempt("发送编辑器上下文失败", send))) return false
       }
       // The data layer admits optimistically: the prompt renders immediately
       // and rolls back if the server rejects it, so submission does not wait
@@ -1358,7 +1358,7 @@ export function Prompt(props: PromptProps) {
           // the server makes an unchanged selection a no-op.
           prepare: commitModel,
         })
-        .catch((error) => (newSession ? newSession.recover(error) : fail("Failed to send prompt", error)))
+        .catch((error) => (newSession ? newSession.recover(error) : fail("发送提示失败", error)))
       if (pendingEditorSelection) editor.markSelectionSent()
     }
 
@@ -1452,7 +1452,7 @@ export function Prompt(props: PromptProps) {
         )
       })
       if (extmark && expandPastedText(extmark.id)) return
-      pasteText(pastedContent, `[Pasted ~${lineCount} lines]`)
+      pasteText(pastedContent, `[已粘贴约 ${lineCount} 行]`)
       return
     }
 
@@ -1694,7 +1694,7 @@ export function Prompt(props: PromptProps) {
                           when={!failed()}
                           fallback={
                             <box width="100%" height="100%" alignItems="center" justifyContent="center">
-                              <text fg={theme.text.muted}>No preview</text>
+                              <text fg={theme.text.muted}>无预览</text>
                             </box>
                           }
                         >
@@ -1912,7 +1912,7 @@ export function Prompt(props: PromptProps) {
                   <Match when={move.pendingNew()}>
                     <box paddingLeft={3} height={1} minHeight={0} flexShrink={1}>
                       <text fg={theme.hue.accent[500]} wrapMode="none" truncate>
-                        (new worktree)
+                        (新建工作树)
                       </text>
                     </box>
                   </Match>
@@ -1975,7 +1975,7 @@ export function Prompt(props: PromptProps) {
               absolute: item.directory,
               destructive: {
                 id: item.directory,
-                confirm: "Press ctrl+d to confirm",
+                confirm: "按 ctrl+d 确认",
                 run: () => directoryRecents.remove(projectID, item.directory),
               },
             }

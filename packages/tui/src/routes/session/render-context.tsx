@@ -31,6 +31,6 @@ export const context = createContext<{
 
 export function use() {
   const ctx = useContext(context)
-  if (!ctx) throw new Error("useContext must be used within a Session component")
+  if (!ctx) throw new Error("useContext 必须在 Session 组件内使用")
   return ctx
 }

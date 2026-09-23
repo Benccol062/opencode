@@ -72,8 +72,8 @@ function storedView(value: unknown): DiffView | undefined {
 
 function diffSourceLabel(mode: DiffMode) {
   if (mode === "branch") return "All"
-  if (mode === "committed") return "Committed"
-  return "Uncommitted"
+  if (mode === "committed") return "已提交"
+  return "未提交"
 }
 
 function DiffViewer(props: { context: Plugin.Context }) {
@@ -152,10 +152,10 @@ function DiffViewer(props: { context: Plugin.Context }) {
   const result = () => (diff.error || diff.loading ? undefined : diff())
   const sourceDetail = () => {
     if (mode() === "working") return "vs HEAD"
-    if (diff.error) return "Base or diff unavailable"
-    if (!result()) return "Resolving diff…"
+    if (diff.error) return "Base 或 diff 不可用"
+    if (!result()) return "正在解析 diff…"
     const base = result()?.base
-    if (!base) return "Base not reported"
+    if (!base) return "缺少 Base 信息"
     return `vs ${base.name}`
   }
 
@@ -223,24 +223,24 @@ function DiffBaseDialog(props: {
     <box paddingLeft={4} paddingRight={4}>
       <text fg={branches.error ? theme.text.feedback.error.base : theme.text.muted}>
         {branches.loading
-          ? "Loading branches…"
+          ? "正在加载分支…"
           : branches.error
             ? "Could not load branches. Reopen the picker to try again."
-            : "No branches found"}
+            : "未找到分支"}
       </text>
     </box>
   )
 
   return (
     <DialogSelect
-      title="Base branch"
-      placeholder="Search local and remote branches"
+      title="Base 分支"
+      placeholder="搜索本地和远程分支"
       skipFilter
       current={props.current?.replace(/^refs\/(heads|remotes)\//, "")}
       onFilter={setSearch}
       emptyView={<Empty />}
       noMatchView={<Empty />}
-      footer={<text fg={theme.text.muted}>Remembered until the TUI exits</text>}
+      footer={<text fg={theme.text.muted}>TUI 退出前一直记住</text>}
       options={(branches.loading || branches.error ? [] : (branches()?.data ?? [])).map((name) => ({
         title: name,
         value: name,
@@ -528,13 +528,13 @@ export function DiffViewerContent(props: {
   const commands: KeymapCommand[] = [
     {
       id: "diff.close",
-      title: "Close diff viewer",
+      title: "关闭 diff 查看器",
       group: "VCS",
       run: close,
     },
     {
       id: "diff.down",
-      title: "Move diff viewer down",
+      title: "在 diff 查看器中下移",
       group: "VCS",
       run() {
         clearPatchSelection()
@@ -543,7 +543,7 @@ export function DiffViewerContent(props: {
     },
     {
       id: "diff.up",
-      title: "Move diff viewer up",
+      title: "在 diff 查看器中上移",
       group: "VCS",
       run() {
         clearPatchSelection()
@@ -552,31 +552,31 @@ export function DiffViewerContent(props: {
     },
     {
       id: "diff.page.down",
-      title: "Page diff viewer down",
+      title: "在 diff 查看器中向下翻页",
       group: "VCS",
       run: () => scrollPage(1, 1),
     },
     {
       id: "diff.page.up",
-      title: "Page diff viewer up",
+      title: "在 diff 查看器中向上翻页",
       group: "VCS",
       run: () => scrollPage(-1, 1),
     },
     {
       id: "diff.half_page.down",
-      title: "Scroll down half a page",
+      title: "向下滚动半页",
       group: "VCS",
       run: () => scrollPage(1, 2),
     },
     {
       id: "diff.half_page.up",
-      title: "Scroll up half a page",
+      title: "向上滚动半页",
       group: "VCS",
       run: () => scrollPage(-1, 2),
     },
     {
       id: "diff.first",
-      title: "Go to the start of the diff",
+      title: "跳到 diff 开头",
       group: "VCS",
       run() {
         clearPatchSelection()
@@ -585,7 +585,7 @@ export function DiffViewerContent(props: {
     },
     {
       id: "diff.last",
-      title: "Go to the end of the diff",
+      title: "跳到 diff 结尾",
       group: "VCS",
       run() {
         clearPatchSelection()
@@ -594,7 +594,7 @@ export function DiffViewerContent(props: {
     },
     {
       id: "diff.next_hunk",
-      title: "Jump to next diff hunk",
+      title: "跳到下一个 diff 块",
       group: "VCS",
       run() {
         jumpRelativeHunk(1)
@@ -602,7 +602,7 @@ export function DiffViewerContent(props: {
     },
     {
       id: "diff.previous_hunk",
-      title: "Jump to previous diff hunk",
+      title: "跳到上一个 diff 块",
       group: "VCS",
       run() {
         jumpRelativeHunk(-1)
@@ -610,7 +610,7 @@ export function DiffViewerContent(props: {
     },
     {
       id: "diff.next_file",
-      title: "Jump to next diff file",
+      title: "跳到下一个 diff 文件",
       group: "VCS",
       run() {
         jumpRelativePatchFile(1)
@@ -618,7 +618,7 @@ export function DiffViewerContent(props: {
     },
     {
       id: "diff.previous_file",
-      title: "Jump to previous diff file",
+      title: "跳到上一个 diff 文件",
       group: "VCS",
       run() {
         jumpRelativePatchFile(-1)
@@ -626,7 +626,7 @@ export function DiffViewerContent(props: {
     },
     {
       id: "diff.mark_reviewed",
-      title: "Toggle selected diff file reviewed",
+      title: "切换所选 diff 文件的已审阅状态",
       group: "VCS",
       run() {
         toggleFileReviewed(selectedFileIndex() ?? currentPatchFileIndex())
@@ -634,7 +634,7 @@ export function DiffViewerContent(props: {
     },
     {
       id: "diff.toggle_file_tree",
-      title: "Toggle diff viewer file tree",
+      title: "显示/隐藏 diff 查看器文件树",
       group: "VCS",
       run() {
         const next = !fileTreeEnabled()
@@ -644,7 +644,7 @@ export function DiffViewerContent(props: {
     },
     {
       id: "diff.single_patch",
-      title: "Toggle single patch view",
+      title: "切换单文件补丁视图",
       group: "VCS",
       run() {
         setSelectedHunk(undefined)
@@ -666,7 +666,7 @@ export function DiffViewerContent(props: {
     },
     {
       id: "diff.switch_source",
-      title: "Switch diff viewer source",
+      title: "切换 diff 查看器来源",
       group: "VCS",
       run() {
         openSwitchDiffDialog()
@@ -674,7 +674,7 @@ export function DiffViewerContent(props: {
     },
     {
       id: "diff.toggle_view",
-      title: "Toggle diff viewer split or unified view",
+      title: "切换 diff 查看器分栏/统一视图",
       group: "VCS",
       run() {
         if (!splitAvailable()) return
@@ -686,7 +686,7 @@ export function DiffViewerContent(props: {
     },
     {
       id: "diff.help",
-      title: "Show more diff viewer shortcuts",
+      title: "显示更多 diff 查看器快捷键",
       group: "VCS",
       run() {
         openHelpDialog()
@@ -695,7 +695,7 @@ export function DiffViewerContent(props: {
     // Specific diff bindings take precedence over app.exit's Ctrl+D binding.
     {
       id: "app.exit",
-      title: "Close diff viewer",
+      title: "关闭 diff 查看器",
       group: "VCS",
       run: close,
     },
@@ -705,20 +705,20 @@ export function DiffViewerContent(props: {
     const options = [
       {
         value: "branch" as const,
-        description: "Branch + local changes",
+        description: "分支 + 本地更改",
       },
       {
         value: "committed" as const,
-        description: "Branch commits only",
+        description: "仅分支提交",
       },
       {
         value: "working" as const,
-        description: "Local changes only",
+        description: "仅本地更改",
       },
     ]
     dialog.show(() => (
       <DialogSelect<DiffMode | "base">
-        title="Diff source"
+        title="diff 来源"
         skipFilter={true}
         renderFilter={false}
         current={mode()}
@@ -738,7 +738,7 @@ export function DiffViewerContent(props: {
                   title: "Base",
                   titleView: "Base".padEnd(11),
                   value: "base" as const,
-                  description: props.sourceBase?.name ?? "Choose…",
+                  description: props.sourceBase?.name ?? "选择…",
                   onSelect: props.onChooseBase,
                 },
               ]
@@ -828,7 +828,7 @@ export function DiffViewerContent(props: {
         <Switch>
           <Match when={props.loading}>
             <box flexGrow={1} padding={2}>
-              <text fg={theme.text.muted}>Loading diff…</text>
+              <text fg={theme.text.muted}>正在加载 diff…</text>
             </box>
           </Match>
           <Match when={!props.loading && props.error}>
@@ -849,7 +849,7 @@ export function DiffViewerContent(props: {
           </Match>
           <Match when={!props.loading && files().length === 0}>
             <box flexGrow={1} padding={2}>
-              <text fg={theme.text.muted}>No changes to show</text>
+              <text fg={theme.text.muted}>没有可显示的更改</text>
             </box>
           </Match>
           <Match when={!props.loading}>
@@ -970,7 +970,7 @@ export function DiffViewerContent(props: {
                                   ✓
                                 </text>
                               </Show>
-                              <Show when={!image()} fallback={<text fg={theme.text.muted}>Image</text>}>
+                              <Show when={!image()} fallback={<text fg={theme.text.muted}>图片</text>}>
                                 <text flexShrink={0} fg={reviewed() ? theme.text.muted : theme.diff.text.added}>
                                   +{entry.file.additions}
                                 </text>
@@ -1089,20 +1089,20 @@ function DiffViewerHelpDialog(props: { context: Plugin.Context; single: boolean 
         .join(" / ")
   const groups = [
     {
-      title: "Review",
+      title: "预览",
       rows: [
-        { shortcut: () => props.context.keymap.shortcuts("diff.next_file").join(" / "), label: "Next file" },
-        { shortcut: () => props.context.keymap.shortcuts("diff.previous_file").join(" / "), label: "Previous file" },
+        { shortcut: () => props.context.keymap.shortcuts("diff.next_file").join(" / "), label: "下一个文件" },
+        { shortcut: () => props.context.keymap.shortcuts("diff.previous_file").join(" / "), label: "上一个文件" },
         {
           shortcut: shortcut("diff.mark_reviewed"),
           label: props.single ? "Review + next / reopen" : "Review + collapse / reopen",
         },
         { shortcut: shortcut("diff.next_hunk", "diff.previous_hunk"), label: "Next / previous change" },
-        { shortcut: () => "right-click", label: "File menu (heading or tree)" },
+        { shortcut: () => "right-click", label: "文件菜单(标题栏或文件树)" },
       ],
     },
     {
-      title: "Scroll",
+      title: "滚动",
       rows: [
         { shortcut: shortcut("diff.down", "diff.up"), label: "Down / up" },
         { shortcut: shortcut("diff.half_page.down", "diff.half_page.up"), label: "Half page down / up" },
@@ -1116,8 +1116,8 @@ function DiffViewerHelpDialog(props: { context: Plugin.Context; single: boolean 
         { shortcut: shortcut("diff.toggle_view"), label: "Split / unified" },
         { shortcut: shortcut("diff.single_patch"), label: "All files / single file" },
         { shortcut: shortcut("diff.toggle_file_tree"), label: "Show / hide file tree" },
-        { shortcut: shortcut("diff.switch_source"), label: "Switch diff source" },
-        { shortcut: () => props.context.keymap.shortcuts("diff.close").join(" / "), label: "Close diff viewer" },
+        { shortcut: shortcut("diff.switch_source"), label: "切换 diff 来源" },
+        { shortcut: () => props.context.keymap.shortcuts("diff.close").join(" / "), label: "关闭 diff 查看器" },
       ],
     },
   ]
@@ -1126,7 +1126,7 @@ function DiffViewerHelpDialog(props: { context: Plugin.Context; single: boolean 
     <box paddingLeft={2} paddingRight={2} paddingBottom={1} gap={1}>
       <box flexDirection="row" justifyContent="space-between">
         <text attributes={TextAttributes.BOLD} fg={theme.text.base}>
-          Diff shortcuts
+          diff 快捷键
         </text>
         <text fg={theme.text.muted} selectable={false} onMouseUp={() => props.context.ui.dialog.clear()}>
           esc close
@@ -1179,7 +1179,7 @@ function Commands(props: { context: Plugin.Context }) {
     commands: [
       {
         id: "diff.open",
-        title: "Open diff viewer",
+        title: "打开 diff 查看器",
         slash: { name: "diff" },
         group: "VCS",
         palette: true,

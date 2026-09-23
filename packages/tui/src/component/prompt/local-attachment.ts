@@ -71,10 +71,10 @@ const mimeTypes: Record<string, string> = {
 
 async function readFileBounded(file: string, maxBytes: number) {
   const source = Bun.file(file)
-  if (!(await source.exists())) throw new Error("Attachment does not exist")
-  if (source.size > maxBytes) throw new Error("Attachment exceeds the local file limit")
+  if (!(await source.exists())) throw new Error("附件不存在")
+  if (source.size > maxBytes) throw new Error("附件超出本地文件大小限制")
   const content = Buffer.from(await source.slice(0, maxBytes + 1).arrayBuffer())
-  if (content.byteLength > maxBytes) throw new Error("Attachment exceeds the local file limit")
+  if (content.byteLength > maxBytes) throw new Error("附件超出本地文件大小限制")
   return content
 }
 

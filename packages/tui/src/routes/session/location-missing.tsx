@@ -19,17 +19,17 @@ export function SessionLocationUnavailable(props: { directory: string; onMove: (
   return (
     <SessionQuestion
       id="session.location-missing"
-      group="Session recovery"
-      choicesLabel="Recovery actions"
+      group="会话恢复"
+      choicesLabel="恢复操作"
       instance={props.directory}
-      title="Session location unavailable"
+      title="会话位置不可用"
       body={
         <box paddingLeft={1} gap={1}>
           <text fg={theme.text.muted}>{directory()}</text>
           <text fg={theme.text.base}>Choose another directory to continue this session.</text>
         </box>
       }
-      options={{ move: "Choose directory" }}
+      options={{ move: "选择目录" }}
       onSelect={props.onMove}
     />
   )

@@ -398,7 +398,7 @@ export function RunFooterView(props: RunFooterViewProps) {
     if (exiting() || (busy() && armed())) {
       const key = exiting() ? clearShortcut() : interruptLabel()
       const action = exiting() ? "exit" : "stop"
-      if (!key) return exiting() ? "Exit pending" : "Stop pending"
+      if (!key) return exiting() ? "退出待确认" : "Stop pending"
       const phrases = [
         `Press ${key} again to ${exiting() ? "exit" : "interrupt"}`,
         `${key} again to ${exiting() ? "exit" : "interrupt"}`,
@@ -412,7 +412,7 @@ export function RunFooterView(props: RunFooterViewProps) {
     if (!footerDetails()) return shell() ? "Shell" : ""
     if (busy()) {
       if (stateStatus() === "reconnecting") return "reconnecting"
-      return interruptLabel() ? `${interruptLabel()} stop` : "Running"
+      return interruptLabel() ? `${interruptLabel()} stop` : "运行中"
     }
     return stateStatus() || (shell() ? "Shell" : "")
   })
@@ -547,7 +547,7 @@ export function RunFooterView(props: RunFooterViewProps) {
     commands: [
       {
         id: "app.clear",
-        title: "Clear screen",
+        title: "清屏",
         group: "System",
         run: clearScreen,
       },
@@ -559,13 +559,13 @@ export function RunFooterView(props: RunFooterViewProps) {
     commands: [
       {
         id: "command.palette.show",
-        title: "Open command palette",
+        title: "打开命令面板",
         group: "Prompt",
         run: openCommand,
       },
       {
         id: "variant.cycle",
-        title: "Cycle model variant",
+        title: "轮换模型变体",
         group: "Model",
         run: props.onCycle,
       },
@@ -578,7 +578,7 @@ export function RunFooterView(props: RunFooterViewProps) {
     commands: [
       {
         id: "session.background",
-        title: "Background subagents",
+        title: "后台运行子代理",
         group: "Session",
         run: () => props.onBackground?.(),
       },
@@ -590,7 +590,7 @@ export function RunFooterView(props: RunFooterViewProps) {
     commands: [
       {
         id: "session.child.first",
-        title: "View subagents",
+        title: "查看子代理",
         group: "Session",
         run: openSubagentMenu,
       },
@@ -602,7 +602,7 @@ export function RunFooterView(props: RunFooterViewProps) {
     commands: [
       {
         id: "session.queued_prompts",
-        title: "View pending prompts",
+        title: "查看待处理提示",
         group: "Prompt",
         run: openQueuedMenu,
       },
@@ -619,7 +619,7 @@ export function RunFooterView(props: RunFooterViewProps) {
     commands: [
       {
         id: "composer.subagent.interrupt",
-        title: "Interrupt subagent",
+        title: "中断子代理",
         group: "Session",
         run: () => {
           const current = selectedTab()

@@ -62,7 +62,7 @@ export function cliErrorMessage(input: unknown): string | undefined {
         })
       : []
     return [
-      `Configuration is invalid${path && path !== "config" ? ` at ${path}` : ""}` + (message ? `: ${message}` : ""),
+      `配置无效${path && path !== "config" ? ` at ${path}` : ""}` + (message ? `: ${message}` : ""),
       ...issues.map((issue) => "↳ " + issue.message + " " + issue.path.join(".")),
     ].join("\n")
   }
@@ -115,7 +115,7 @@ export function errorFormat(error: unknown): string {
       }
       return json
     } catch {
-      return "Unexpected error (unserializable)"
+      return "意外错误(无法序列化)"
     }
   }
 

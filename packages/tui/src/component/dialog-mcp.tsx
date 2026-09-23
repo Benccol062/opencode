@@ -20,18 +20,18 @@ function statusError(status: McpServer["status"]) {
 
 function Status(props: { status: McpServer["status"]; loading: boolean }) {
   if (props.loading || props.status.status === "pending") {
-    return <>Connecting …</>
+    return <>正在连接…</>
   }
   if (props.status.status === "connected") {
-    return <span style={{ attributes: TextAttributes.BOLD }}>Connected ✓</span>
+    return <span style={{ attributes: TextAttributes.BOLD }}>已连接 ✓</span>
   }
   if (props.status.status === "failed") {
-    return <>Failed !</>
+    return <>失败 !</>
   }
   if (props.status.status === "needs_auth") {
-    return <>Sign in required →</>
+    return <>需要登录 →</>
   }
-  return <>Disabled ○</>
+  return <>已禁用 ○</>
 }
 
 export function DialogMcp(props: { initialServer?: string; details?: boolean } = {}) {
@@ -138,7 +138,7 @@ export function DialogMcp(props: { initialServer?: string; details?: boolean } =
         when={detail()}
         fallback={
           <DialogSelect
-            title="MCP servers"
+            title="MCP 服务器"
             options={options()}
             preserveSelection
             onMove={(option) => setFocused(option.value as string)}
@@ -164,7 +164,7 @@ export function DialogMcp(props: { initialServer?: string; details?: boolean } =
         {(server) => (
           <DialogErrorDetails
             title={`MCP server: ${server().name}`}
-            error={statusError(server().status) ?? "Unknown MCP connection error"}
+            error={statusError(server().status) ?? "未知的 MCP 连接错误"}
             context={`Status: ${server().status.status}\nConfiguration: mcp.servers.${server().name}${
               server().integrationID ? `\nIntegration: ${server().integrationID}` : ""
             }`}

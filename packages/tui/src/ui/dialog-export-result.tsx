@@ -17,8 +17,8 @@ export function DialogExportResult(props: { path: string; onClose?: () => void }
     commands: [
       {
         bind: "return",
-        title: "Close export result",
-        group: "Dialog",
+        title: "关闭导出结果",
+        group: "对话框",
         run: close,
       },
     ],
@@ -28,7 +28,7 @@ export function DialogExportResult(props: { path: string; onClose?: () => void }
     <box paddingLeft={2} paddingRight={2} gap={1}>
       <box flexDirection="row" justifyContent="space-between">
         <text attributes={TextAttributes.BOLD} fg={theme.text.base}>
-          Session exported
+          会话已导出
         </text>
         <text fg={theme.text.muted} onMouseUp={close}>
           esc
@@ -44,7 +44,7 @@ export function DialogExportResult(props: { path: string; onClose?: () => void }
           backgroundColor={theme.background.action.primary.focused}
           onMouseUp={close}
         >
-          <text fg={theme.text.action.primary.focused}>Close</text>
+          <text fg={theme.text.action.primary.focused}>关闭</text>
         </box>
       </box>
     </box>

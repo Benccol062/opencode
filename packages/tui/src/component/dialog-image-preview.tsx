@@ -31,7 +31,7 @@ export function DialogImagePreview(props: { images: readonly ImagePreviewItem[];
   Keymap.createLayer(() => ({
     mode: "modal",
     commands: [
-      { bind: "left", title: "Previous image", group: "Dialog", run: () => move(-1) },
+      { bind: "left", title: "Previous image", group: "对话框", run: () => move(-1) },
       { bind: "right", title: "Next image", group: "Dialog", run: () => move(1) },
     ],
   }))
@@ -57,13 +57,13 @@ export function DialogImagePreview(props: { images: readonly ImagePreviewItem[];
       />
       <box flexDirection="row" justifyContent="space-between">
         <text fg={theme.text.muted} onMouseUp={() => move(-1)}>
-          {props.images.length > 1 ? "← previous" : ""}
+          {props.images.length > 1 ? "← 上一张" : ""}
         </text>
         <text fg={failed() ? theme.text.feedback.error.base : theme.text.muted} wrapMode="none" truncate>
-          {failed() ? "No preview" : (current().mention?.text ?? `Image ${index() + 1}`)}
+          {failed() ? "无预览" : (current().mention?.text ?? `Image ${index() + 1}`)}
         </text>
         <text fg={theme.text.muted} onMouseUp={() => move(1)}>
-          {props.images.length > 1 ? "next →" : ""}
+          {props.images.length > 1 ? "下一张 →" : ""}
         </text>
       </box>
     </box>

@@ -46,9 +46,9 @@ export function DialogUpdate(props: {
     if (type === "installing") return []
     const confirm =
       type === "available"
-        ? { label: "Update", run: props.install }
+        ? { label: "更新", run: props.install }
         : type === "installed"
-          ? { label: "Restart", run: props.restart }
+          ? { label: "重启", run: props.restart }
           : undefined
     return [
       {
@@ -70,12 +70,12 @@ export function DialogUpdate(props: {
       {
         bind: "return",
         title: "Confirm update action",
-        group: "Dialog",
+        group: "对话框",
         run: () => void buttons()[active()]?.run(),
       },
       ...["left", "right", "tab", "shift+tab"].map((bind) => ({
         bind,
-        title: bind === "left" || bind === "shift+tab" ? "Previous update action" : "Next update action",
+        title: bind === "left" || bind === "shift+tab" ? "上一个更新操作" : "Next update action",
         group: "Dialog",
         run: () => {
           const count = buttons().length
@@ -90,10 +90,10 @@ export function DialogUpdate(props: {
       <box flexDirection="row" justifyContent="space-between">
         <text attributes={TextAttributes.BOLD} fg={theme.text.base}>
           {state().type === "installing"
-            ? "Updating OpenCode"
+            ? "正在更新 OpenCode"
             : state().type === "available" || state().type === "failed"
-              ? "Update available"
-              : "Update"}
+              ? "有可用更新"
+              : "更新"}
         </text>
         <text fg={theme.text.muted} onMouseUp={() => dialog.clear()}>
           esc
@@ -104,7 +104,7 @@ export function DialogUpdate(props: {
           {(current) => (
             <Switch>
               <Match when={current.type === "checking"}>
-                <Spinner shimmer={theme.text.base}>Checking for updates…</Spinner>
+                <Spinner shimmer={theme.text.base}>正在检查更新…</Spinner>
               </Match>
               <Match when={current.type === "available"}>
                 <text fg={theme.text.muted}>

@@ -20,14 +20,14 @@ type Setting = {
 
 export const settings: Setting[] = [
   {
-    title: "Theme",
-    category: "Appearance",
+    title: "主题",
+    category: "外观",
     path: ["theme", "name"],
     default: "opencode",
     keywords: ["color scheme", "colors"],
   },
   {
-    title: "Color mode",
+    title: "颜色模式",
     category: "Appearance",
     path: ["theme", "mode"],
     default: "system",
@@ -35,7 +35,7 @@ export const settings: Setting[] = [
     keywords: ["dark mode", "light mode", "system theme"],
   },
   {
-    title: "Animations",
+    title: "动画",
     category: "Appearance",
     path: ["animations"],
     default: false,
@@ -44,15 +44,15 @@ export const settings: Setting[] = [
     keywords: ["motion", "effects"],
   },
   {
-    title: "Sidebar",
-    category: "Session",
+    title: "侧边栏",
+    category: "会话",
     path: ["session", "sidebar"],
     default: "auto",
     values: ["hide", "auto"],
     keywords: ["side panel"],
   },
   {
-    title: "Scrollbar",
+    title: "滚动条",
     category: "Session",
     path: ["session", "scrollbar"],
     default: false,
@@ -61,7 +61,7 @@ export const settings: Setting[] = [
     keywords: ["scroll bar"],
   },
   {
-    title: "Thinking",
+    title: "思考过程",
     category: "Session",
     path: ["session", "thinking"],
     default: "hide",
@@ -77,7 +77,7 @@ export const settings: Setting[] = [
     keywords: ["syntax", "concealment", "rendering"],
   },
   {
-    title: "Tool grouping",
+    title: "工具分组",
     category: "Session",
     path: ["session", "grouping"],
     default: "auto",
@@ -85,7 +85,7 @@ export const settings: Setting[] = [
     keywords: ["transcript", "messages", "reads", "searches"],
   },
   {
-    title: "Transcript images",
+    title: "会话记录图片",
     category: "Session",
     path: ["session", "image_preview"],
     default: false,
@@ -103,7 +103,7 @@ export const settings: Setting[] = [
     keywords: ["tokens per second", "throughput"],
   },
   {
-    title: "New session location",
+    title: "新会话位置",
     category: "Session",
     path: ["session", "new_location"],
     default: "launch",
@@ -112,7 +112,7 @@ export const settings: Setting[] = [
     keywords: ["directory", "cwd", "inherit"],
   },
   {
-    title: "Permissions",
+    title: "权限",
     category: "Session",
     path: ["session", "permissions"],
     default: "prompt",
@@ -128,7 +128,7 @@ export const settings: Setting[] = [
     values: ["off", "on", "auto"],
   },
   {
-    title: "Scope",
+    title: "范围",
     category: "Tabs",
     path: ["tabs", "scope"],
     default: "cwd",
@@ -136,7 +136,7 @@ export const settings: Setting[] = [
     labels: ["current directory", "global"],
   },
   {
-    title: "Layout",
+    title: "布局",
     category: "Tabs",
     path: ["tabs", "layout"],
     default: "horizontal",
@@ -144,7 +144,7 @@ export const settings: Setting[] = [
     keywords: ["sidebar", "orientation", "left"],
   },
   {
-    title: "Indicators",
+    title: "指示器",
     category: "Tabs",
     path: ["tabs", "indicators"],
     default: "status",
@@ -154,14 +154,14 @@ export const settings: Setting[] = [
   },
   {
     title: "Layout",
-    category: "Diffs",
+    category: "差异对比",
     path: ["diffs", "view"],
     default: "auto",
     values: ["auto", "split", "unified"],
     keywords: ["diff layout", "split diff", "unified diff"],
   },
   {
-    title: "Wrapping",
+    title: "自动换行",
     category: "Diffs",
     path: ["diffs", "wrap"],
     default: "word",
@@ -169,7 +169,7 @@ export const settings: Setting[] = [
     keywords: ["diff wrap", "word wrap", "line wrap"],
   },
   {
-    title: "File tree",
+    title: "文件树",
     category: "Diffs",
     path: ["diffs", "tree"],
     default: true,
@@ -178,7 +178,7 @@ export const settings: Setting[] = [
     keywords: ["diff files"],
   },
   {
-    title: "Single patch",
+    title: "单个补丁",
     category: "Diffs",
     path: ["diffs", "single"],
     default: false,
@@ -187,8 +187,8 @@ export const settings: Setting[] = [
     keywords: ["one file", "selected file"],
   },
   {
-    title: "Scroll speed",
-    category: "Input",
+    title: "滚动速度",
+    category: "输入",
     path: ["scroll", "speed"],
     default: 3,
     step: 0.25,
@@ -198,7 +198,7 @@ export const settings: Setting[] = [
     keywords: ["scrolling"],
   },
   {
-    title: "Acceleration",
+    title: "滚动加速",
     category: "Input",
     path: ["scroll", "acceleration"],
     default: false,
@@ -207,7 +207,7 @@ export const settings: Setting[] = [
     keywords: ["scroll acceleration"],
   },
   {
-    title: "Mouse",
+    title: "鼠标",
     category: "Input",
     path: ["mouse"],
     default: true,
@@ -216,7 +216,7 @@ export const settings: Setting[] = [
     keywords: ["mouse capture"],
   },
   {
-    title: "Editor context",
+    title: "编辑器上下文",
     category: "Input",
     path: ["prompt", "editor"],
     default: true,
@@ -225,7 +225,7 @@ export const settings: Setting[] = [
     keywords: ["file context", "prompt context", "editor selection"],
   },
   {
-    title: "Large pastes",
+    title: "大段粘贴",
     category: "Input",
     path: ["prompt", "paste"],
     default: "compact",
@@ -233,7 +233,7 @@ export const settings: Setting[] = [
     keywords: ["paste summary", "clipboard", "pasted content"],
   },
   {
-    title: "Image previews",
+    title: "图片预览",
     category: "Input",
     path: ["prompt", "image_preview"],
     default: false,
@@ -242,27 +242,27 @@ export const settings: Setting[] = [
     keywords: ["attachments", "clipboard", "images", "prompt"],
   },
   {
-    title: "Leader timeout",
+    title: "前导键超时",
     category: "Input",
     path: ["leader", "timeout"],
     default: 2000,
     step: 250,
     min: 250,
     max: 10000,
-    format: (value) => `${value} ms`,
+    format: (value) => `${value} 毫秒`,
     keywords: ["leader key", "shortcut timeout"],
   },
   {
-    title: "Notifications",
-    category: "Alerts",
+    title: "通知",
+    category: "提醒",
     path: ["attention", "notifications"],
     default: false,
     values: [false, true],
     labels: ["off", "on"],
-    keywords: ["system notifications", "desktop notifications", "alerts"],
+    keywords: ["system notifications", "桌面通知", "alerts"],
   },
   {
-    title: "Sounds",
+    title: "提示音",
     category: "Alerts",
     path: ["attention", "sound"],
     default: false,
@@ -271,7 +271,7 @@ export const settings: Setting[] = [
     keywords: ["audio", "sound effects", "alerts"],
   },
   {
-    title: "Volume",
+    title: "音量",
     category: "Alerts",
     path: ["attention", "volume"],
     default: 0.4,
@@ -282,8 +282,8 @@ export const settings: Setting[] = [
     keywords: ["sound volume", "audio volume"],
   },
   {
-    title: "Window title",
-    category: "Terminal",
+    title: "窗口标题",
+    category: "终端",
     path: ["terminal", "title"],
     default: true,
     values: [false, true],
@@ -291,7 +291,7 @@ export const settings: Setting[] = [
     keywords: ["terminal title", "tab title"],
   },
   {
-    title: "Copy behavior",
+    title: "复制行为",
     category: "Terminal",
     path: ["terminal", "copy"],
     default: process.platform === "win32" ? "manual" : "select",
@@ -299,8 +299,8 @@ export const settings: Setting[] = [
     keywords: ["selection", "clipboard"],
   },
   {
-    title: "Developer tools",
-    category: "Debug",
+    title: "开发者工具",
+    category: "调试",
     path: ["debug", "devtools"],
     default: false,
     values: [false, true],
@@ -376,7 +376,7 @@ export function DialogConfig(props: { current?: string }) {
 
   return (
     <DialogSelect
-      title="Settings"
+      title="设置"
       options={options()}
       current={current}
       filterThreshold={0.7}
@@ -387,7 +387,7 @@ export function DialogConfig(props: { current?: string }) {
         {
           bind: "left",
           title: "Previous value",
-          group: "Settings",
+          group: "设置",
           run: () => void change(-1),
         },
         {

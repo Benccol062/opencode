@@ -50,14 +50,14 @@ export function DialogExperiments() {
 
   return (
     <DialogSelect
-      title="Experiments"
+      title="实验性功能"
       options={options()}
       renderFilter={experiments.length > 0}
       onMove={(option) => setSelected(option.value)}
       onSelect={(option) => void change(option.value)}
       emptyView={
         <box paddingLeft={4} paddingRight={4}>
-          <text fg={theme.text.muted}>No experiments available</text>
+          <text fg={theme.text.muted}>暂无可用的实验性功能</text>
         </box>
       }
       footerHints={experiments.length > 0 ? [{ title: "←/→", label: "change" }] : []}
@@ -67,7 +67,7 @@ export function DialogExperiments() {
               {
                 bind: "left",
                 title: "Previous value",
-                group: "Experiments",
+                group: "实验性功能",
                 run: () => void change(),
               },
               {

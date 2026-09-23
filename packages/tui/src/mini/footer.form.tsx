@@ -103,7 +103,7 @@ export function RunFormBody(props: {
     const field = externalField()
     if (!field) return "choose"
     if (state().answers[field.key] === true) return formSingle(props.request) ? "submit" : "next"
-    return state().externalReady[field.key] ? (size().width < 24 ? "done" : "acknowledge") : "open URL"
+    return state().externalReady[field.key] ? (size().width < 24 ? "done" : "acknowledge") : "打开 URL"
   })
 
   createEffect(() => {
@@ -198,7 +198,7 @@ export function RunFormBody(props: {
     const field = current()
     if (field?.type === "external") {
       if (state().answers[field.key] !== true) {
-        setState((previous) => formSetError(previous, `Acknowledge ${formLabel(field)}`))
+        setState((previous) => formSetError(previous, `请确认 ${formLabel(field)}`))
         return
       }
     } else if (field) {
@@ -325,7 +325,7 @@ export function RunFormBody(props: {
         <Show when={!unsupported() && !formSingle(props.request)}>
           <text fg={props.theme.muted} wrapMode="none" flexShrink={0}>
             {confirm()
-              ? "Review"
+              ? "预览"
               : `${Math.min(state().field + 1, props.request.fields.length)}/${props.request.fields.length}`}
           </text>
         </Show>
@@ -393,10 +393,10 @@ export function RunFormBody(props: {
                   flexShrink={0}
                 >
                   {state().answers[field().key] === true
-                    ? "Acknowledged"
+                    ? "已确认"
                     : state().externalReady[field().key]
-                      ? "Press enter to acknowledge completion"
-                      : "Press enter to open the URL"}
+                      ? "按 enter 确认完成"
+                      : "按 enter 打开 URL"}
                 </text>
               </box>
             )}
@@ -405,8 +405,8 @@ export function RunFormBody(props: {
             <box width="100%" flexDirection="column" flexShrink={0} gap={compact() ? 0 : 1}>
               <text width="100%" fg={props.theme.text} wrapMode="word" flexShrink={0}>
                 {answerField()!.description ?? formLabel(answerField()!)}
-                {answerField()!.required ? " (required)" : ""}
-                {multiple() ? " (select all that apply)" : ""}
+                {answerField()!.required ? " (必填)" : ""}
+                {multiple() ? " (可多选)" : ""}
               </text>
               <Show when={!textual() && !state().editing}>
                 <box width="100%" flexDirection="column" flexShrink={0}>
@@ -513,7 +513,7 @@ export function RunFormBody(props: {
                             : props.theme.formfieldText
                         }
                       >
-                        Type your own answer
+                        输入自定义答案
                       </text>
                     </box>
                   </Show>
@@ -531,7 +531,7 @@ export function RunFormBody(props: {
                       ? state().answers[field.key] === true
                         ? "acknowledged"
                         : "required"
-                      : formDisplay(field, state().answers[field.key]) || "(not answered)"}
+                      : formDisplay(field, state().answers[field.key]) || "(未作答)"}
                   </text>
                 )}
               </For>
@@ -596,7 +596,7 @@ export function RunFormBody(props: {
               minWidth={0}
             >
               {state().submitting
-                ? "submitting…"
+                ? "提交中…"
                 : unsupported()
                   ? "esc dismiss"
                   : confirm()

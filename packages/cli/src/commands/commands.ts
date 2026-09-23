@@ -14,11 +14,11 @@ declare const OPENCODE_CLI_NAME: string | undefined
 
 const ServerParams = {
   standalone: Flag.boolean("standalone").pipe(
-    Flag.withDescription("Run with a private server instead of the background service"),
+    Flag.withDescription("使用私有 server 而不是后台 service"),
     Flag.withDefault(false),
   ),
   server: Flag.string("server").pipe(
-    Flag.withDescription("Connect to a server URL instead of the background service"),
+    Flag.withDescription("连接到 server URL 而不是后台 service"),
     Flag.optional,
   ),
 }
@@ -36,57 +36,57 @@ const PermissionParams = {
 }
 
 const Root = Spec.make(typeof OPENCODE_CLI_NAME === "string" ? OPENCODE_CLI_NAME : "opencode", {
-  description: "OpenCode command line interface",
+  description: "OpenCode 命令行界面",
   params: {
     ...ServerParams,
     ...PermissionParams,
     directory: Argument.string("directory").pipe(
-      Argument.withDescription("Directory to start OpenCode in"),
+      Argument.withDescription("启动 OpenCode 的目录"),
       Argument.optional,
     ),
     continue: Flag.boolean("continue").pipe(
       Flag.withAlias("c"),
-      Flag.withDescription("Continue the last session"),
+      Flag.withDescription("继续上一个会话"),
       Flag.withDefault(false),
     ),
     session: Flag.string("session").pipe(
       Flag.withAlias("s"),
-      Flag.withDescription("Session ID to continue"),
+      Flag.withDescription("要继续的会话 Session ID"),
       Flag.optional,
     ),
-    prompt: Flag.string("prompt").pipe(Flag.withDescription("Prompt to use"), Flag.optional),
+    prompt: Flag.string("prompt").pipe(Flag.withDescription("要使用的提示词"), Flag.optional),
   },
   commands: [
     Spec.make("upgrade", {
-      description: "Upgrade OpenCode to the latest or a specific version",
+      description: "将 OpenCode 升级到最新版本或指定版本",
       aliases: ["update"],
       params: {
         target: Argument.string("target").pipe(
-          Argument.withDescription("Version to upgrade to (with or without a leading v)"),
+          Argument.withDescription("要升级到的版本(可带或不带前导 v)"),
           Argument.optional,
         ),
         method: Flag.choice("method", Updater.methods).pipe(
           Flag.withAlias("m"),
-          Flag.withDescription("Installation method to use"),
+          Flag.withDescription("要使用的安装方式"),
           Flag.optional,
         ),
       },
     }),
     Spec.make("uninstall", {
-      description: "Uninstall OpenCode and remove all related files",
+      description: "卸载 OpenCode 并删除所有相关文件",
       params: {
         keepConfig: Flag.boolean("keep-config").pipe(
           Flag.withAlias("c"),
-          Flag.withDescription("Keep configuration files"),
+          Flag.withDescription("保留配置文件"),
           Flag.withDefault(false),
         ),
         keepData: Flag.boolean("keep-data").pipe(
           Flag.withAlias("d"),
-          Flag.withDescription("Keep session data and snapshots"),
+          Flag.withDescription("保留会话数据和快照"),
           Flag.withDefault(false),
         ),
         dryRun: Flag.boolean("dry-run").pipe(
-          Flag.withDescription("Show what would be removed without removing"),
+          Flag.withDescription("仅显示将被删除的内容而不实际删除"),
           Flag.withDefault(false),
         ),
         force: Flag.boolean("force").pipe(
@@ -96,31 +96,31 @@ const Root = Spec.make(typeof OPENCODE_CLI_NAME === "string" ? OPENCODE_CLI_NAME
         ),
       },
     }),
-    Spec.make("acp", { description: "Start an Agent Client Protocol server" }),
+    Spec.make("acp", { description: "启动 Agent Client Protocol 服务端" }),
     Spec.make("api", {
-      description: "Make a request to the running server",
+      description: "向正在运行的 server 发起请求",
       params: {
         ...ServerParams,
         request: Argument.string("operation | method path").pipe(
-          Argument.withDescription("OpenAPI operation ID, or an HTTP method followed by a path"),
+          Argument.withDescription("OpenAPI 操作 ID，或 HTTP 方法加路径"),
           Argument.variadic({ min: 1, max: 2 }),
         ),
-        data: Flag.string("data").pipe(Flag.withAlias("d"), Flag.withDescription("Request body"), Flag.optional),
+        data: Flag.string("data").pipe(Flag.withAlias("d"), Flag.withDescription("请求体"), Flag.optional),
         header: Flag.string("header").pipe(
           Flag.withAlias("H"),
           Flag.withDescription("Request header in name:value form"),
           Flag.atMost(100),
         ),
-        param: Flag.keyValuePair("param").pipe(Flag.withDescription("OpenAPI path or query parameter"), Flag.optional),
+        param: Flag.keyValuePair("param").pipe(Flag.withDescription("OpenAPI 路径或查询参数"), Flag.optional),
       },
     }),
     Spec.make("debug", {
-      description: "Debugging and troubleshooting tools",
+      description: "调试与故障排查工具",
       commands: [
-        Spec.make("agents", { description: "List all agents" }),
-        Spec.make("config", { description: "List configuration sources" }),
+        Spec.make("agents", { description: "列出所有 agent" }),
+        Spec.make("config", { description: "列出配置来源" }),
         Spec.make("paths", {
-          description: "Show global paths (data, config, cache, state)",
+          description: "显示全局路径(data、config、cache、state)",
           params: {
             name: Argument.choice("name", [
               "db",
@@ -142,14 +142,14 @@ const Root = Spec.make(typeof OPENCODE_CLI_NAME === "string" ? OPENCODE_CLI_NAME
       ],
     }),
     Spec.make("auth", {
-      description: "manage AI providers and credentials",
+      description: "管理 AI provider 与凭证",
       commands: [
         Spec.make("list", {
-          description: "list providers and credentials",
+          description: "列出 provider 与凭证",
           params: {
             ...ServerParams,
             format: Flag.choice("format", ["default", "json"]).pipe(
-              Flag.withDescription("Output format"),
+              Flag.withDescription("输出格式"),
               Flag.withDefault("default"),
             ),
           },
@@ -162,37 +162,37 @@ const Root = Spec.make(typeof OPENCODE_CLI_NAME === "string" ? OPENCODE_CLI_NAME
               Argument.withDescription("Integration ID, name, or well-known provider URL"),
               Argument.optional,
             ),
-            method: Flag.string("method").pipe(Flag.withDescription("Authentication method ID"), Flag.optional),
+            method: Flag.string("method").pipe(Flag.withDescription("认证方式 ID"), Flag.optional),
             answer: Flag.string("answer").pipe(
-              Flag.withDescription("Provider form answer (key=value; repeat for multiple fields)"),
+              Flag.withDescription("provider 表单答案(key=value；多个字段请重复填写)"),
               Flag.atMost(100),
             ),
           },
         }),
         Spec.make("logout", {
-          description: "log out of a saved account",
+          description: "登出已保存的账号",
           params: {
             ...ServerParams,
             target: Argument.string("target").pipe(
-              Argument.withDescription("Integration ID or name"),
+              Argument.withDescription("集成 ID 或名称"),
               Argument.optional,
             ),
             credential: Argument.string("credential").pipe(
-              Argument.withDescription("Credential ID or label (opens an account picker when omitted)"),
+              Argument.withDescription("凭证 ID 或标签(省略时打开账号选择器)"),
               Argument.optional,
             ),
           },
         }),
         Spec.make("switch", {
-          description: "switch the active account for an integration",
+          description: "切换某集成的当前账号",
           params: {
             ...ServerParams,
             target: Argument.string("target").pipe(
-              Argument.withDescription("Integration ID or name"),
+              Argument.withDescription("集成 ID 或名称"),
               Argument.optional,
             ),
             credential: Argument.string("credential").pipe(
-              Argument.withDescription("Credential ID or label (opens an account picker when omitted)"),
+              Argument.withDescription("凭证 ID 或标签(省略时打开账号选择器)"),
               Argument.optional,
             ),
           },
@@ -200,47 +200,47 @@ const Root = Spec.make(typeof OPENCODE_CLI_NAME === "string" ? OPENCODE_CLI_NAME
       ],
     }),
     Spec.make("mcp", {
-      description: "Manage MCP (Model Context Protocol) servers",
+      description: "管理 MCP(Model Context Protocol)服务端",
       commands: [
-        Spec.make("list", { description: "List configured MCP servers and their status" }),
+        Spec.make("list", { description: "列出已配置的 MCP 服务端及其状态" }),
         Spec.make("add", {
-          description: "Add an MCP server to your configuration",
+          description: "向配置中添加 MCP 服务端",
           params: {
-            name: Argument.string("name").pipe(Argument.withDescription("Name of the MCP server")),
+            name: Argument.string("name").pipe(Argument.withDescription("MCP 服务端的名称")),
             command: Argument.string("command").pipe(
               Argument.withDescription("Command and arguments for a local server, passed after --"),
               Argument.variadic({ min: 0 }),
             ),
-            url: Flag.string("url").pipe(Flag.withDescription("URL for a remote MCP server"), Flag.optional),
+            url: Flag.string("url").pipe(Flag.withDescription("远程 MCP 服务端的 URL"), Flag.optional),
             header: Flag.keyValuePair("header").pipe(
-              Flag.withDescription("HTTP header for a remote server, as name=value"),
+              Flag.withDescription("远程服务端的 HTTP 头，形如 name=value"),
               Flag.optional,
             ),
             env: Flag.keyValuePair("env").pipe(
-              Flag.withDescription("Environment variable for a local server, as name=value"),
+              Flag.withDescription("本地服务端的环境变量，形如 name=value"),
               Flag.optional,
             ),
             global: Flag.boolean("global").pipe(
-              Flag.withDescription("Write to the global config instead of the project config"),
+              Flag.withDescription("写入全局配置而非项目配置"),
               Flag.withDefault(false),
             ),
           },
         }),
         Spec.make("auth", {
           description: "Authenticate with an OAuth-capable remote MCP server",
-          params: { name: Argument.string("name").pipe(Argument.withDescription("Name of the MCP server")) },
+          params: { name: Argument.string("name").pipe(Argument.withDescription("MCP 服务端的名称")) },
         }),
         Spec.make("logout", {
-          description: "Remove stored OAuth credentials for an MCP server",
-          params: { name: Argument.string("name").pipe(Argument.withDescription("Name of the MCP server")) },
+          description: "删除某 MCP 服务端已存储的 OAuth 凭证",
+          params: { name: Argument.string("name").pipe(Argument.withDescription("MCP 服务端的名称")) },
         }),
       ],
     }),
     Spec.make("plugin", {
-      description: "Manage plugins",
+      description: "管理插件",
       commands: [
         Spec.make("list", {
-          description: "List plugins",
+          description: "列出插件",
           params: {
             builtin: Flag.boolean("builtin").pipe(
               Flag.withDescription("Include built-in server plugins"),
@@ -249,88 +249,88 @@ const Root = Spec.make(typeof OPENCODE_CLI_NAME === "string" ? OPENCODE_CLI_NAME
           },
         }),
         Spec.make("add", {
-          description: "Install a plugin and add it to the global configuration",
+          description: "安装插件并添加到全局配置",
           params: {
-            package: Argument.string("package").pipe(Argument.withDescription("npm registry or Git package specifier")),
+            package: Argument.string("package").pipe(Argument.withDescription("npm registry 或 Git 包说明符")),
           },
         }),
         Spec.make("check", {
-          description: "Check package plugins for updates",
+          description: "检查包插件更新",
           params: {
             target: Argument.string("target").pipe(
-              Argument.withDescription("Configured package target"),
+              Argument.withDescription("已配置的包目标"),
               Argument.optional,
             ),
           },
         }),
         Spec.make("update", {
-          description: "Update package plugins",
+          description: "更新包插件",
           params: {
             target: Argument.string("target").pipe(
-              Argument.withDescription("Configured package target; omit to update all outdated plugins"),
+              Argument.withDescription("已配置的包目标；省略则更新所有过时插件"),
               Argument.optional,
             ),
           },
         }),
         Spec.make("remove", {
-          description: "Remove a plugin from global configuration",
+          description: "从全局配置中移除插件",
           params: {
-            package: Argument.string("package").pipe(Argument.withDescription("configured package specifier")),
+            package: Argument.string("package").pipe(Argument.withDescription("已配置的包说明符")),
           },
         }),
       ],
     }),
     Spec.make("models", {
-      description: "List all available models",
+      description: "列出所有可用模型",
       params: ServerParams,
     }),
     Spec.make("stats", {
-      description: "Show shareable usage statistics",
+      description: "显示可分享的使用统计",
       params: {
         ...ServerParams,
         days: Flag.integer("days").pipe(
           Flag.withSchema(Schema.Int.check(Schema.isGreaterThanOrEqualTo(0))),
-          Flag.withDescription("Show the last N days; 0 means today"),
+          Flag.withDescription("显示最近 N 天；0 表示今天"),
           Flag.optional,
         ),
         year: Flag.integer("year").pipe(
           Flag.withSchema(Schema.Int.check(Schema.isBetween({ minimum: 1970, maximum: 9_999 }))),
-          Flag.withDescription("Show a calendar year"),
+          Flag.withDescription("显示一个自然年"),
           Flag.optional,
         ),
-        all: Flag.boolean("all").pipe(Flag.withDescription("Show lifetime statistics"), Flag.withDefault(false)),
+        all: Flag.boolean("all").pipe(Flag.withDescription("显示累计统计"), Flag.withDefault(false)),
         project: Flag.string("project").pipe(
           Flag.withDescription('Filter by project ID, or use "." for the current project'),
           Flag.optional,
         ),
-        models: Flag.boolean("models").pipe(Flag.withDescription("Show model usage"), Flag.withDefault(false)),
-        tools: Flag.boolean("tools").pipe(Flag.withDescription("Show tool reliability"), Flag.withDefault(false)),
-        cost: Flag.boolean("cost").pipe(Flag.withDescription("Show cost and token details"), Flag.withDefault(false)),
-        full: Flag.boolean("full").pipe(Flag.withDescription("Show every detailed section"), Flag.withDefault(false)),
+        models: Flag.boolean("models").pipe(Flag.withDescription("显示模型用量"), Flag.withDefault(false)),
+        tools: Flag.boolean("tools").pipe(Flag.withDescription("显示工具可靠性"), Flag.withDefault(false)),
+        cost: Flag.boolean("cost").pipe(Flag.withDescription("显示费用与 token 明细"), Flag.withDefault(false)),
+        full: Flag.boolean("full").pipe(Flag.withDescription("显示所有明细部分"), Flag.withDefault(false)),
         limit: Flag.integer("limit").pipe(
           Flag.withSchema(Schema.Int.check(Schema.isGreaterThanOrEqualTo(1))),
-          Flag.withDescription("Number of rows in detailed sections"),
+          Flag.withDescription("明细部分的行数"),
           Flag.withDefault(5),
         ),
-        json: Flag.boolean("json").pipe(Flag.withDescription("Output statistics as JSON"), Flag.withDefault(false)),
+        json: Flag.boolean("json").pipe(Flag.withDescription("以 JSON 输出统计信息"), Flag.withDefault(false)),
       },
     }),
     Spec.make("mini", {
-      description: "Start the minimal interactive interface",
+      description: "启动极简交互界面",
       params: {
         ...ServerParams,
         continue: Flag.boolean("continue").pipe(
           Flag.withAlias("c"),
-          Flag.withDescription("Continue the last session"),
+          Flag.withDescription("继续上一个会话"),
           Flag.withDefault(false),
         ),
         session: Flag.string("session").pipe(
           Flag.withAlias("s"),
-          Flag.withDescription("Session ID to continue"),
+          Flag.withDescription("要继续的会话 Session ID"),
           Flag.optional,
         ),
         fork: Flag.boolean("fork").pipe(
-          Flag.withDescription("Fork the session when continuing"),
+          Flag.withDescription("继续时复刻会话"),
           Flag.withDefault(false),
         ),
         replay: Flag.boolean("replay").pipe(
@@ -346,31 +346,31 @@ const Root = Spec.make(typeof OPENCODE_CLI_NAME === "string" ? OPENCODE_CLI_NAME
           Flag.withDescription("Model to use in the format provider/model"),
           Flag.optional,
         ),
-        agent: Flag.string("agent").pipe(Flag.withDescription("Agent to use"), Flag.optional),
-        prompt: Flag.string("prompt").pipe(Flag.withDescription("Prompt to use"), Flag.optional),
+        agent: Flag.string("agent").pipe(Flag.withDescription("要使用的 agent"), Flag.optional),
+        prompt: Flag.string("prompt").pipe(Flag.withDescription("要使用的提示词"), Flag.optional),
         demo: Flag.boolean("demo").pipe(Flag.withDefault(false), Flag.withHidden),
       },
     }),
     Spec.make("run", {
-      description: "Run OpenCode with a message",
+      description: "使用一条消息运行 OpenCode",
       params: {
         ...ServerParams,
         message: Argument.string("message").pipe(
-          Argument.withDescription("Message to send"),
+          Argument.withDescription("要发送的消息"),
           Argument.variadic({ min: 0 }),
         ),
         continue: Flag.boolean("continue").pipe(
           Flag.withAlias("c"),
-          Flag.withDescription("Continue the last session"),
+          Flag.withDescription("继续上一个会话"),
           Flag.withDefault(false),
         ),
         session: Flag.string("session").pipe(
           Flag.withAlias("s"),
-          Flag.withDescription("Session ID to continue"),
+          Flag.withDescription("要继续的会话 Session ID"),
           Flag.optional,
         ),
         fork: Flag.boolean("fork").pipe(
-          Flag.withDescription("Fork the session before continuing"),
+          Flag.withDescription("继续前复刻会话"),
           Flag.withDefault(false),
         ),
         model: Flag.string("model").pipe(
@@ -378,23 +378,23 @@ const Root = Spec.make(typeof OPENCODE_CLI_NAME === "string" ? OPENCODE_CLI_NAME
           Flag.withDescription("Model to use in the format provider/model#variant"),
           Flag.optional,
         ),
-        agent: Flag.string("agent").pipe(Flag.withDescription("Agent to use"), Flag.optional),
+        agent: Flag.string("agent").pipe(Flag.withDescription("要使用的 agent"), Flag.optional),
         format: Flag.choice("format", ["default", "json"]).pipe(
-          Flag.withDescription("Output format"),
+          Flag.withDescription("输出格式"),
           Flag.withDefault("default"),
         ),
         file: Flag.string("file").pipe(
           Flag.withAlias("f"),
-          Flag.withDescription("File to attach to the message"),
+          Flag.withDescription("要附加到消息的文件"),
           Flag.atMost(100),
         ),
-        title: Flag.string("title").pipe(Flag.withDescription("Session title"), Flag.optional),
-        thinking: Flag.boolean("thinking").pipe(Flag.withDescription("Show thinking blocks"), Flag.withDefault(false)),
+        title: Flag.string("title").pipe(Flag.withDescription("会话标题"), Flag.optional),
+        thinking: Flag.boolean("thinking").pipe(Flag.withDescription("显示思考块"), Flag.withDefault(false)),
         ...PermissionParams,
       },
     }),
     Spec.make("session", {
-      description: "Manage sessions",
+      description: "管理会话",
       commands: [
         Spec.make("list", {
           description: "List top-level sessions in the current project, newest first",
@@ -407,39 +407,39 @@ const Root = Spec.make(typeof OPENCODE_CLI_NAME === "string" ? OPENCODE_CLI_NAME
               Flag.optional,
             ),
             format: Flag.choice("format", ["table", "json"]).pipe(
-              Flag.withDescription("Output format"),
+              Flag.withDescription("输出格式"),
               Flag.withDefault("table"),
             ),
           },
         }),
         Spec.make("delete", {
-          description: "Delete a session and its child sessions",
+          description: "删除会话及其子会话",
           params: {
             ...ServerParams,
-            sessionID: Argument.string("sessionID").pipe(Argument.withDescription("Session ID to delete")),
+            sessionID: Argument.string("sessionID").pipe(Argument.withDescription("要删除的会话 Session ID")),
           },
         }),
         Spec.make("export", {
-          description: "Export session data as JSON",
+          description: "以 JSON 导出会话数据",
           params: {
             ...ServerParams,
             session: Argument.string("session").pipe(
-              Argument.withDescription("Session ID to export"),
+              Argument.withDescription("要导出的会话 Session ID"),
               Argument.optional,
             ),
             sanitize: Flag.boolean("sanitize").pipe(
-              Flag.withDescription("Redact sensitive transcript and file data"),
+              Flag.withDescription("脱敏转录与文件中的敏感数据"),
               Flag.withDefault(false),
             ),
           },
         }),
         Spec.make("import", {
-          description: "Import session data from a JSON file or URL",
+          description: "从 JSON 文件或 URL 导入会话数据",
           params: {
             ...ServerParams,
-            file: Argument.string("file").pipe(Argument.withDescription("JSON file or URL to import")),
+            file: Argument.string("file").pipe(Argument.withDescription("要导入的 JSON 文件或 URL")),
             directory: Flag.string("directory").pipe(
-              Flag.withDescription("Directory in which to import the session"),
+              Flag.withDescription("导入会话的目标目录"),
               Flag.optional,
             ),
           },
@@ -447,41 +447,41 @@ const Root = Spec.make(typeof OPENCODE_CLI_NAME === "string" ? OPENCODE_CLI_NAME
       ],
     }),
     Spec.make("service", {
-      description: "Manage the background server",
+      description: "管理后台 server",
       commands: [
-        Spec.make("start", { description: "Start the background server" }),
-        Spec.make("restart", { description: "Restart the background server" }),
-        Spec.make("status", { description: "Show background server status" }),
-        Spec.make("stop", { description: "Stop the background server" }),
+        Spec.make("start", { description: "启动后台 server" }),
+        Spec.make("restart", { description: "重启后台 server" }),
+        Spec.make("status", { description: "显示后台 server 状态" }),
+        Spec.make("stop", { description: "停止后台 server" }),
         Spec.make("get", {
-          description: "Get service configuration",
+          description: "获取 service 配置",
           params: {
-            key: Argument.string("key").pipe(Argument.withDescription("Service setting or env"), Argument.optional),
+            key: Argument.string("key").pipe(Argument.withDescription("service 设置项或 env"), Argument.optional),
             name: Argument.string("name").pipe(
-              Argument.withDescription("Environment variable name"),
+              Argument.withDescription("环境变量名"),
               Argument.optional,
             ),
           },
         }),
         Spec.make("set", {
-          description: "Set service configuration",
+          description: "设置 service 配置",
           params: {
-            key: Argument.string("key").pipe(Argument.withDescription("Service setting or env")),
+            key: Argument.string("key").pipe(Argument.withDescription("service 设置项或 env")),
             value: Argument.string("value").pipe(
-              Argument.withDescription("Setting value or environment variable name"),
+              Argument.withDescription("设置值或环境变量名"),
             ),
             nestedValue: Argument.string("env-value").pipe(
-              Argument.withDescription("Environment variable value"),
+              Argument.withDescription("环境变量值"),
               Argument.optional,
             ),
           },
         }),
         Spec.make("unset", {
-          description: "Unset service configuration",
+          description: "取消 service 配置",
           params: {
-            key: Argument.string("key").pipe(Argument.withDescription("Service setting or env")),
+            key: Argument.string("key").pipe(Argument.withDescription("service 设置项或 env")),
             name: Argument.string("name").pipe(
-              Argument.withDescription("Environment variable name"),
+              Argument.withDescription("环境变量名"),
               Argument.optional,
             ),
           },
@@ -489,37 +489,37 @@ const Root = Spec.make(typeof OPENCODE_CLI_NAME === "string" ? OPENCODE_CLI_NAME
       ],
     }),
     Spec.make("reload", {
-      description: "Reload configuration",
+      description: "重新加载配置",
       params: {
         ...ServerParams,
       },
     }),
     Spec.make("pair", {
-      description: "Show server pairing information",
+      description: "显示 server 配对信息",
       params: {
         url: Flag.string("url").pipe(
-          Flag.withDescription("Advertise an external HTTP(S) server URL in the pairing QR code"),
+          Flag.withDescription("在配对 QR 码中公布外部 HTTP(S) server URL"),
           Flag.mapTryCatch(
             (value) => {
               const url = new URL(value)
               if (!["http:", "https:"].includes(url.protocol) || url.username || url.password || url.search || url.hash)
-                throw new Error("Invalid pairing URL")
+                throw new Error("无效的配对 URL")
               return url.href.replace(/\/+$/, "")
             },
-            () => "Expected an HTTP(S) server URL without credentials, query parameters, or a fragment",
+            () => "应为不带凭证、查询参数或片段的 HTTP(S) server URL",
           ),
           Flag.optional,
         ),
       },
     }),
     Spec.make("serve", {
-      description: "Start the v2 API and web server",
+      description: "启动 v2 API 与 web server",
       params: {
         hostname: Flag.string("hostname").pipe(Flag.optional),
         port: Flag.integer("port").pipe(Flag.optional),
         cors: Flag.string("cors").pipe(
           Flag.withSchema(Schema.NonEmptyString),
-          Flag.withDescription("Additional allowed CORS origin (repeat for multiple origins)"),
+          Flag.withDescription("额外允许的 CORS 来源(多个来源请重复填写)"),
           Flag.atLeast(0),
         ),
         service: Flag.boolean("service").pipe(Flag.withDefault(false)),

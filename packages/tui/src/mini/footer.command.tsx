@@ -417,23 +417,23 @@ export function RunCommandMenuBody(props: {
     const session: CommandEntry[] = [
       {
         action: "editor",
-        category: "Session",
-        display: "Open editor",
+        category: "会话",
+        display: "打开编辑器",
         footer: "/editor",
-        keywords: "editor compose draft external editor",
+        keywords: "编辑器 撰写 草稿 外部编辑器",
       },
       {
         action: "status",
         category: "Session",
-        display: "Show status",
-        keywords: "status activity model context usage footer",
+        display: "显示状态",
+        keywords: "状态 活动 模型 上下文 用量 页脚",
       },
       ...(props.subagents().length > 0
         ? [
             {
               action: "subagent" as const,
               category: "Session",
-              display: "View subagents",
+              display: "查看子代理",
               footer:
                 activeSubagentCount() > 0 ? `${activeSubagentCount()} active` : `${props.subagents().length} recent`,
               keywords: props
@@ -447,15 +447,15 @@ export function RunCommandMenuBody(props: {
         action: "slash",
         category: "Session",
         name: "compact",
-        display: "Compact session",
+        display: "压缩会话",
         footer: "/compact",
-        keywords: "compact session context",
+        keywords: "压缩 会话 上下文",
       },
       {
         action: "slash",
         category: "Session",
         name: "new",
-        display: "New session",
+        display: "新建会话",
         footer: "/new",
         keywords: "new session clear",
       },
@@ -463,20 +463,20 @@ export function RunCommandMenuBody(props: {
     const agent: CommandEntry[] = [
       {
         action: "agent",
-        category: "Agent",
-        display: "Switch agent",
+        category: "智能体",
+        display: "切换智能体",
       },
       {
         action: "model",
         category: "Agent",
-        display: "Switch model",
+        display: "切换模型",
       },
       ...(props.queued().length > 0
         ? [
             {
               action: "queued" as const,
               category: "Agent",
-              display: "View pending prompts",
+              display: "查看待处理提示",
               footer: `${props.queued().length} pending`,
               keywords: props
                 .queued()
@@ -488,7 +488,7 @@ export function RunCommandMenuBody(props: {
       {
         action: "variant.cycle",
         category: "Agent",
-        display: "Variant cycle",
+        display: "轮换变体",
         footer: props.variantCycle,
         keywords: "variant cycle",
       },
@@ -497,7 +497,7 @@ export function RunCommandMenuBody(props: {
             {
               action: "variant.list" as const,
               category: "Agent",
-              display: "Switch model variant",
+              display: "切换模型变体",
               keywords: `variant variants ${props.variants().join(" ")}`,
             },
           ]
@@ -508,15 +508,15 @@ export function RunCommandMenuBody(props: {
       ...agent,
       {
         action: "clear",
-        category: "System",
-        display: "Clear screen",
+        category: "系统",
+        display: "清屏",
         footer: props.clearShortcut,
-        keywords: "clear screen cls redraw",
+        keywords: "清屏 cls 重绘",
       },
       {
         action: "settings",
         category: "System",
-        display: "Settings",
+        display: "设置",
         footer: "/settings",
         keywords: "/settings settings preferences configuration",
       },
@@ -596,13 +596,13 @@ export function RunCommandMenuBody(props: {
 
   return (
     <PanelShell
-      title="Commands"
+      title="命令"
       layout={controller.layout()}
       countVisible={false}
       query={controller.query()}
       count={controller.items().length}
       total={entries().length}
-      placeholder="Search"
+      placeholder="搜索"
       theme={props.theme}
       inputRef={controller.inputRef}
       onQuery={controller.setQuery}
@@ -616,7 +616,7 @@ export function RunCommandMenuBody(props: {
         rows={controller.menu.limit}
         limit={controller.menu.limit()}
         compact={controller.layout().compact}
-        empty="No results found"
+        empty="未找到结果"
         border={false}
         paddingLeft={panelPad(props.mono)}
         paddingRight={panelPad(props.mono)}
@@ -662,7 +662,7 @@ export function RunAgentSelectBody(props: {
 
   return (
     <PanelShell
-      title="Select agent"
+      title="选择智能体"
       layout={controller.layout()}
       query={controller.query()}
       count={controller.items().length}
@@ -681,7 +681,7 @@ export function RunAgentSelectBody(props: {
         rows={controller.menu.limit}
         limit={controller.menu.limit()}
         compact={controller.layout().compact}
-        empty="No agents found"
+        empty="未找到智能体"
         border={false}
         paddingLeft={panelPad(props.mono)}
         paddingRight={panelPad(props.mono)}
@@ -713,7 +713,7 @@ export function RunSettingsBody(props: {
     },
     {
       category: "Transcript",
-      display: "Thinking",
+      display: "思考",
       footer: saving() === "thinking" ? "saving" : props.settings().thinking,
       footerTone: saving() === "thinking" ? "running" : "selection",
       keywords: `thinking reasoning ${props.settings().thinking}`,
@@ -721,7 +721,7 @@ export function RunSettingsBody(props: {
     },
     {
       category: "Transcript",
-      display: "Tools",
+      display: "工具",
       footer: saving() === "tools" ? "saving" : props.settings().tools,
       footerTone: saving() === "tools" ? "running" : "selection",
       keywords: `tools files skills activity work steps intermediate ${props.settings().tools}`,
@@ -737,7 +737,7 @@ export function RunSettingsBody(props: {
     },
     {
       category: "Transcript",
-      display: "Turn summary",
+      display: "回合摘要",
       footer: saving() === "turn_summary" ? "saving" : props.settings().turn_summary,
       footerTone: saving() === "turn_summary" ? "running" : "selection",
       keywords: `turn summary agent model duration ${props.settings().turn_summary}`,
@@ -745,7 +745,7 @@ export function RunSettingsBody(props: {
     },
     {
       category: "Terminal",
-      display: "Footer details",
+      display: "页脚详情",
       footer: saving() === "footer" ? "saving" : props.settings().footer,
       footerTone: saving() === "footer" ? "running" : "selection",
       keywords: `footer status activity model context usage ${props.settings().footer}`,
@@ -753,7 +753,7 @@ export function RunSettingsBody(props: {
     },
     {
       category: "Terminal",
-      display: "Splash",
+      display: "启动画面",
       footer: saving() === "splash" ? "saving" : props.settings().splash,
       footerTone: saving() === "splash" ? "running" : "selection",
       keywords: `splash entry exit banner ${props.settings().splash}`,
@@ -761,7 +761,7 @@ export function RunSettingsBody(props: {
     },
     {
       category: "Terminal",
-      display: "Monochrome UI",
+      display: "单色界面",
       footer: saving() === "mono" ? "saving" : props.settings().mono ? "on" : "off",
       footerTone: saving() === "mono" ? "running" : "selection",
       keywords: `mono monochrome ascii legacy compat terminal ${props.settings().mono ? "on" : "off"}`,
@@ -769,7 +769,7 @@ export function RunSettingsBody(props: {
     },
     {
       category: "Terminal",
-      display: "Work spinner",
+      display: "工作指示器",
       icon: (color) => (
         <OneCellSpinner
           animation={props.mono ? SEED_MONO : WORK_SPINNERS[props.settings().work_spinner]}
@@ -848,7 +848,7 @@ export function RunSettingsBody(props: {
         rows={controller.menu.limit}
         limit={controller.menu.limit()}
         compact={controller.layout().compact}
-        empty="No settings found"
+        empty="未找到设置"
         border={false}
         paddingLeft={panelPad(props.mono)}
         paddingRight={panelPad(props.mono)}
@@ -912,7 +912,7 @@ export function RunSubagentSelectBody(props: {
 
   return (
     <PanelShell
-      title="Select subagent"
+      title="选择子代理"
       layout={controller.layout()}
       query={controller.query()}
       count={controller.items().length}
@@ -932,7 +932,7 @@ export function RunSubagentSelectBody(props: {
         rows={controller.menu.rows}
         limit={controller.menu.limit()}
         compact={controller.layout().compact}
-        empty="No subagents found"
+        empty="未找到子代理"
         border={false}
         paddingLeft={panelPad(props.mono)}
         paddingRight={panelPad(props.mono)}
@@ -976,7 +976,7 @@ export function RunQueuedPromptSelectBody(props: {
     commands: [
       {
         id: "queued_prompt.delete",
-        title: "Delete pending prompt",
+        title: "删除待处理提示",
         group: "Prompt",
         run() {
           const item = controller.items()[controller.menu.selected()]
@@ -989,7 +989,7 @@ export function RunQueuedPromptSelectBody(props: {
 
   return (
     <PanelShell
-      title="Pending prompts"
+      title="待处理提示"
       layout={controller.layout()}
       query={controller.query()}
       count={controller.items().length}
@@ -1014,7 +1014,7 @@ export function RunQueuedPromptSelectBody(props: {
         rows={controller.menu.rows}
         limit={controller.menu.limit()}
         compact={controller.layout().compact}
-        empty="No pending prompts"
+        empty="暂无待处理提示"
         border={false}
         paddingLeft={panelPad(props.mono)}
         paddingRight={panelPad(props.mono)}
@@ -1037,7 +1037,7 @@ export function RunVariantSelectBody(props: {
   const entries = createMemo<VariantEntry[]>(() => [
     {
       category: "",
-      display: "Default",
+      display: "默认",
       footer: props.current() === undefined ? "current" : undefined,
       footerTone: "selection",
       keywords: "default",
@@ -1064,7 +1064,7 @@ export function RunVariantSelectBody(props: {
 
   return (
     <PanelShell
-      title="Select variant"
+      title="选择变体"
       layout={controller.layout()}
       query={controller.query()}
       count={controller.items().length}
@@ -1155,7 +1155,7 @@ export function RunModelSelectBody(props: {
 
   return (
     <PanelShell
-      title="Select model"
+      title="选择模型"
       layout={controller.layout()}
       query={controller.query()}
       count={controller.items().length}
@@ -1180,7 +1180,7 @@ export function RunModelSelectBody(props: {
         rows={controller.menu.limit}
         limit={controller.menu.limit()}
         compact={controller.layout().compact}
-        empty={props.providers() ? "No results found" : "Models loading"}
+        empty={props.providers() ? "No results found" : "模型加载中"}
         border={false}
         paddingLeft={panelPad(props.mono)}
         paddingRight={panelPad(props.mono)}

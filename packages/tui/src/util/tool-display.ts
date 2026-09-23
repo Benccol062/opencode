@@ -44,7 +44,7 @@ export function webSearchProviderName(provider: unknown) {
 
 export function webSearchProviderLabel(provider: unknown) {
   const name = webSearchProviderName(provider)
-  return name ? `Web Search via ${name}` : "Web Search"
+  return name ? `通过 ${name} 的 Web 搜索` : "Web Search"
 }
 
 export function toolDisplayMetadata(state: unknown): Record<string, unknown> {
