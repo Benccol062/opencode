@@ -20,7 +20,6 @@ export const UPLOAD_PATH = "/v2/upload"
 // 1. Public model input
 // ---------------------------------------------------------------------------
 
-/** Provider-native `/v2/transcript` fields. The model id selects `speech_models`. */
 export type AssemblyAITranscriptionOptions = {
   readonly keyterms_prompt?: ReadonlyArray<string>
   readonly punctuate?: boolean

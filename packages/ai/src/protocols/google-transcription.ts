@@ -42,7 +42,6 @@ export type Request = TranscriptionRequestFor<GoogleTranscriptionOptions>
 // 3. Streaming event schema
 // ---------------------------------------------------------------------------
 
-/** Protobuf JSON durations such as `"0.400s"`. */
 const Seconds = Schema.String.check(Schema.isPattern(/^\d+(\.\d+)?s$/)).pipe(
   Schema.decodeTo(Schema.Number, {
     decode: SchemaGetter.transform((value) => Number.parseFloat(value)),

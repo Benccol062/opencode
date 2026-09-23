@@ -26,7 +26,6 @@ export const PATH = "/audio/transcriptions"
 // 1. Public model input
 // ---------------------------------------------------------------------------
 
-/** Arrays become repeated `name[]` form fields; objects are sent as JSON strings. */
 export type OpenAITranscriptionOptions = {
   readonly chunking_strategy?:
     | "auto"
@@ -89,7 +88,6 @@ type Transcript = Schema.Schema.Type<typeof Transcript>
 const decodeEvent = MediaProtocol.decodeFrame(ADAPTER, NAME, Event)
 const decodeTranscript = MediaProtocol.decodeFrame(ADAPTER, NAME, Transcript)
 
-/** `generate` answers with one untyped `json`, `verbose_json`, or `diarized_json` document; `stream` with SSE events. */
 type Frame = string | { readonly document: string }
 
 // ---------------------------------------------------------------------------

@@ -43,13 +43,9 @@ export const binary = (value: Uint8Array, contentType: string, query?: Query): B
   query,
 })
 
-/** POST a body to a path under the route base URL with the route's auth and the request's `http` headers. */
 export type Send = (path: string, body: Body) => Effect.Effect<HttpClientResponse.HttpClientResponse, AIError>
 
-/**
- * Runs after unsupported-field rejection and before `body.from`, for submissions that reference media uploaded first
- * (AssemblyAI `/v2/upload`); returns the request `body.from` lowers.
- */
+/** Runs after unsupported-field rejection and before `body.from`, for providers that need an upload first. */
 export type Prepare<Request> = (request: Request, send: Send) => Effect.Effect<Request, AIError>
 
 // ---------------------------------------------------------------------------

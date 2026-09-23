@@ -15,7 +15,6 @@ const UsageMetadata = Schema.Struct({
 })
 type UsageMetadata = Schema.Schema.Type<typeof UsageMetadata>
 
-/** One `generateContent` response, or one `streamGenerateContent` chunk, whose candidate parts decode with `part`. */
 export const chunk = <const Part extends Schema.Top>(part: Part) =>
   Schema.Struct({
     candidates: Schema.optional(

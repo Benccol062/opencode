@@ -259,7 +259,7 @@ const makeTransport = <Request extends MediaRequest>(input: Composition<Request>
   const routeHttp = input.headers === undefined ? undefined : new HttpOptions({ headers: input.headers })
   const authorize = Auth.toEffect(input.auth)
   const baseURL = (path: string) => new URL(`${ProviderShared.trimBaseUrl(input.endpoint.baseURL ?? "")}${path}`)
-  /** Authorize and execute one call; `auth` is only what `Auth` added, never deployment headers. */
+  /** `auth` is only what `Auth` added, never deployment headers. */
   const send = Effect.fn("MediaRoute.send")(function* (
     call: {
       readonly method: AuthInput["method"]
@@ -340,7 +340,6 @@ const withQuery = (url: URL, query: MediaProtocol.Query | undefined) => {
   return url
 }
 
-/** Body text for auth signing, the headers adjusted for the body, and the transport body. */
 const encode = (body: MediaProtocol.Body | undefined, headers: Headers.Headers) => {
   if (body === undefined) return { text: "", headers, apply: (request: HttpClientRequest.HttpClientRequest) => request }
   if (body.type === "json") {

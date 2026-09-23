@@ -45,7 +45,6 @@ describe("Google Transcription recorded", () => {
       const finish = events.at(-1)
       if (finish === undefined || !TranscriptionEvent.is.finish(finish)) throw new Error("Expected a finish event")
 
-      // One part per speaker turn: the turns must join into the spoken sentence pair, not run together.
       expect(finish.text).toMatch(/release ship\? Yes, it shipped this morning\.$/)
       const speakers = events.filter(TranscriptionEvent.is.segment).map((event) => event.segment.speaker)
       expect(speakers).toHaveLength(2)

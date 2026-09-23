@@ -61,7 +61,6 @@ const EXTENSION_ALIASES: Readonly<Record<string, string>> = {
   "audio/x-flac": "flac",
 }
 
-/** The conventional extension for a media type, for upload APIs that detect the format from the filename. */
 export const mediaTypeExtension = (mediaType: string): string | undefined => {
   const type = mediaType.split(";", 1)[0].trim().toLowerCase()
   return EXTENSION_ALIASES[type] ?? Object.entries(EXTENSIONS).find(([, known]) => known === type)?.[0]

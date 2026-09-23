@@ -30,10 +30,7 @@ export class TranscriptionModel<Options extends TranscriptionOptions = Transcrip
     return new TranscriptionModel<Options>(input)
   }
 
-  /**
-   * Compose an inline, streaming, or queued transcription protocol with its canonical path into a model. The number of
-   * type arguments selects the kind: `<Options>`, `<Options, Frame, State>`, or `<Options, Token>`.
-   */
+  /** The number of type arguments selects the kind: `<Options>`, `<Options, Frame, State>`, or `<Options, Token>`. */
   static fromRoute<Options extends TranscriptionOptions>(
     route: TranscriptionModel.InlineRouteInput<Options>,
     input: MediaRoute.ModelInput,
@@ -118,14 +115,11 @@ export type TranscriptionTimestamps = Schema.Schema.Type<typeof TranscriptionTim
 export class TranscriptionRequest extends Schema.Class<TranscriptionRequest>("Transcription.Request")({
   model: TranscriptionModelSchema,
   audio: Media.AssetSchema,
-  /** Provider-native language code, passed through as a hint. */
   language: Schema.optional(Schema.String),
-  /** Vocabulary or context hint. */
   prompt: Schema.optional(Schema.String),
   /** Routes that cannot produce the requested granularity fail typed; routes may return more than asked. */
   timestamps: Schema.optional(TranscriptionTimestamps),
   diarize: Schema.optional(Schema.Boolean),
-  /** Expected number of speakers, a hint only. */
   speakers: Schema.optional(Schema.Int),
   providerOptions: Schema.optional(Schema.Record(Schema.String, Schema.Unknown)),
   http: Schema.optional(HttpOptions),
@@ -200,7 +194,6 @@ export const TranscriptionSegmentEvent = Schema.Struct({
   segment: TranscriptionSegment,
 }).annotate({ identifier: "Transcription.Event.Segment" })
 
-/** The complete transcript, so `generate` is just the `finish` event of the same stream. */
 export const TranscriptionFinishEvent = Schema.Struct({
   type: Schema.tag("finish"),
   ...transcriptFields,
@@ -224,7 +217,6 @@ export const TranscriptionEvent = Object.assign(transcriptionEventTagged, {
 })
 export type TranscriptionEvent = Schema.Schema.Type<typeof transcriptionEventTagged>
 
-/** A completed inline or queued response as the streaming event shape: inline routes have no partial frames. */
 export const responseEvents = (response: TranscriptionResponse): ReadonlyArray<TranscriptionEvent> => [
   TranscriptionFinishEvent.make({ ...response }),
 ]
@@ -279,7 +271,7 @@ export function stream(input: TranscriptionRequest | TranscriptionRequestInput, 
   return Stream.unwrap(requestEffect(input).pipe(Effect.map((request) => TranscriptionClient.stream(request, options))))
 }
 
-/** Submit to a queued route and return its handle; inline and streaming routes fail with `UnsupportedOperation`. */
+/** Inline and streaming routes fail with `UnsupportedOperation`. */
 export function start<const Model extends TranscriptionModel>(
   input: TranscriptionRequestInput<Model>,
 ): Effect.Effect<Generation<TranscriptionResponse>, AIError, Service>
@@ -288,7 +280,6 @@ export function start(input: TranscriptionRequest | TranscriptionRequestInput) {
   return requestEffect(input).pipe(Effect.flatMap((request) => TranscriptionClient.start(request)))
 }
 
-/** Rebuild a queued transcription handle from a persisted `Generation.token`, refreshing its status once. */
 export const resume = <Options extends TranscriptionOptions>(
   model: TranscriptionModel<Options>,
   token: unknown,

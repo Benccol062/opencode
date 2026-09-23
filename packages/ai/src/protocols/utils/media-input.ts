@@ -14,7 +14,7 @@ export const inlineBytes = (route: string, asset: Media.Asset): Effect.Effect<Ui
   )
 }
 
-/** A multipart file part, copied into the plain `ArrayBuffer` that `BlobPart` requires. */
+/** Copied because `BlobPart` requires a plain `ArrayBuffer`. */
 export const blob = (data: Uint8Array, mediaType: string) => {
   const buffer = new ArrayBuffer(data.byteLength)
   new Uint8Array(buffer).set(data)
@@ -24,7 +24,6 @@ export const blob = (data: Uint8Array, mediaType: string) => {
 const isScalar = (value: unknown): value is string | number | boolean =>
   typeof value === "string" || typeof value === "number" || typeof value === "boolean"
 
-/** Scalar and scalar-array options as URL query parameters; any other value fails typed instead of being dropped. */
 export const query = (route: string, values: Record<string, unknown>): Effect.Effect<MediaProtocol.Query, AIError> => {
   const entries = Object.entries(values).filter(([, value]) => value !== undefined)
   const invalid = entries.find(([, value]) => !isScalar(value) && !(Array.isArray(value) && value.every(isScalar)))

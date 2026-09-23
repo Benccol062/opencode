@@ -17,7 +17,6 @@ export const PATH = "/v1/listen"
 // 1. Public model input
 // ---------------------------------------------------------------------------
 
-/** Query parameters of `/v1/listen`; arrays become repeated parameters. `smart_format` defaults to `true`. */
 export type DeepgramTranscriptionOptions = {
   readonly smart_format?: boolean
   readonly punctuate?: boolean

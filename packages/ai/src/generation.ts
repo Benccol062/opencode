@@ -52,7 +52,6 @@ export const ProgressEvent = Schema.Struct({
   progress: Schema.optional(Schema.Number),
 }).annotate({ identifier: "Generation.Event.Progress" })
 
-/** A non-terminal status observation, shared by every queued modality's event union. */
 export type Observation = Schema.Schema.Type<typeof QueuedEvent> | Schema.Schema.Type<typeof ProgressEvent>
 
 export type Event = Observation | { readonly type: "generation-finished"; readonly id: string; readonly status: Status }
@@ -181,7 +180,6 @@ export class Generation<Response> {
   }
 }
 
-/** Status observations until the first terminal one, then the fetched result expanded into modality events. */
 export const resultEvents = <Response, A>(
   generation: Generation<Response>,
   expand: (response: Response) => ReadonlyArray<A>,
