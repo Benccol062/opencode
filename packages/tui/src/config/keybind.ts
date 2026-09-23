@@ -86,7 +86,7 @@ export const Definitions = {
   "diff.switch_source": keybind("d", "Switch diff viewer source"),
   "diff.toggle_view": keybind("v", "Toggle diff viewer split or unified view"),
   "diff.mark_reviewed": keybind("m", "Toggle selected diff file reviewed"),
-  "diff.help": keybind("?,shift+?,shift+/", "Show more diff viewer shortcuts"),
+  "diff.help": keybind("?,shift+?,shift+/", "显示更多 diff 查看器快捷键"),
 
   "prompt.editor": keybind("<leader>e", "Open external editor"),
   "theme.switch": keybind("none", "List available themes"),

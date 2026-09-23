@@ -141,7 +141,7 @@ const source = {
   "ui.messageNav.newMessage": "New message",
 
   "ui.promptInput.noMatchingItems": "No matching items",
-  "ui.promptInput.commands": "Commands",
+  "ui.promptInput.commands": "命令",
   "ui.promptInput.dropFiles": "Drop files to add",
   "ui.promptInput.dropFiles.image": "Drop images or files to add",
   "ui.promptInput.dropFiles.pdf": "Drop PDFs or files to add",
@@ -150,8 +150,8 @@ const source = {
   "ui.promptInput.cancelUpload": "Cancel upload",
   "ui.promptInput.uploading": "{{percent}}%",
   "ui.promptInput.label": "Prompt",
-  "ui.promptInput.placeholder.shell": "Enter shell command…",
-  "ui.promptInput.placeholder.normal": "Ask anything, {{slash}} for commands, {{at}} for context…",
+  "ui.promptInput.placeholder.shell": "输入 shell 命令…",
+  "ui.promptInput.placeholder.normal": "随便问点什么，{{slash}} 查看命令，{{at}} 添加上下文…",
   "ui.promptInput.placeholder.followUp": "Add follow-up, {{slash}} for commands, {{at}} for context…",
   "ui.promptInput.add": "Add images and files",
   "ui.promptInput.attachments": "Images and files",
@@ -223,7 +223,7 @@ const source = {
   "ui.common.close": "Close",
   "ui.common.next": "Next",
   "ui.common.submit": "Submit",
-  "ui.common.showMore": "Show more",
+  "ui.common.showMore": "显示更多",
   "ui.common.moreCount.one": "+{{count}} more",
   "ui.common.moreCount.other": "+{{count}} more",
 

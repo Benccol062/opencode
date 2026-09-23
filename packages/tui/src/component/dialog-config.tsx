@@ -28,7 +28,7 @@ export const settings: Setting[] = [
   },
   {
     title: "颜色模式",
-    category: "Appearance",
+    category: "外观",
     path: ["theme", "mode"],
     default: "system",
     values: ["system", "dark", "light"],
@@ -36,7 +36,7 @@ export const settings: Setting[] = [
   },
   {
     title: "动画",
-    category: "Appearance",
+    category: "外观",
     path: ["animations"],
     default: false,
     values: [false, true],
@@ -53,7 +53,7 @@ export const settings: Setting[] = [
   },
   {
     title: "滚动条",
-    category: "Session",
+    category: "会话",
     path: ["session", "scrollbar"],
     default: false,
     values: [false, true],
@@ -62,7 +62,7 @@ export const settings: Setting[] = [
   },
   {
     title: "思考过程",
-    category: "Session",
+    category: "会话",
     path: ["session", "thinking"],
     default: "hide",
     values: ["hide", "show"],
@@ -70,7 +70,7 @@ export const settings: Setting[] = [
   },
   {
     title: "Markdown",
-    category: "Session",
+    category: "会话",
     path: ["session", "markdown"],
     default: "rendered",
     values: ["source", "rendered"],
@@ -78,7 +78,7 @@ export const settings: Setting[] = [
   },
   {
     title: "工具分组",
-    category: "Session",
+    category: "会话",
     path: ["session", "grouping"],
     default: "auto",
     values: ["none", "auto"],
@@ -86,7 +86,7 @@ export const settings: Setting[] = [
   },
   {
     title: "会话记录图片",
-    category: "Session",
+    category: "会话",
     path: ["session", "image_preview"],
     default: false,
     values: [false, true],
@@ -95,7 +95,7 @@ export const settings: Setting[] = [
   },
   {
     title: "TPS",
-    category: "Session",
+    category: "会话",
     path: ["session", "tps"],
     default: true,
     values: [false, true],
@@ -104,7 +104,7 @@ export const settings: Setting[] = [
   },
   {
     title: "新会话位置",
-    category: "Session",
+    category: "会话",
     path: ["session", "new_location"],
     default: "launch",
     values: ["launch", "inherit"],
@@ -113,7 +113,7 @@ export const settings: Setting[] = [
   },
   {
     title: "权限",
-    category: "Session",
+    category: "会话",
     path: ["session", "permissions"],
     default: "prompt",
     values: ["prompt", "autoaccept"],
@@ -153,7 +153,7 @@ export const settings: Setting[] = [
     keywords: ["tab numbers", "number mode", "status icons"],
   },
   {
-    title: "Layout",
+    title: "布局",
     category: "差异对比",
     path: ["diffs", "view"],
     default: "auto",
@@ -162,7 +162,7 @@ export const settings: Setting[] = [
   },
   {
     title: "自动换行",
-    category: "Diffs",
+    category: "差异对比",
     path: ["diffs", "wrap"],
     default: "word",
     values: ["none", "word"],
@@ -170,7 +170,7 @@ export const settings: Setting[] = [
   },
   {
     title: "文件树",
-    category: "Diffs",
+    category: "差异对比",
     path: ["diffs", "tree"],
     default: true,
     values: [false, true],
@@ -179,7 +179,7 @@ export const settings: Setting[] = [
   },
   {
     title: "单个补丁",
-    category: "Diffs",
+    category: "差异对比",
     path: ["diffs", "single"],
     default: false,
     values: [false, true],
@@ -199,7 +199,7 @@ export const settings: Setting[] = [
   },
   {
     title: "滚动加速",
-    category: "Input",
+    category: "输入",
     path: ["scroll", "acceleration"],
     default: false,
     values: [false, true],
@@ -208,7 +208,7 @@ export const settings: Setting[] = [
   },
   {
     title: "鼠标",
-    category: "Input",
+    category: "输入",
     path: ["mouse"],
     default: true,
     values: [false, true],
@@ -217,7 +217,7 @@ export const settings: Setting[] = [
   },
   {
     title: "编辑器上下文",
-    category: "Input",
+    category: "输入",
     path: ["prompt", "editor"],
     default: true,
     values: [false, true],
@@ -226,7 +226,7 @@ export const settings: Setting[] = [
   },
   {
     title: "大段粘贴",
-    category: "Input",
+    category: "输入",
     path: ["prompt", "paste"],
     default: "compact",
     values: ["compact", "full"],
@@ -234,7 +234,7 @@ export const settings: Setting[] = [
   },
   {
     title: "图片预览",
-    category: "Input",
+    category: "输入",
     path: ["prompt", "image_preview"],
     default: false,
     values: [false, true],
@@ -243,7 +243,7 @@ export const settings: Setting[] = [
   },
   {
     title: "前导键超时",
-    category: "Input",
+    category: "输入",
     path: ["leader", "timeout"],
     default: 2000,
     step: 250,
@@ -263,7 +263,7 @@ export const settings: Setting[] = [
   },
   {
     title: "提示音",
-    category: "Alerts",
+    category: "提醒",
     path: ["attention", "sound"],
     default: false,
     values: [false, true],
@@ -272,7 +272,7 @@ export const settings: Setting[] = [
   },
   {
     title: "音量",
-    category: "Alerts",
+    category: "提醒",
     path: ["attention", "volume"],
     default: 0.4,
     step: 0.1,
@@ -292,7 +292,7 @@ export const settings: Setting[] = [
   },
   {
     title: "复制行为",
-    category: "Terminal",
+    category: "终端",
     path: ["terminal", "copy"],
     default: process.platform === "win32" ? "manual" : "select",
     values: ["manual", "select"],
@@ -393,7 +393,7 @@ export function DialogConfig(props: { current?: string }) {
         {
           bind: "right",
           title: "Next value",
-          group: "Settings",
+          group: "设置",
           run: () => void change(1),
         },
       ]}

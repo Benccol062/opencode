@@ -144,7 +144,7 @@ export function DialogModel(props: { providerID?: string }) {
       actions={[
         {
           command: "model.dialog.provider",
-          title: connected() ? "Connect an integration" : "View all integrations",
+          title: connected() ? "连接集成" : "View all integrations",
           selection: "none",
           onTrigger() {
             dialog.replace(() => (
@@ -156,7 +156,7 @@ export function DialogModel(props: { providerID?: string }) {
         },
         {
           command: "model.dialog.favorite",
-          title: "Favorite",
+          title: "收藏",
           hidden: !connected(),
           onTrigger: (option) => {
             local.model.toggleFavorite(option.value as { providerID: string; modelID: string })

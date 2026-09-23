@@ -370,7 +370,7 @@ export function DialogOpen(props: { sessions: SessionInfo[]; onLoad: (sessions: 
                 ? [
                     {
                       bind: "right",
-                      title: "Show project worktrees",
+                      title: "显示项目工作树",
                       group: "Dialog",
                       run: () => {
                         const target = select?.selected?.value
@@ -392,11 +392,11 @@ export function DialogOpen(props: { sessions: SessionInfo[]; onLoad: (sessions: 
                 ? [
                     {
                       bind: "left",
-                      title: "Return to projects",
+                      title: "返回项目",
                       group: "Dialog",
                       run: back,
                     },
-                    { bind: "ctrl+n", title: "New worktree", group: "Dialog", run: newWorktree },
+                    { bind: "ctrl+n", title: "新建工作树", group: "Dialog", run: newWorktree },
                   ]
                 : []),
             ]}
@@ -406,7 +406,7 @@ export function DialogOpen(props: { sessions: SessionInfo[]; onLoad: (sessions: 
                 <text fg={theme.text.muted}>
                   {projectID()
                     ? worktrees.loading
-                      ? "Loading worktrees…"
+                      ? "正在加载工作树…"
                       : "无匹配的工作树"
                     : recent.loading || projects.loading || matched.loading
                       ? "正在搜索会话和项目…"
@@ -433,7 +433,7 @@ export function DialogOpen(props: { sessions: SessionInfo[]; onLoad: (sessions: 
       >
         <DialogPrompt
           size="large"
-          title={`${projectName(data.project.get(projectID()!)) ?? "Project"} / New worktree`}
+          title={`${projectName(data.project.get(projectID()!)) ?? "Project"} / 新建工作树`}
           placeholder="工作树名称(可选)"
           description={() => <text fg={theme.text.muted}>Leave blank for a random name.</text>}
           busy={creating()}

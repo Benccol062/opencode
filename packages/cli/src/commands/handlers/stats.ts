@@ -47,7 +47,7 @@ const handler = Effect.fn("cli.stats")(function* (input: Runtime.Input<typeof Co
     ? JSON.stringify(stats, null, 2)
     : renderStats(stats, {
         label: range.label,
-        scope: project === undefined ? "all projects" : project === "." ? "current project" : "selected project",
+        scope: project === undefined ? "所有项目" : project === "." ? "当前项目" : "所选项目",
         models: input.models || input.full,
         tools: input.tools || input.full,
         cost: input.cost || input.full,
@@ -74,7 +74,7 @@ export function request<A>(url: string, run: (signal: AbortSignal) => Promise<A>
     try: () => run(AbortSignal.timeout(30_000)),
     catch: (cause) =>
       cause instanceof ClientError && cause.reason === "Transport"
-        ? new Error(`Could not reach server at ${url}`, { cause })
+        ? new Error(`无法访问服务器 ${url}`, { cause })
         : cause,
   })
 }
@@ -99,26 +99,26 @@ export function renderStats(stats: SessionStatsInfo, options: RenderOptions) {
   const toolRate = !toolTotals || terminalTools === 0 ? undefined : (toolTotals.succeeded / terminalTools) * 100
   const primary = `1;${colors.primary}`
   const sessionLine = [
-    metricCount(stats.sessions, "session", options.color),
-    stats.subagents > 0 ? metricCount(stats.subagents, "subagent", options.color) : undefined,
+    metricCount(stats.sessions, "会话", options.color),
+    stats.subagents > 0 ? metricCount(stats.subagents, "子代理", options.color) : undefined,
   ]
     .filter((value) => value !== undefined)
     .join(" · ")
   const toolSummary = !toolTotals
-    ? "tool stats unavailable"
+    ? "工具统计不可用"
     : toolRate === undefined
-      ? "no tool calls"
+      ? "无工具调用"
       : `${style(formatPercent(toolRate), primary, options.color)} tool success`
   const details = options.models || options.tools || options.cost
   const empty = stats.sessions === 0 && stats.prompts === 0 && stats.steps === 0
-  const heading = `${style("opencode stats", primary, options.color)} ${style(`· ${options.label} · ${options.scope}`, "2", options.color)}`
+  const heading = `${style("opencode 统计", primary, options.color)} ${style(`· ${options.label} · ${options.scope}`, "2", options.color)}`
   const lines = details
     ? [style(`${options.label} · ${options.scope}`, "2", options.color)]
     : empty
       ? [
           heading,
           "",
-          style("no activity in this range", "2", options.color),
+          style("该范围内无活动", "2", options.color),
           "",
           style("opencode.ai", "2", options.color),
         ]
@@ -128,8 +128,8 @@ export function renderStats(stats: SessionStatsInfo, options: RenderOptions) {
           ...renderActivity(stats.activity, stats.range.from, stats.range.to, options.color, options.width),
           "",
           sessionLine,
-          `${metricCount(stats.prompts, "prompt", options.color)} · ${metricCount(stats.steps, "step", options.color)} · ${metricCount(totalTokens, "token", options.color)}`,
-          `${toolSummary} · ${metricCount(stats.activeDays, "active day", options.color)} · best streak ${style(stats.streak.toString(), primary, options.color)} day${stats.streak === 1 ? "" : "s"}`,
+          `${metricCount(stats.prompts, "提示", options.color)} · ${metricCount(stats.steps, "步骤", options.color)} · ${metricCount(totalTokens, "令牌", options.color)}`,
+          `${toolSummary} · ${metricCount(stats.activeDays, "活跃天数", options.color)} · best streak ${style(stats.streak.toString(), primary, options.color)} day${stats.streak === 1 ? "" : "s"}`,
           "",
           style("opencode.ai", "2", options.color),
         ]
@@ -144,21 +144,21 @@ export function renderStats(stats: SessionStatsInfo, options: RenderOptions) {
 function statsRange(input: { days?: number; year?: number; all: boolean }) {
   const now = new Date()
   const to = now.getTime() + 1
-  if (input.all) return { from: undefined, to, label: "all time" }
+  if (input.all) return { from: undefined, to, label: "全部时间" }
   if (input.days !== undefined) {
     const from = new Date(now.getFullYear(), now.getMonth(), now.getDate())
     from.setDate(from.getDate() - Math.max(0, input.days - 1))
     return {
       from: from.getTime(),
       to,
-      label: input.days === 0 || input.days === 1 ? "today" : `last ${input.days} days`,
+      label: input.days === 0 || input.days === 1 ? "今天" : `last ${input.days} days`,
     }
   }
   const year = input.year ?? now.getFullYear()
   return {
     from: new Date(year, 0, 1).getTime(),
     to: year === now.getFullYear() ? to : new Date(year + 1, 0, 1).getTime(),
-    label: year === now.getFullYear() ? `${year} so far` : year.toString(),
+    label: year === now.getFullYear() ? `${year} 年至今` : year.toString(),
   }
 }
 
@@ -176,10 +176,10 @@ function renderActivity(
     )
     .join("")
     .trimEnd()
-  const weekdays = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
+  const weekdays = ["一", "二", "三", "四", "五", "六", "日"]
   return [
     style(
-      calendar.clipped ? `activity · last ${calendar.weeks.length} weeks` : "activity",
+      calendar.clipped ? `活跃度 · last ${calendar.weeks.length} weeks` : "活跃度",
       `1;${colors.primary}`,
       color,
     ),
@@ -189,7 +189,7 @@ function renderActivity(
       ...(day === weekdays.length - 1 ? [] : [""]),
     ]),
     "",
-    `   ${style("less", "2", color)} ${[0, 1, 2, 3, 4].map((level) => paintActivity(level, color)).join("")} ${style("more", "2", color)}`,
+    `   ${style("少", "2", color)} ${[0, 1, 2, 3, 4].map((level) => paintActivity(level, color)).join("")} ${style("多", "2", color)}`,
   ]
 }
 
@@ -197,24 +197,24 @@ function renderCost(stats: SessionStatsInfo) {
   const input = stats.tokens.input + stats.tokens.cache.read + stats.tokens.cache.write
   const cached = input === 0 ? 0 : (stats.tokens.cache.read / input) * 100
   return [
-    "COST & TOKENS",
-    row("cost", `$${stats.cost.toFixed(2)}`),
-    row("input", formatNumber(stats.tokens.input)),
-    row("output", formatNumber(stats.tokens.output)),
-    row("reasoning", formatNumber(stats.tokens.reasoning)),
-    row("cache read", formatNumber(stats.tokens.cache.read)),
-    row("cache write", formatNumber(stats.tokens.cache.write)),
-    row("cached input", formatPercent(cached)),
+    "费用与令牌",
+    row("费用", `$${stats.cost.toFixed(2)}`),
+    row("输入", formatNumber(stats.tokens.input)),
+    row("输出", formatNumber(stats.tokens.output)),
+    row("推理", formatNumber(stats.tokens.reasoning)),
+    row("缓存读取", formatNumber(stats.tokens.cache.read)),
+    row("缓存写入", formatNumber(stats.tokens.cache.write)),
+    row("缓存输入", formatPercent(cached)),
   ]
 }
 
 function renderModels(stats: SessionStatsInfo, limit: number, width: number) {
-  if (stats.models.length === 0) return ["MODELS", "  no model usage"]
+  if (stats.models.length === 0) return ["模型", "  no model usage"]
   const models = stats.models.slice(0, limit)
-  const more = stats.models.length - models.length
+  const 多 = stats.models.length - models.length
   if (width < 68)
     return [
-      "MODELS",
+      "模型",
       ...models.flatMap((item) => [
         truncate(
           `${item.model.providerID}/${item.model.id}${item.model.variant ? `#${item.model.variant}` : ""}`,
@@ -225,8 +225,8 @@ function renderModels(stats: SessionStatsInfo, limit: number, width: number) {
       ...(more > 0 ? ["", `+${more.toLocaleString("en-US")} more model${more === 1 ? "" : "s"}`] : []),
     ]
   return [
-    "MODELS",
-    tableHeader("model", "tokens", "steps", "cost"),
+    "模型",
+    tableHeader("模型", "令牌", "步骤", "费用"),
     ...models.map((item) =>
       tableRow(
         `${item.model.providerID}/${item.model.id}${item.model.variant ? `#${item.model.variant}` : ""}`,
@@ -240,28 +240,28 @@ function renderModels(stats: SessionStatsInfo, limit: number, width: number) {
 }
 
 function renderTools(stats: SessionStatsInfo, limit: number, width: number) {
-  if (stats.tools.mode !== "detail") return ["TOOL RELIABILITY", "  tool details unavailable"]
-  if (stats.tools.usage.length === 0) return ["TOOL RELIABILITY", "  no tool calls"]
+  if (stats.tools.mode !== "detail") return ["工具可靠性", "  tool details unavailable"]
+  if (stats.tools.usage.length === 0) return ["工具可靠性", "  no tool calls"]
   const tools = stats.tools.usage.slice(0, limit)
   const more = stats.tools.usage.length - tools.length
   if (width < 68)
     return [
-      "TOOL RELIABILITY",
+      "工具可靠性",
       ...tools.flatMap((tool) => {
         const terminal = tool.succeeded + tool.failed
         return [
           truncate(tool.name, width),
-          `  ${formatNumber(tool.calls)} calls · ${terminal === 0 ? "-" : formatPercent((tool.failed / terminal) * 100)} error · ${tool.durationP50 === undefined ? "-" : formatDuration(tool.durationP50)} p50`,
+          `  ${formatNumber(tool.calls)} calls · ${terminal === 0 ? "-" : formatPercent((tool.failed / terminal) * 100)} 错误 · ${tool.durationP50 === undefined ? "-" : formatDuration(tool.durationP50)} p50`,
         ]
       }),
       "",
-      `${formatNumber(stats.tools.totals.succeeded + stats.tools.totals.failed)} finished calls · ${formatNumber(stats.tools.totals.unfinished)} unfinished`,
+      `${formatNumber(stats.tools.totals.succeeded + stats.tools.totals.failed)} finished 调用 · ${formatNumber(stats.tools.totals.unfinished)} unfinished`,
       ...(more > 0 ? [`+${more.toLocaleString("en-US")} more tool${more === 1 ? "" : "s"}`] : []),
     ]
   return [
-    "TOOL RELIABILITY",
-    tableHeader("tool", "calls", "error", "p50"),
-    ...tools.map((tool) => {
+    "工具可靠性",
+    tableHeader("工具", "调用", "错误", "p50"),
+    ...tools.map((工具) => {
       const terminal = tool.succeeded + tool.failed
       return tableRow(
         tool.name,

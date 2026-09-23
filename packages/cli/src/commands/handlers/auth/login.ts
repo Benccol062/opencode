@@ -49,7 +49,7 @@ const login = Effect.fn("cli.auth.login.run")(function* (input: {
 }) {
   if (!input.target)
     yield* requireInteractive("Pass an integration ID or name when running without an interactive terminal")
-  intro("Connect an integration")
+  intro("连接集成")
   const client = yield* createClient({ server: input.server, standalone: input.standalone })
   const integration = yield* findIntegration(client, input.target)
   const methods = connectMethods(integration)

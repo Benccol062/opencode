@@ -192,7 +192,7 @@ export function DialogWorkspaces(props: DialogWorkspacesProps) {
           directory: item.location,
           subdirectory: item.location !== item.root.directory,
         } as const,
-        category: item.root.directory === current ? "Current" : "Other",
+        category: item.root.directory === current ? "当前" : "Other",
         titleWidth,
         truncateTitle: "left" as const,
       }
@@ -258,7 +258,7 @@ export function DialogWorkspaces(props: DialogWorkspacesProps) {
           .status({ location: { directory: selected.directory } })
           .catch(() => undefined)
         const choice = await DialogWorkspaceFileChanges.show(dialog, status?.data ?? [], {
-          title: "Delete worktree?",
+          title: "删除工作树？",
           message: "This worktree has file changes. Do you want to delete it anyway?",
         })
         if (choice !== "yes") {
@@ -278,7 +278,7 @@ export function DialogWorkspaces(props: DialogWorkspacesProps) {
         if (forcedError) {
           toast.show({
             variant: "error",
-            title: "Failed to delete worktree",
+            title: "删除工作树失败",
             message: errorMessage(forcedError),
           })
           reopen()
@@ -292,7 +292,7 @@ export function DialogWorkspaces(props: DialogWorkspacesProps) {
       }
       toast.show({
         variant: "error",
-        title: "Failed to delete worktree",
+        title: "删除工作树失败",
         message: errorMessage(error),
       })
       return
@@ -324,11 +324,11 @@ export function DialogWorkspaces(props: DialogWorkspacesProps) {
   return (
     <box minHeight={showError() ? 5 : fullHeight()}>
       <DialogSelect
-        title="Worktrees"
+        title="工作树"
         titleView={
           <box flexDirection="row" gap={1}>
             <text fg={theme.text.base} attributes={TextAttributes.BOLD}>
-              Worktrees
+              工作树
             </text>
             <Show when={working() || directories.loading || loadedProject.loading}>
               <Spinner />
@@ -342,24 +342,24 @@ export function DialogWorkspaces(props: DialogWorkspacesProps) {
           showError() ? (
             <box paddingLeft={4} paddingRight={4}>
               <text fg={theme.text.feedback.error.base} attributes={TextAttributes.BOLD}>
-                Could not load worktrees
+                无法加载工作树
               </text>
               <text fg={theme.text.muted}>{errorMessage(loadError())}</text>
               <text fg={theme.text.muted}>Close and reopen Worktrees to try again.</text>
             </box>
           ) : directories.loading || loadedProject.loading ? (
             <box paddingLeft={4} paddingRight={4}>
-              <text fg={theme.text.muted}>Loading worktrees…</text>
+              <text fg={theme.text.muted}>正在加载工作树…</text>
             </box>
           ) : (
             <box paddingLeft={4} paddingRight={4}>
-              <text fg={theme.text.muted}>No worktrees available</text>
+              <text fg={theme.text.muted}>暂无可用工作树</text>
             </box>
           )
         }
         noMatchView={
           <box paddingLeft={4} paddingRight={4}>
-            <text fg={theme.text.muted}>No worktrees found</text>
+            <text fg={theme.text.muted}>未找到工作树</text>
           </box>
         }
         locked={showError() || directories.loading || loadedProject.loading || Boolean(removing())}

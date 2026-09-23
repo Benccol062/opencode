@@ -79,7 +79,7 @@ export function SidebarMcp(props: { context: Plugin.Context; sessionID: string }
                     <Match when={item.status.status === "connected"}>Connected</Match>
                     <Match when={item.status.status === "pending"}>Connecting</Match>
                     <Match when={item.status.status === "failed"}>Error</Match>
-                    <Match when={item.status.status === "disabled"}>Disabled</Match>
+                    <Match when={item.status.status === "disabled"}>已禁用</Match>
                     <Match when={item.status.status === "needs_auth"}>Sign in</Match>
                   </Switch>
                 </text>

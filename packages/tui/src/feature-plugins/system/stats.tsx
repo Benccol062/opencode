@@ -90,7 +90,7 @@ export function StatsPoster(props: { stats: SessionStatsInfo }) {
             </For>
           </box>
         </Show>
-        <text fg={theme.text.muted}>TOKENS</text>
+        <text fg={theme.text.muted}>令牌</text>
       </box>
       <box alignItems="center">
         <text fg={theme.text.muted}>
@@ -99,7 +99,7 @@ export function StatsPoster(props: { stats: SessionStatsInfo }) {
               .months.map((month) => (month.label.length <= month.span * 2 ? month.label : "").padEnd(month.span * 2))
               .join("")}
         </text>
-        <For each={["M", "T", "W", "T", "F", "S", "S"]}>
+        <For each={["一", "二", "三", "四", "五", "六", "日"]}>
           {(day, index) => (
             <box flexDirection="row" height={1}>
               <text fg={theme.text.muted}>{day + "   "}</text>
@@ -149,7 +149,7 @@ function StatsPage(props: { context: Plugin.Context; onClose: () => void }) {
   const theme = useTheme()
 
   props.context.keymap.layer(() => ({
-    commands: [{ bind: "escape", title: "back", run: props.onClose }],
+    commands: [{ bind: "escape", title: "返回", run: props.onClose }],
   }))
 
   return (
@@ -170,7 +170,7 @@ function StatsPage(props: { context: Plugin.Context; onClose: () => void }) {
             <text fg={theme.text.feedback.error.base}>Could not load stats. Reopen /stats to try again.</text>
           }
         >
-          <Show when={result()} fallback={<text fg={theme.text.muted}>Gathering your stats…</text>}>
+          <Show when={result()} fallback={<text fg={theme.text.muted}>正在收集统计信息…</text>}>
             {(value) => <StatsPoster stats={value()} />}
           </Show>
         </Show>
@@ -195,8 +195,8 @@ export default Plugin.define({
           commands: [
             {
               id: "stats.open",
-              title: "Usage statistics",
-              group: "System",
+              title: "使用情况统计",
+              group: "系统",
               slash: { name: "stats" },
               palette: true,
               run() {

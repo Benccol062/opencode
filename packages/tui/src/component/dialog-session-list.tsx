@@ -198,10 +198,10 @@ export function DialogSessionList() {
       titleView={
         <box flexDirection="row">
           <text fg={theme.text.base} attributes={TextAttributes.BOLD}>
-            Sessions
+            会话
           </text>
           <Show when={!allProjects() && currentProjectName()}>
-            <text fg={theme.text.muted}> for {currentProjectName()}</text>
+            <text fg={theme.text.muted}> （{currentProjectName()}）</text>
           </Show>
         </box>
       }
@@ -215,7 +215,7 @@ export function DialogSessionList() {
       bindings={[
         {
           bind: "ctrl+a",
-          title: allProjects() ? "Show current directory sessions" : "Show all project sessions",
+          title: allProjects() ? "显示当前目录会话" : "Show all project sessions",
           group: "Dialog",
           run: () => {
             void updatePrefs((draft) => {

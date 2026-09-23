@@ -424,7 +424,7 @@ export function RunCommandMenuBody(props: {
       },
       {
         action: "status",
-        category: "Session",
+        category: "会话",
         display: "显示状态",
         keywords: "状态 活动 模型 上下文 用量 页脚",
       },
@@ -432,10 +432,10 @@ export function RunCommandMenuBody(props: {
         ? [
             {
               action: "subagent" as const,
-              category: "Session",
+              category: "会话",
               display: "查看子代理",
               footer:
-                activeSubagentCount() > 0 ? `${activeSubagentCount()} active` : `${props.subagents().length} recent`,
+                activeSubagentCount() > 0 ? `${activeSubagentCount()} 个运行中` : `${props.subagents().length} recent`,
               keywords: props
                 .subagents()
                 .map((item) => `${item.label} ${item.description} ${item.title ?? ""}`)
@@ -468,14 +468,14 @@ export function RunCommandMenuBody(props: {
       },
       {
         action: "model",
-        category: "Agent",
+        category: "智能体",
         display: "切换模型",
       },
       ...(props.queued().length > 0
         ? [
             {
               action: "queued" as const,
-              category: "Agent",
+              category: "智能体",
               display: "查看待处理提示",
               footer: `${props.queued().length} pending`,
               keywords: props
@@ -515,12 +515,12 @@ export function RunCommandMenuBody(props: {
       },
       {
         action: "settings",
-        category: "System",
+        category: "系统",
         display: "设置",
         footer: "/settings",
         keywords: "/settings settings preferences configuration",
       },
-      { action: "exit", category: "System", display: "Exit", footer: "/exit", keywords: "/exit exit" },
+      { action: "exit", category: "系统", display: "Exit", footer: "/exit", keywords: "/exit exit" },
     ]
   })
   const pick = (item: CommandEntry) => {

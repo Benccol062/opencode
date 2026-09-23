@@ -50,7 +50,7 @@ export default Plugin.define({
           commands: [
             {
               id: "session.aside",
-              title: "Ask a side question",
+              title: "问个题外话",
               description: "One-shot answer from the session's context without adding to the conversation",
               group: "Session",
               palette: true,
@@ -62,7 +62,7 @@ export default Plugin.define({
                   return
                 }
                 const question =
-                  input?.trim() || (await context.ui.dialog.prompt({ title: "/btw", placeholder: "Ask anything" }))
+                  input?.trim() || (await context.ui.dialog.prompt({ title: "/btw", placeholder: "随便问点什么" }))
                 if (!question) return
                 setPending((count) => count + 1)
                 await context.client.session
