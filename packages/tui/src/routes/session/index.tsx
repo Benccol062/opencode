@@ -129,7 +129,7 @@ const BACKGROUND_TOOL_HINT_DELAY = 3_000
 const TRANSCRIPT_TAIL_ROWS = 40
 const TRANSCRIPT_BACKFILL_CHUNK = 60
 
-export function 会话(props: {
+export function Session(props: {
   scrollRef?: (scroll: ScrollBoxRenderable | undefined) => void
   verticalTabsWidth: number
   promptMuted?: boolean

@@ -58,7 +58,9 @@ const processEffect = Effect.fnUntraced(function* (options: Options) {
       const serviceOptions = options.mode === "service" ? yield* ServiceConfig.options() : undefined
       const config = options.mode === "service" ? yield* ServiceConfig.read() : {}
       const hostname = options.hostname ?? config.hostname ?? "127.0.0.1"
-      const port = options.port ?? config.port ?? (options.mode === "service" ? ServiceConfig.defaultPort() : undefined)
+      // 汉化版：默认端口走 channel 哈希，与官方版错开，避免 `op`/`opencode` 冲突。
+      // 用户显式 --port 或 server.port 配置仍优先。
+      const port = options.port ?? config.port ?? ServiceConfig.defaultPort()
       const incumbent =
         serviceOptions !== undefined && port !== undefined
           ? yield* Service.incumbent({ ...serviceOptions, url: serviceURL(hostname, port) })
