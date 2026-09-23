@@ -1400,7 +1400,7 @@ export function Session(props: {
                   />
                 </Match>
                 <Match when={!disabled()}>
-                  <提示
+                  <Prompt
                     visible={true}
                     ref={bind}
                     muted={props.promptMuted}
@@ -2509,7 +2509,7 @@ function ToolPart(props: { part: SessionMessageAssistantTool; images?: boolean }
         <Edit {...toolprops} />
       </Match>
       <Match when={display() === "subagent"}>
-        <子代理 {...toolprops} />
+        <Subagent {...toolprops} />
       </Match>
       <Match when={display() === "execute"}>
         <Execute {...toolprops} />
