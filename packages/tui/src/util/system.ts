@@ -13,8 +13,8 @@ export function describeOS() {
 }
 
 export function describeTerminal() {
-  const program = process.env.TERM_PROGRAM || process.env.TERM || "unknown"
+  const program = process.env.TERM_PROGRAM || process.env.TERM || "未知"
   const version = process.env.TERM_PROGRAM_VERSION ? ` ${process.env.TERM_PROGRAM_VERSION}` : ""
-  const multiplexer = process.env.TMUX ? " in tmux" : process.env.STY ? " in screen" : ""
+  const multiplexer = process.env.TMUX ? " （在 tmux 中）" : process.env.STY ? " in screen" : ""
   return `${program}${version}${multiplexer}`
 }

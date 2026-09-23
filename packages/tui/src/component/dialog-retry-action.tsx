@@ -48,7 +48,7 @@ export function DialogRetryAction(props: DialogRetryActionProps) {
     bindings: [
       {
         key: "left",
-        desc: "Previous retry option",
+        desc: "上一个重试选项",
         group: "Dialog",
         cmd: () => setSelected((value) => (value === "action" ? "dismiss" : "action")),
       },
@@ -66,7 +66,7 @@ export function DialogRetryAction(props: DialogRetryActionProps) {
       },
       {
         key: "return",
-        desc: "Confirm retry option",
+        desc: "确认重试选项",
         group: "Dialog",
         cmd: () => {
           if (selected() === "action") runAction(props, dialog)
@@ -123,7 +123,7 @@ export function DialogRetryAction(props: DialogRetryActionProps) {
               bg={selected() === "dismiss" ? undefined : textBg()}
               attributes={selected() === "dismiss" ? TextAttributes.BOLD : undefined}
             >
-              don't show again
+              不再显示
             </text>
           </box>
           <box

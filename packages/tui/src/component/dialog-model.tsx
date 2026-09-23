@@ -50,12 +50,12 @@ export function DialogModel(props: { providerID?: string }) {
       })
     }
 
-    const favoriteOptions = toOptions(favorites, "Favorites")
+    const favoriteOptions = toOptions(favorites, "收藏")
     const recentOptions = toOptions(
       recents.filter(
         (item) => !favorites.some((fav) => fav.providerID === item.providerID && fav.modelID === item.modelID),
       ),
-      "Recent",
+      "最近",
     )
 
     const providerOptions = pipe(
@@ -75,7 +75,7 @@ export function DialogModel(props: { providerID?: string }) {
             title: info.name ?? model,
             releaseDate: info.release_date,
             description: favorites.some((item) => item.providerID === provider.id && item.modelID === model)
-              ? "(Favorite)"
+              ? "（已收藏）"
               : undefined,
             category: connected() ? provider.name : undefined,
             disabled: provider.id === "opencode" && model.includes("-nano"),
@@ -110,7 +110,7 @@ export function DialogModel(props: { providerID?: string }) {
           providers(),
           map((option) => ({
             ...option,
-            category: "Popular providers",
+            category: "热门提供商",
           })),
           take(6),
         )
@@ -135,7 +135,7 @@ export function DialogModel(props: { providerID?: string }) {
 
   const title = createMemo(() => {
     const value = provider()
-    if (!value) return "Select model"
+    if (!value) return "选择模型"
     return value.name
   })
 
@@ -143,7 +143,7 @@ export function DialogModel(props: { providerID?: string }) {
     local.model.set({ providerID, modelID }, { recent: true })
     const list = local.model.variant.list()
     const cur = local.model.variant.selected()
-    if (cur === "default" || (cur && list.includes(cur))) {
+    if (cur === "—（跳过）" || (cur && list.includes(cur))) {
       dialog.clear()
       return
     }
@@ -159,14 +159,14 @@ export function DialogModel(props: { providerID?: string }) {
       options={options()}
       actions={[
         {
-          command: "model.dialog.provider",
+          command: "—（跳过）",
           title: connected() ? "Connect provider" : "View all providers",
           onTrigger() {
             dialog.replace(() => <DialogProvider />)
           },
         },
         {
-          command: "model.dialog.favorite",
+          command: "—（跳过）",
           title: "Favorite",
           hidden: !connected(),
           onTrigger: (option) => {

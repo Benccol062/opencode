@@ -45,7 +45,7 @@ const TITLE_LIMIT = 80
 const MESSAGE_LIMIT = 240
 const BUILTIN_PACK: RegisteredSoundPack = {
   id: DEFAULT_PACK_ID,
-  name: "OpenCode Default",
+  name: "OpenCode 默认",
   builtin: true,
   sounds: {
     default: defaultSoundPath,
@@ -152,7 +152,7 @@ export function createTuiAttention(input: {
     try {
       for (const file of soundCandidates(name)) {
         const current = await audio.loadSoundFile(file).catch((error) => {
-          console.debug("failed to load attention sound", { file, error })
+          console.debug("加载提醒音效失败", { file, error })
           return null
         })
         if (disposed) return false
@@ -161,7 +161,7 @@ export function createTuiAttention(input: {
       }
       return false
     } catch (error) {
-      console.debug("failed to play attention sound", { error })
+      console.debug("播放提醒音效失败", { error })
       return false
     }
   }
@@ -187,7 +187,7 @@ export function createTuiAttention(input: {
                   normalizeText(request.title, DEFAULT_TITLE, TITLE_LIMIT),
                 )
               } catch (error) {
-                console.debug("failed to trigger attention notification", { error })
+                console.debug("触发提醒通知失败", { error })
                 return false
               }
             })()
@@ -210,7 +210,7 @@ export function createTuiAttention(input: {
           sound,
         }
       } catch (error) {
-        console.debug("failed to handle attention notification", { error })
+        console.debug("处理提醒通知失败", { error })
         return {
           ok: false,
           notification: false,

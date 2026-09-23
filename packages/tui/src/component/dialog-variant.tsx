@@ -10,8 +10,8 @@ export function DialogVariant() {
   const options = createMemo(() => {
     return [
       {
-        value: "default",
-        title: "Default",
+        value: "—（跳过）",
+        title: "默认",
         onSelect: () => {
           dialog.clear()
           local.model.variant.set(undefined)
@@ -31,7 +31,7 @@ export function DialogVariant() {
   return (
     <DialogSelect<string>
       options={options()}
-      title={"Select variant"}
+      title={"选择变体"}
       current={local.model.variant.selected()}
       flat={true}
     />

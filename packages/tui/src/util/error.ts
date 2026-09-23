@@ -24,8 +24,8 @@ export function cliErrorMessage(input: unknown): string | undefined {
     return [
       `Model not found: ${field(model, "providerID")}/${field(model, "modelID")}`,
       ...(suggestions.length ? ["Did you mean: " + suggestions.join(", ")] : []),
-      "Try: `opencode models` to list available models",
-      "Or check your config (opencode.json) provider/model names",
+      "请尝试：opencode models 以列出可用模型",
+      "或检查配置文件（opencode.json）中的提供商/模型名称",
     ].join("\n")
   }
 
@@ -53,7 +53,7 @@ export function cliErrorMessage(input: unknown): string | undefined {
     const remote = field(remoteAuth, "remote")
     return [
       `Failed to load remote config${remote ? ` from ${remote}` : ""}: the server returned a login page instead of JSON.`,
-      "Authentication is missing or has expired (the endpoint is likely behind an SSO or identity-aware proxy).",
+      "身份验证缺失或已过期（该端点可能位于 SSO 或身份感知代理之后）。",
       ...(url ? [`Run \`opencode auth login ${url}\` to re-authenticate.`] : []),
     ].join("\n")
   }
@@ -126,7 +126,7 @@ export function errorFormat(error: unknown): string {
       }
       return json
     } catch {
-      return "Unexpected error (unserializable)"
+      return "意外错误（无法序列化）"
     }
   }
 
@@ -152,7 +152,7 @@ export function errorMessage(error: unknown): string {
 
   const formatted = errorFormat(error)
   if (formatted) return formatted
-  return "unknown error"
+  return "未知错误"
 }
 
 export function errorData(error: unknown) {

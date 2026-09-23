@@ -538,7 +538,7 @@ export const {
           })
         })
         .catch(async (e) => {
-          console.error("tui bootstrap failed", {
+          console.error("TUI 初始化失败", {
             error: e instanceof Error ? e.message : String(e),
             name: e instanceof Error ? e.name : undefined,
             stack: e instanceof Error ? e.stack : undefined,

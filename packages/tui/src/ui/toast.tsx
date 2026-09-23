@@ -74,7 +74,7 @@ function init() {
         })
       toast.show({
         variant: "error",
-        message: "An unknown error has occurred",
+        message: "发生未知错误",
       })
     },
     get currentToast(): ToastOptions | null {
@@ -96,7 +96,7 @@ export function ToastProvider(props: ParentProps) {
 export function useToast() {
   const value = useContext(ctx)
   if (!value) {
-    throw new Error("useToast must be used within a ToastProvider")
+    throw new Error("（跳过，不翻译）")
   }
   return value
 }

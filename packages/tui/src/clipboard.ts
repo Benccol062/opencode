@@ -14,7 +14,7 @@ function command(command: string, args: string[] = [], input?: string) {
     child.stdout?.on("data", (chunk: Buffer) => output.push(chunk))
     child.on("close", (code) => {
       if (code === 0) return resolve(Buffer.concat(output))
-      reject(new Error(`${command} exited with code ${code}`))
+      reject(new Error(`${command} 以退出码 ${code} 退出`))
     })
     if (input !== undefined) child.stdin?.end(input)
   })

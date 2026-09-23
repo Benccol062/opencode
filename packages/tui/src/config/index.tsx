@@ -20,24 +20,24 @@ export const PluginSpec = Schema.Union([Schema.String, Schema.mutable(Schema.Tup
 
 export const LeaderTimeoutDefault = 2000
 export const LeaderTimeout = Schema.Int.check(Schema.isGreaterThan(0)).annotate({
-  description: "Leader key timeout in milliseconds",
+  description: "前导键超时时间（毫秒）",
 })
 
 export const ScrollSpeed = Schema.Number.check(Schema.isGreaterThanOrEqualTo(0.001))
 export const ScrollAcceleration = Schema.Struct({
-  enabled: Schema.Boolean.annotate({ description: "Enable scroll acceleration" }),
-}).annotate({ description: "Scroll acceleration settings" })
+  enabled: Schema.Boolean.annotate({ description: "启用滚动加速" }),
+}).annotate({ description: "滚动加速设置" })
 export const DiffStyle = Schema.Literals(["auto", "stacked"]).annotate({
-  description: "Control diff rendering style: 'auto' adapts to terminal width, 'stacked' always shows single column",
+  description: "控制 diff 渲染样式：“auto”按终端宽度自适应，“stacked”始终单列显示",
 })
 export const Cursor = Schema.Struct({
   style: Schema.optional(Schema.Literals(["block", "underline", "line", "default"])).annotate({
-    description: "Cursor shape. Use 'default' to preserve the terminal setting",
+    description: "光标形状。使用 'default' 可保留终端原有设置",
   }),
   blinking: Schema.optional(Schema.Boolean).annotate({
-    description: "Whether the cursor blinks. Has no effect when style is 'default'",
+    description: "光标是否闪烁。当样式为 'default' 时无效",
   }),
-}).annotate({ description: "Terminal cursor settings" })
+}).annotate({ description: "终端光标设置" })
 
 export const AttentionSounds = Schema.Record(AttentionSoundName, Schema.optionalKey(Schema.String))
 export type AttentionSoundPaths = Schema.Schema.Type<typeof AttentionSounds>
@@ -48,15 +48,15 @@ export const Attention = Schema.Struct({
   volume: Schema.optional(Schema.Number.check(Schema.isGreaterThanOrEqualTo(0), Schema.isLessThanOrEqualTo(1))),
   sound_pack: Schema.optional(Schema.String),
   sounds: Schema.optional(AttentionSounds),
-}).annotate({ description: "Attention notification and sound settings" })
+}).annotate({ description: "注意提醒与声音设置" })
 
 const PromptSize = Schema.Int.check(Schema.isGreaterThan(0))
 export const Prompt = Schema.Struct({
-  max_height: Schema.optional(PromptSize).annotate({ description: "Prompt textarea max height" }),
+  max_height: Schema.optional(PromptSize).annotate({ description: "提示输入框最大高度" }),
   max_width: Schema.optional(Schema.Union([PromptSize, Schema.Literal("auto")])).annotate({
-    description: "Home prompt max width: a positive integer for a fixed cap, or 'auto' to scale with terminal width",
+    description: "首页提示最大宽度：正整数表示固定上限，'auto' 表示随终端宽度自适应",
   }),
-}).annotate({ description: "Prompt size settings" })
+}).annotate({ description: "提示框尺寸设置" })
 
 export const Info = Schema.Struct({
   $schema: Schema.optional(Schema.String),
@@ -67,11 +67,11 @@ export const Info = Schema.Struct({
   leader_timeout: Schema.optional(LeaderTimeout),
   attention: Schema.optional(Attention),
   prompt: Schema.optional(Prompt),
-  scroll_speed: Schema.optional(ScrollSpeed).annotate({ description: "TUI scroll speed" }),
+  scroll_speed: Schema.optional(ScrollSpeed).annotate({ description: "TUI 滚动速度" }),
   scroll_acceleration: Schema.optional(ScrollAcceleration),
   diff_style: Schema.optional(DiffStyle),
   cursor: Schema.optional(Cursor),
-  mouse: Schema.optional(Schema.Boolean).annotate({ description: "Enable or disable mouse capture (default: true)" }),
+  mouse: Schema.optional(Schema.Boolean).annotate({ description: "启用或停用鼠标捕获（默认值：true）" }),
 })
 export type Info = Schema.Schema.Type<typeof Info>
 

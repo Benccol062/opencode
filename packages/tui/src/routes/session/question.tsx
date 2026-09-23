@@ -136,8 +136,8 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
     commands: [
       {
         name: "prompt.clear",
-        title: "Clear answer edit",
-        category: "Question",
+        title: "清除答案编辑",
+        category: "问题",
         run() {
           const text = textarea?.plainText ?? ""
           if (!text) {
@@ -151,7 +151,7 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
     bindings: [
       {
         key: "escape",
-        desc: "Cancel answer edit",
+        desc: "取消答案编辑",
         group: "Question",
         cmd: () => {
           setStore("editing", false)
@@ -160,7 +160,7 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
       ...tuiConfig.keybinds.get("prompt.clear"),
       {
         key: "return",
-        desc: "Submit answer edit",
+        desc: "提交答案编辑",
         group: "Question",
         cmd: () => {
           const text = textarea?.plainText?.trim() ?? ""
@@ -217,7 +217,7 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
       commands: [
         {
           name: "app.exit",
-          title: "Reject question",
+          title: "拒绝问题",
           category: "Question",
           run() {
             reject()
@@ -227,21 +227,21 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
       bindings: [
         {
           key: "left",
-          desc: "Previous question",
+          desc: "上一个问题",
           group: "Question",
           cmd: () => selectTab((store.tab - 1 + tabs()) % tabs()),
         },
         {
           key: "h",
-          desc: "Previous question",
+          desc: "上一个问题",
           group: "Question",
           cmd: () => selectTab((store.tab - 1 + tabs()) % tabs()),
         },
-        { key: "right", desc: "Next question", group: "Question", cmd: () => selectTab((store.tab + 1) % tabs()) },
-        { key: "l", desc: "Next question", group: "Question", cmd: () => selectTab((store.tab + 1) % tabs()) },
+        { key: "right", desc: "下一个问题", group: "Question", cmd: () => selectTab((store.tab + 1) % tabs()) },
+        { key: "l", desc: "下一个问题", group: "Question", cmd: () => selectTab((store.tab + 1) % tabs()) },
         {
           key: "tab",
-          desc: "Next question",
+          desc: "下一个问题",
           group: "Question",
           cmd: ({ event }: { event: { shift: boolean } }) => {
             selectTab((store.tab + (event.shift ? -1 : 1) + tabs()) % tabs())
@@ -249,14 +249,14 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
         },
         ...(confirm()
           ? [
-              { key: "return", desc: "Submit answer", group: "Question", cmd: () => submit() },
-              { key: "escape", desc: "Reject question", group: "Question", cmd: () => reject() },
+              { key: "return", desc: "提交答案", group: "Question", cmd: () => submit() },
+              { key: "escape", desc: "拒绝问题", group: "Question", cmd: () => reject() },
               ...tuiConfig.keybinds.get("app.exit"),
             ]
           : [
               ...Array.from({ length: max }, (_, index) => ({
                 key: String(index + 1),
-                desc: `Select answer ${index + 1}`,
+                desc: `选择答案 ${index + 1}`,
                 group: "Question",
                 cmd: () => {
                   moveTo(index)
@@ -265,20 +265,20 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
               })),
               {
                 key: "up",
-                desc: "Previous answer",
+                desc: "上一个答案",
                 group: "Question",
                 cmd: () => moveTo((store.selected - 1 + total) % total),
               },
               {
                 key: "k",
-                desc: "Previous answer",
+                desc: "上一个答案",
                 group: "Question",
                 cmd: () => moveTo((store.selected - 1 + total) % total),
               },
-              { key: "down", desc: "Next answer", group: "Question", cmd: () => moveTo((store.selected + 1) % total) },
-              { key: "j", desc: "Next answer", group: "Question", cmd: () => moveTo((store.selected + 1) % total) },
-              { key: "return", desc: "Select answer", group: "Question", cmd: () => selectOption() },
-              { key: "escape", desc: "Reject question", group: "Question", cmd: () => reject() },
+              { key: "down", desc: "下一个答案", group: "Question", cmd: () => moveTo((store.selected + 1) % total) },
+              { key: "j", desc: "下一个答案", group: "Question", cmd: () => moveTo((store.selected + 1) % total) },
+              { key: "return", desc: "选择答案", group: "Question", cmd: () => selectOption() },
+              { key: "escape", desc: "拒绝问题", group: "Question", cmd: () => reject() },
               ...tuiConfig.keybinds.get("app.exit"),
             ]),
       ],
@@ -347,7 +347,7 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
                 selectTab(questions().length)
               }}
             >
-              <text fg={confirm() ? selectedForeground(theme, theme.accent) : theme.textMuted}>Confirm</text>
+              <text fg={confirm() ? selectedForeground(theme, theme.accent) : theme.textMuted}>确认</text>
             </box>
           </box>
         </Show>
@@ -357,7 +357,7 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
             <box>
               <text fg={theme.text}>
                 {question()?.question}
-                {multi() ? " (select all that apply)" : ""}
+                {multi() ? " （可多选）" : ""}
               </text>
             </box>
             <box>
@@ -414,7 +414,7 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
                     </box>
                     <box backgroundColor={other() ? theme.backgroundElement : undefined}>
                       <text fg={other() ? theme.secondary : customPicked() ? theme.success : theme.text}>
-                        {multi() ? `[${customPicked() ? "✓" : " "}] Type your own answer` : "Type your own answer"}
+                        {multi() ? `[${customPicked() ? "✓" : " "}] 输入自定义答案` : "输入自定义回答"}
                       </text>
                     </box>
 
@@ -434,7 +434,7 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
                           })
                         }}
                         initialValue={input()}
-                        placeholder="Type your own answer"
+                        placeholder="输入自定义答案"
                         placeholderColor={theme.textMuted}
                         minHeight={1}
                         maxHeight={6}
@@ -458,7 +458,7 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
 
         <Show when={confirm() && !single()}>
           <box paddingLeft={1}>
-            <text fg={theme.text}>Review</text>
+            <text fg={theme.text}>检查</text>
           </box>
           <For each={questions()}>
             {(q, index) => {
@@ -469,7 +469,7 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
                   <text>
                     <span style={{ fg: theme.textMuted }}>{q.header}:</span>{" "}
                     <span style={{ fg: answered() ? theme.text : theme.error }}>
-                      {answered() ? value() : "(not answered)"}
+                      {answered() ? value() : "（未回答）"}
                     </span>
                   </text>
                 </box>
@@ -495,18 +495,18 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
           </Show>
           <Show when={!confirm()}>
             <text fg={theme.text}>
-              {"↑↓"} <span style={{ fg: theme.textMuted }}>select</span>
+              {"↑↓"} <span style={{ fg: theme.textMuted }}>选择</span>
             </text>
           </Show>
           <text fg={theme.text}>
             enter{" "}
             <span style={{ fg: theme.textMuted }}>
-              {confirm() ? "submit" : multi() ? "toggle" : single() ? "submit" : "confirm"}
+              {confirm() ? "submit" : multi() ? "切换" : single() ? "submit" : "confirm"}
             </span>
           </text>
 
           <text fg={theme.text}>
-            esc <span style={{ fg: theme.textMuted }}>dismiss</span>
+            esc <span style={{ fg: theme.textMuted }}>关闭</span>
           </text>
         </box>
       </box>

@@ -61,7 +61,7 @@ async function loadWorkspaceAdapters(input: {
     return response.data
   } catch (err) {
     input.toast.show({
-      title: "Failed to load workspace adapters",
+      title: "加载工作区适配器失败",
       message: errorMessage(err),
       variant: "error",
     })
@@ -106,7 +106,7 @@ export async function warpWorkspaceSession(input: {
     })
   } catch (err) {
     input.toast.show({
-      title: "Failed to warp session",
+      title: "Warp 会话失败",
       message: errorMessage(err),
       variant: "error",
     })
@@ -116,8 +116,8 @@ export async function warpWorkspaceSession(input: {
     if (result?.error && "name" in result.error && result.error.name === "VcsApplyError") {
       await DialogAlert.show(
         input.dialog,
-        "Unable to Warp Session",
-        "Unable to apply file changes to this workspace. It has existing changes that conflict or is based off a different branch. Session has not been warped.",
+        "无法 Warp 会话",
+        "无法将文件更改应用到此工作区。该工作区存在冲突的更改，或基于不同的分支。会话尚未 Warp。",
       )
       return false
     }
@@ -211,13 +211,13 @@ export function DialogWorkspaceSelect(props: {
         title: adapter.name,
         value: { type: "new" as const, workspaceType: adapter.type, workspaceName: adapter.name },
         description: adapter.description,
-        category: "New workspace",
+        category: "新建工作区",
       })),
       {
-        title: "None",
+        title: "无",
         value: { type: "none" as const },
-        description: "Use the local project",
-        category: "Choose workspace",
+        description: "使用本地项目",
+        category: "选择工作区",
       },
       ...recent.map((workspace: Workspace) => ({
         title: workspace.name,
@@ -233,9 +233,9 @@ export function DialogWorkspaceSelect(props: {
       ...(hasMore
         ? [
             {
-              title: "View all workspaces",
+              title: "查看所有工作区",
               value: { type: "existing-list" as const },
-              description: "Choose from all workspaces",
+              description: "从所有工作区中选择",
               category: "Choose workspace",
             },
           ]
@@ -293,7 +293,7 @@ function DialogExistingWorkspaceSelect(props: {
 
   return (
     <DialogSelect<ExistingWorkspaceSelectValue>
-      title="Existing Workspace"
+      title="已有工作区"
       options={options()}
       onSelect={(option) => {
         void props.onSelect({

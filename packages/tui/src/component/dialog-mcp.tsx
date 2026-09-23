@@ -10,12 +10,12 @@ import { useSDK } from "../context/sdk"
 function Status(props: { enabled: boolean; loading: boolean }) {
   const { theme } = useTheme()
   if (props.loading) {
-    return <span style={{ fg: theme.textMuted }}>⋯ Loading</span>
+    return <span style={{ fg: theme.textMuted }}>⋯ 加载中</span>
   }
   if (props.enabled) {
-    return <span style={{ fg: theme.success, attributes: TextAttributes.BOLD }}>✓ Enabled</span>
+    return <span style={{ fg: theme.success, attributes: TextAttributes.BOLD }}>✓ 已启用</span>
   }
-  return <span style={{ fg: theme.textMuted }}>○ Disabled</span>
+  return <span style={{ fg: theme.textMuted }}>○ 已禁用</span>
 }
 
 export function DialogMcp() {
@@ -37,7 +37,7 @@ export function DialogMcp() {
       map(([name, status]) => ({
         value: name,
         title: name,
-        description: status.status === "failed" ? "failed" : status.status,
+        description: status.status === "失败" ? "failed" : status.status,
         footer: <Status enabled={local.mcp.isEnabled(name)} loading={loadingMcp === name} />,
         category: undefined,
       })),
@@ -46,7 +46,7 @@ export function DialogMcp() {
 
   const actions = createMemo(() => [
     {
-      command: "dialog.mcp.toggle",
+      command: "—（跳过）",
       title: "toggle",
       onTrigger: async (option: DialogSelectOption<string>) => {
         // Prevent toggling while an operation is already in progress
@@ -60,10 +60,10 @@ export function DialogMcp() {
           if (status.data) {
             sync.set("mcp", status.data)
           } else {
-            console.error("Failed to refresh MCP status: no data returned")
+            console.error("—（跳过）")
           }
         } catch (error) {
-          console.error("Failed to toggle MCP:", error)
+          console.error("—（跳过）", error)
         } finally {
           setLoading(null)
         }
@@ -74,7 +74,7 @@ export function DialogMcp() {
   return (
     <DialogSelect
       ref={setRef}
-      title="MCPs"
+      title="MCP"
       options={options()}
       actions={actions()}
       onSelect={(_option) => {

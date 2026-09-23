@@ -46,7 +46,7 @@ const MAX_PANEL_HEIGHT = 16
 const PANEL_TOP_PADDING = 1
 const FOOTER_HEIGHT = 1
 const FOOTER_MARGIN = 1
-const UNKNOWN = "Unknown"
+const UNKNOWN = "未知"
 
 type Layout = "dock" | "overlay"
 
@@ -175,7 +175,7 @@ function HomeHint(props: { api: TuiPluginApi }) {
   return (
     <box width="100%" maxWidth={75} alignItems="center" paddingTop={1} flexShrink={0}>
       <text fg={look().muted} wrapMode="none">
-        Show keyboard shortcuts with <span style={{ fg: look().subtle }}>{trigger() || command.toggle}</span>
+        按 <span style={{ fg: look().subtle }}>{trigger() || command.toggle}</span> 显示键盘快捷键
       </text>
     </box>
   )
@@ -289,8 +289,8 @@ function WhichKeyPanel(props: {
     commands: [
       {
         name: command.groupPrevious,
-        title: "Previous key binding group",
-        desc: "Show the previous which-key group",
+        title: "上一个按键绑定分组",
+        desc: "显示上一个 which-key 分组",
         category: "System",
         run() {
           moveGroup(-1)
@@ -298,8 +298,8 @@ function WhichKeyPanel(props: {
       },
       {
         name: command.groupNext,
-        title: "Next key binding group",
-        desc: "Show the next which-key group",
+        title: "下一个按键绑定分组",
+        desc: "显示下一个 which-key 分组",
         category: "System",
         run() {
           moveGroup(1)
@@ -307,8 +307,8 @@ function WhichKeyPanel(props: {
       },
       {
         name: command.scrollUp,
-        title: "Scroll key bindings up",
-        desc: "Scroll the which-key panel up",
+        title: "向上滚动按键绑定",
+        desc: "向上滚动 which-key 面板",
         category: "System",
         run() {
           scroll(-columns())
@@ -316,8 +316,8 @@ function WhichKeyPanel(props: {
       },
       {
         name: command.scrollDown,
-        title: "Scroll key bindings down",
-        desc: "Scroll the which-key panel down",
+        title: "向下滚动按键绑定",
+        desc: "向下滚动 which-key 面板",
         category: "System",
         run() {
           scroll(columns())
@@ -325,8 +325,8 @@ function WhichKeyPanel(props: {
       },
       {
         name: command.pageUp,
-        title: "Page key bindings up",
-        desc: "Page the which-key panel up",
+        title: "向上翻页按键绑定",
+        desc: "向上翻页 which-key 面板",
         category: "System",
         run() {
           scroll(-pageSize())
@@ -334,8 +334,8 @@ function WhichKeyPanel(props: {
       },
       {
         name: command.pageDown,
-        title: "Page key bindings down",
-        desc: "Page the which-key panel down",
+        title: "向下翻页按键绑定",
+        desc: "向下翻页 which-key 面板",
         category: "System",
         run() {
           scroll(pageSize())
@@ -343,8 +343,8 @@ function WhichKeyPanel(props: {
       },
       {
         name: command.home,
-        title: "First key binding",
-        desc: "Jump to the first which-key binding",
+        title: "第一个按键绑定",
+        desc: "跳转到第一个 which-key 按键绑定",
         category: "System",
         run() {
           setOffset(0)
@@ -352,8 +352,8 @@ function WhichKeyPanel(props: {
       },
       {
         name: command.end,
-        title: "Last key binding",
-        desc: "Jump to the last which-key binding",
+        title: "最后一个按键绑定",
+        desc: "跳转到最后一个 which-key 按键绑定",
         category: "System",
         run() {
           setOffset(maxOffset())
@@ -455,7 +455,7 @@ function WhichKeyPanel(props: {
           <box height={TAB_CONTENT_GAP} flexShrink={0} />
         </Show>
         <box height={rows()} flexShrink={0} flexDirection="column">
-          <Show when={shown().length > 0} fallback={<text fg={look().muted}>No reachable bindings</text>}>
+          <Show when={shown().length > 0} fallback={<text fg={look().muted}>`没有可用的按键绑定`</text>}>
             <For each={rowIndexes()}>
               {(row) => (
                 <box width="100%" flexDirection="row" justifyContent="center" gap={COLUMN_GAP}>
@@ -539,8 +539,8 @@ const tui: TuiPlugin = async (api) => {
     commands: [
       {
         name: command.toggle,
-        title: "Show key bindings",
-        desc: "Toggle which-key overlay",
+        title: "显示按键绑定",
+        desc: "切换 which-key 浮层",
         category: "System",
         run() {
           setPinned((value) => !value)
@@ -548,8 +548,8 @@ const tui: TuiPlugin = async (api) => {
       },
       {
         name: command.toggleLayout,
-        title: "Toggle key bindings layout",
-        desc: "Switch which-key between dock and overlay mode",
+        title: "切换按键绑定布局",
+        desc: "在停靠和悬浮模式之间切换 which-key",
         category: "System",
         run() {
           setMode((value) => {
@@ -561,8 +561,8 @@ const tui: TuiPlugin = async (api) => {
       },
       {
         name: command.togglePending,
-        title: "Toggle pending key preview",
-        desc: "Automatically show which-key for pending key sequences in overlay mode",
+        title: "切换待处理按键预览",
+        desc: "在悬浮模式下自动为待处理按键序列显示 which-key",
         category: "System",
         run() {
           setPendingPreview((value) => {
